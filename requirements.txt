@@ -2,6 +2,7 @@ coverage
 jyquickhelper
 pyquickhelper
 sphinx_bootstrap_theme
+sphinxcontrib.blockdiag
 starlette
 ujson
 wheel
