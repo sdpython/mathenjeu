@@ -8,7 +8,7 @@ README
     :target: https://travis-ci.org/sdpython/mathenjeu
     :alt: Build status
 
-.. image:: https://ci.appveyor.com/api/projects/status/5jl303wl14dtesl0?svg=true
+.. image:: https://ci.appveyor.com/api/projects/status/kewttt58ejfwduao?svg=true
     :target: https://ci.appveyor.com/project/sdpython/mathenjeu
     :alt: Build Status Windows
 
