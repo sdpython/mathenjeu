@@ -1,0 +1,7 @@
+coverage
+jyquickhelper
+pyquickhelper
+sphinx_bootstrap_theme
+starlette
+ujson
+wheel
