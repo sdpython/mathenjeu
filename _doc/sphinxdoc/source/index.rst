@@ -45,14 +45,11 @@ Maths en Jeux (ou exercices sur internet)
         :target: http://www.xavierdupre.fr/app/mathenjeu/helpsphinx/all_notebooks_coverage.html
         :alt: Notebook Coverage
 
-
 .. toctree::
     :maxdepth: 1
 
     i_examples
     i_index
-
-
 
 +----------------------+---------------------+---------------------+--------------------+------------------------+------------------------------------------------+
 | :ref:`l-modules`     |  :ref:`l-functions` | :ref:`l-classes`    | :ref:`l-methods`   | :ref:`l-staticmethods` | :ref:`l-properties`                            |
