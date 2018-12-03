@@ -37,7 +37,11 @@ CLASSIFIERS = [
 
 packages = find_packages('src', exclude='src')
 package_dir = {k: "src/" + k.replace(".", "/") for k in packages}
-package_data = {}
+package_data = {project_var_name + ".apps.qcm.statics.css": ["*.css"],
+                project_var_name + ".apps.qcm.statics.js": ["*.js"],
+                project_var_name + ".apps.qcm.templates": ["*.html"],
+                }
+
 
 ############
 # functions
@@ -162,5 +166,6 @@ if not r:
         package_dir=package_dir,
         package_data=package_data,
         setup_requires=["pyquickhelper"],
-        install_requires=['numpy', 'pandas'],
+        install_requires=['aiofiles', 'itsdangerous', 'jinja2', 'lightmlrestapi',
+                          'numpy', 'pandas', 'starlette'],
     )

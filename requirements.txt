@@ -1,5 +1,9 @@
+aiofiles
 coverage
+jinja2
 jyquickhelper
+itsdangerous
+lightmlrestapi
 pyquickhelper
 sphinx_bootstrap_theme
 sphinxcontrib.blockdiag

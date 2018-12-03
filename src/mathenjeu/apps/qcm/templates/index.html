@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<main role="main">
+
+  <!-- Main jumbotron for a primary marketing message or call to action -->
+  <div class="jumbotron">
+    <div class="container">
+      <h1 class="display-4">Question - {{number}}/{{nbnumber}}</h1>
+      <p>{{question}}</p>
+      <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more &raquo;</a></p>
+    </div>
+  </div>
+
+  <div class="container">
+    <!-- Example row of columns -->
+    <div class="row">
+      <div class="col-md-4">
+        <p><a class="btn btn-secondary" href="#" role="button">&laquo; Précédent</a></p>
+      </div>
+      <div class="col-md-4">
+        <p><a class="btn btn-secondary" href="#" role="button">Suivant &raquo;</a></p>
+      </div>
+    </div>
+
+    <hr />
+
+  </div> <!-- /container -->
+
+</main>
+{% endblock %}

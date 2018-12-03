@@ -103,6 +103,9 @@ latex_elements['preamble'] = preamble + custom_preamble
 mathdef_link_only = True
 
 epkg_dictionary.update({
+    'HTTP 404': 'https://en.wikipedia.org/wiki/HTTP_404',
+    'HTTP 500': 'https://en.wikipedia.org/wiki/List_of_HTTP_status_codes',
     "QCM": 'https://en.wikipedia.org/wiki/Multiple_choice',
+    'starlette': 'https://github.com/encode/starlette',
     "ujson": 'https://github.com/esnme/ultrajson',
 })

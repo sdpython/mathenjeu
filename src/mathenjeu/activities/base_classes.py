@@ -75,8 +75,7 @@ class LanguageBase(Base):
         @param      name    unique name (mostly for logging)
         @param      lang    language
         """
-        self._col_eid = eid
-        self._col_name = name
+        Base.__init__(self, eid, name)
         self._col_lang = lang
 
 
