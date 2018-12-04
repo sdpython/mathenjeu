@@ -167,5 +167,6 @@ if not r:
         package_data=package_data,
         setup_requires=["pyquickhelper"],
         install_requires=['aiofiles', 'itsdangerous', 'jinja2', 'lightmlrestapi',
-                          'numpy', 'pandas', 'starlette'],
+                          'numpy', 'pandas', 'python-multipart',
+                          'starlette', 'hypercorn'],
     )

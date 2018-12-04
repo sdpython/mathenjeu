@@ -3,19 +3,25 @@
 {% block content %}
 <main role="main">
 
-  <!-- Main jumbotron for a primary marketing message or call to action -->
   <div class="jumbotron">
     <div class="container">
       <h1 class="display-4">Login</h1>
-      <p>{{question}}</p>
-        <form class="form-inline my-2 my-lg-0">
-          <p>Alias <input class="form-control mr-sm-2" id="alias" type="text" placeholder="" aria-label="alias"></p>
-          <p>Mot de passe <input class="form-control mr-sm-2" id="pwd" type="password" placeholder="" aria-label="pwd"></p>
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Se connecter</button>
+        <form class="form-inline my-2 my-lg-0" method="post" action="/authenticate">
+          <p>Alias <input class="form-control mr-sm-2" id="alias" name="alias"
+                     type="text" placeholder="" aria-label="alias"></p>
+          <p>Mot de passe <input class="form-control mr-sm-2" id="pwd" name="pwd"
+                           type="password" placeholder="" aria-label="pwd"></p>
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit" value="ok">Se connecter</button>
         </form>      
-    </div>
-    
+    </div>    
   </div>
+  
+    <div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        <p>Ce site utilise des cookies pour se souvenir de votre identité.</p>
+      </div>  
+  </div>  
 
     <hr />
 

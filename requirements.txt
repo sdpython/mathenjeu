@@ -5,6 +5,7 @@ jyquickhelper
 itsdangerous
 lightmlrestapi
 pyquickhelper
+python-multipart
 sphinx_bootstrap_theme
 sphinxcontrib.blockdiag
 starlette

@@ -3,7 +3,7 @@
 @file
 @brief Shortcut to *tests*.
 """
-from ..activities import Notion, QuestionChoice, HTMLForm
+from ..activities import Notion, QuestionChoice, HTMLForm, ActivityGroup
 
 
 def simple_french_qcm():
@@ -25,4 +25,4 @@ def simple_french_qcm():
                                 '$\\pi R^2$', '$\\pi^2 R^2$', '$3R^2/4$'],
                        expected_answers=['$\\pi R^2$']),
     ]
-    return objs
+    return ActivityGroup("test_qcm1", "test_qcm1", objs)

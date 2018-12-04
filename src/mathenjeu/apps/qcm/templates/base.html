@@ -40,12 +40,14 @@
             <a class="nav-link" href="http://www.xavierdupre.fr/app/mathenjeu/">documentation</a>
           </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0">
+        {% if alias %}
+        <form class="form-inline my-2 my-lg-0" action="/logout">
             <div class="parwhite">
-            <p> - {{ alias }} - z </p>
+            <p>{{ alias }}</p><p></p>
             </div>
           <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Log out</button>
         </form>
+        {% endif %}
       </div>
     </nav>
 

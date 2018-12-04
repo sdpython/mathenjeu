@@ -35,12 +35,14 @@ class QuestionChoice(Activity):
         @param      answers             answers (dictionary ``{ code, display }``)
         @param      expected_answers    expected_answers, list of codes
         """
-        if isinstance(answers, list):
-            answers = {k: k for k in answers}
-        if not isinstance(answers, dict):
-            raise TypeError("answers must be a dictionary")
         if not isinstance(expected_answers, list):
             raise TypeError("expected_answers must be a list")
+        if isinstance(answers, list):
+            answers = {"a%d" % i: k for i, k in enumerate(answers)}
+            rev = {v: k for k, v in answers.items()}
+            expected_answers = [rev[a] for a in expected_answers]
+        if not isinstance(answers, dict):
+            raise TypeError("answers must be a dictionary")
         for exp in expected_answers:
             if exp not in answers:
                 raise ValueError(

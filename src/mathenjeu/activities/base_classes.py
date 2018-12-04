@@ -36,6 +36,9 @@ class Base:
     def _format_value(v):
         if isinstance(v, str):
             return "'{0}'".format(v.replace("\\", "\\\\").replace("'", "\\'"))
+        elif isinstance(v, list):
+            rs = [repr(_) for _ in v]
+            return '[{0}]'.format(', '.join(rs))
         else:
             return repr(v)
 
@@ -128,3 +131,35 @@ class Activity(LanguageBase):
         self._col_display = display
         self._col_description = description
         self._col_content = content
+
+
+class ActivityGroup(Base):
+    """
+    Defines a set of activities.
+    """
+
+    def __init__(self, eid, name, acts=None):
+        """
+        @param      eid         identifier
+        @param      name        unique name
+        @param      acts        set of activities
+        """
+        Base.__init__(self, eid, name)
+        if acts is None:
+            self._col_acts = []
+        elif isinstance(acts, list):
+            self._col_acts = acts
+        else:
+            raise TypeError("Activities must be defined as a list.")
+
+    def __len__(self):
+        """
+        Returns the number of activities.
+        """
+        return len(self._col_acts)
+
+    def __iter__(self):
+        """
+        To iterate on activities.
+        """
+        return self._col_acts.__iter__()

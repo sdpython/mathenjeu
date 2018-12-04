@@ -4,5 +4,5 @@
 @brief Shortcut to *activities*.
 """
 
-from .base_classes import Notion, Display, Activity
+from .base_classes import Notion, Display, Activity, ActivityGroup
 from .act_question import HTMLForm, QuestionChoice
