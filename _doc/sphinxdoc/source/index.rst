@@ -48,6 +48,7 @@ Maths en Jeux (ou exercices sur internet)
 .. toctree::
     :maxdepth: 1
 
+    api/index
     i_examples
     i_index
 

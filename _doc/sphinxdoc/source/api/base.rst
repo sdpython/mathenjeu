@@ -11,6 +11,8 @@ Classes génériques
 
 .. autosignature:: mathenjeu.activities.base_classes.Activity
 
+.. autosignature:: mathenjeu.activities.base_classes.ActivityGroup
+
 .. autosignature:: mathenjeu.activities.base_classes.Display
 
 .. autosignature:: mathenjeu.activities.base_classes.Notion

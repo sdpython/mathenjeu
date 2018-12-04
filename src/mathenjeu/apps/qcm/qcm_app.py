@@ -16,7 +16,19 @@ from lightmlrestapi.mlapp.base_logging import BaseLogging
 
 class QCMApp(BaseLogging):
     """
-    Defines routes for urls.
+    Defines routes for urls. The web application
+    can be started with the following code:
+
+    ::
+
+        import uvicorn  # pylint: disable=C0412
+        from uvicorn.middleware.proxy_headers import ProxyHeadersMiddleware
+        app2 = QCMApp.create_app(secret_session="dummypwd",
+                                 middles=[(ProxyHeadersMiddleware, {})])
+        uvicorn.run(app2, host='127.0.0.1', port=8099)
+
+    Module :epkg:`uvicorn` does not implement a secured connection.
+    :epkg:`hypercorn` is one alternative.
     """
 
     def __init__(self, app, secret_key, folder='.',
