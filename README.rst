@@ -49,4 +49,7 @@ README
 
 **mathenjeu**
 
-Programmation Python en français.
+Web application to retrieve answers to questions, maybe more.
+Some content are in French. Relies on *starlette*, *uvicorn*,
+*hypercorn*.
+
