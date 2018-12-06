@@ -1,5 +1,6 @@
 aiofiles
 coverage
+hypercorn
 jinja2
 jyquickhelper
 itsdangerous
@@ -10,4 +11,5 @@ sphinx_bootstrap_theme
 sphinxcontrib.blockdiag
 starlette
 ujson
+uvicorn
 wheel

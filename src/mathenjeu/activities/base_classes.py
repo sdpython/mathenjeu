@@ -32,6 +32,12 @@ class Base:
         """
         return list(sorted(k for k in self.__dict__ if k.startswith("_col")))
 
+    def to_dict(self):
+        """
+        Returns all values as a dictionary.
+        """
+        return {k: getattr(self, k) for k in self.__dict__ if k.startswith("_col")}
+
     @staticmethod
     def _format_value(v):
         if isinstance(v, str):
@@ -52,6 +58,18 @@ class Base:
             getattr(self, k))) for k in fields]
         text = "{0}({1})".format(name, ", ".join(pars))
         return text
+
+    def __getitem__(self, field):
+        """
+        Returns the value associated to a field.
+
+        @param      field       field
+        @return                 value
+        """
+        key = "_col_" + field
+        if not hasattr(self, key):
+            raise ValueError("Unable to find attribute '{0}'.".format(field))
+        return getattr(self, key)
 
 
 class Display(Base):
@@ -114,21 +132,19 @@ class Activity(LanguageBase):
     """
 
     def __init__(self, eid, name, lang, title, notion=None,
-                 display=None, description=None, content=None):
+                 description=None, content=None):
         """
         @param      eid         identifier
         @param      name        unique name
         @param      lang        language
         @param      title       display name
         @param      notion      notion (@see cl Notion)
-        @param      display     display (@see cl Display)
         @param      description description
         @param      content     content
         """
         LanguageBase.__init__(self, eid, name, lang)
         self._col_title = title
         self._col_notion = notion
-        self._col_display = display
         self._col_description = description
         self._col_content = content
 
@@ -163,3 +179,66 @@ class ActivityGroup(Base):
         To iterate on activities.
         """
         return self._col_acts.__iter__()
+
+    def __getitem__(self, item):
+        """
+        Retrieves the question.
+
+        @param      item        item
+        @return                 @see cl Activity
+        """
+        if not isinstance(item, int):
+            try:
+                ii = int(item)
+            except ValueError:
+                raise ValueError(
+                    "Unable to retrieve question '{0}'.".format(item))
+        else:
+            ii = item
+
+        return self._col_acts[ii]
+
+    def get_previous(self, current):
+        """
+        Computes the previous question or returns None
+        if does not exist.
+
+        @param      current     previous question
+        @return                 next question or None
+        """
+        try:
+            r = int(current)
+        except ValueError:
+            r = len(self)
+        return (r - 1) if r > 0 else None
+
+    def get_next(self, current):
+        """
+        Computes the next question or returns None
+        if does not exist.
+
+        @param      current     current question
+        @return                 next question or None
+        """
+        try:
+            r = int(current)
+        except ValueError:
+            r = len(self)
+        return (r + 1) if r < len(self) - 1 else None
+
+    def get_display_item(self, item):
+        """
+        Returns a displayable number.
+
+        @param      item        item number
+        @return                 string
+        """
+        if isinstance(item, int):
+            return str(item + 1)  # items starts at 0
+        elif isinstance(item, str):
+            try:
+                return self.get_display_item(int(item))
+            except ValueError:
+                return item
+        else:
+            raise TypeError("Unable to interpret '{0}'.".format(item))

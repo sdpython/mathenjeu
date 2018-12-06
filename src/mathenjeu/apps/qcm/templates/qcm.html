@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block content %}
+<main role="main">
+
+  <div class="jumbotron">
+    <div class="container">
+      <h1 class="display-4">Question - {{number}}/{{nbnumber}}</h1>
+      <p>{{question}}</p>
+    </div>
+
+  </div>
+  
+  {% if description %}
+  <div class="container">
+    <div class="row">
+    {{description}}
+    </div>
+    </div>
+    {% endif %}
+
+    <div class="container"> 
+    <form method="post" name="qa" action="/answer?game={{game}}&qn={{qn}}&next={{next_button}}">
+    <div class="form-group row">
+      <div class="col-sm-10">
+    {% for k, v in answers.items() %}    
+        <div class="form-check">
+          <label class="form-check-label">
+            <input class="form-check-input" type="checkbox" id="{{k}}" name="{{k}}"> {{v}}
+          </label>
+        </div>      
+    {% endfor %}
+      </div>
+    </div>
+    </p>
+
+    <div class="form-group row">
+      <div class="offset-sm-2 col-sm-10">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit" value="ok" name="b">Valider</button>
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit" value="skip" name="b">Passer</button>
+          </div>
+          </div>
+        </form>      
+    </div>  
+
+    <hr />
+
+  <div class="container">
+  
+    <div class="row">
+    {% if has_previous_button %}
+      <div class="col-md-4">
+        <p><a class="btn btn-secondary" href="/qcm?game={{game}}&qn={{previous_button}}" role="button">&laquo; Précédent</a></p>
+      </div>
+      {% endif %}
+    {% if has_next_button %}
+      <div class="col-md-4">
+        <p><a class="btn btn-secondary" href="/qcm?game={{game}}&qn={{next_button}}" role="button">Suivant &raquo;</a></p>
+      </div>
+      {% endif %}
+    </div>
+
+    <hr />
+
+  </div> <!-- /container -->
+
+</main>
+{% endblock %}

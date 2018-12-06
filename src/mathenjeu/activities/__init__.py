@@ -5,4 +5,4 @@
 """
 
 from .base_classes import Notion, Display, Activity, ActivityGroup
-from .act_question import HTMLForm, QuestionChoice
+from .act_question import QuestionChoice

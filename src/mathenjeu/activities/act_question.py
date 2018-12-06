@@ -3,17 +3,8 @@
 @file
 @brief Base classes.
 """
-
-from .base_classes import Activity, Display
-
-
-class HTMLForm(Display):
-    """
-    Displays a question as one HTML form.
-    """
-
-    def __init__(self):
-        Display.__init__(self, 'disp_q1', 'disp_q1')
+from collections import OrderedDict
+from .base_classes import Activity
 
 
 class QuestionChoice(Activity):
@@ -22,7 +13,7 @@ class QuestionChoice(Activity):
     """
 
     def __init__(self, eid, name, lang, title, notion=None,
-                 display=None, description=None, answers=None,
+                 description=None, answers=None,
                  expected_answers=None):
         """
         @param      eid                 identifier
@@ -30,7 +21,6 @@ class QuestionChoice(Activity):
         @param      lang                language
         @param      title               display name
         @param      notion              notion (@see cl Notion)
-        @param      display             display (@see cl Display)
         @param      description         description
         @param      answers             answers (dictionary ``{ code, display }``)
         @param      expected_answers    expected_answers, list of codes
@@ -38,18 +28,27 @@ class QuestionChoice(Activity):
         if not isinstance(expected_answers, list):
             raise TypeError("expected_answers must be a list")
         if isinstance(answers, list):
-            answers = {"a%d" % i: k for i, k in enumerate(answers)}
+            ans = OrderedDict()
+            for i, k in enumerate(answers):
+                ans["a%d" % i] = k
+            answers = ans
             rev = {v: k for k, v in answers.items()}
             expected_answers = [rev[a] for a in expected_answers]
-        if not isinstance(answers, dict):
-            raise TypeError("answers must be a dictionary")
+        elif isinstance(answers, dict):
+            ans = OrderedDict()
+            for i, k in enumerate(sorted(answers.items())):
+                ans["a%d" % i] = k
+            answers = ans
+        elif not isinstance(answers, OrderedDict):
+            raise TypeError("answers must be a of OrderedDict")
         for exp in expected_answers:
             if exp not in answers:
                 raise ValueError(
-                    "One expected answer '{0}' is unknwon.".format(exp))
+                    "One expected answer '{0}' is unknown.".format(exp))
         Activity.__init__(self, eid, name, lang, title, notion=notion,
-                          display=display, description=description,
-                          content=dict(answers=answers, expected_answers=expected_answers))
+                          description=description,
+                          content=dict(answers=answers,
+                                       expected_answers=expected_answers))
 
     @property
     def Answers(self):

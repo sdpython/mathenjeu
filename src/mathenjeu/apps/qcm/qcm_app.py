@@ -33,19 +33,23 @@ class QCMApp(BaseLogging):
 
     def __init__(self, app, secret_key, folder='.',
                  secret_log=None, session_cookie='QCMApp',
+                 title=None, secure=False, domain=None,
                  max_age=14 * 24 * 60 * 60,
-                 title=None, secure=False, domain=None, **kwargs):
+                 display=None, fct_game=None, **kwargs):
         """
         @param      app             :epkg:`starlette` application
         @param      secret_key      secret to encrypt the cookie for session,
                                     see :epkg:`SessionMiddleware`
         @param      secret_log      secret for encryption (None to avoid encryption)
         @param      session_cookie  name of the session cookie
-        @param      max_age         cookie's like
+        @param      max_age         cookie's duration in seconds
         @param      folder          folder where to write the logs (None to disable the logging)
         @param      title           title
-        @param      domain          domain (where the website is deployed)
+        @param      max_age         cookie's duration in seconds
         @param      secure          use secured connection for cookies
+        @param      domain          domain (where the website is deployed)
+        @param      display         display such as @see cl DisplayQuestionChoiceHTML
+        @param      fct_game        function *lambda name:* @see cl ActivityGroup
         @param      kwargs          addition parameter for :epkg:`BaseLogging`
         """
         BaseLogging.__init__(self, secret=secret_log, folder=folder, **kwargs)
@@ -58,6 +62,12 @@ class QCMApp(BaseLogging):
         self.signer = URLSafeTimedSerializer(self.secret_key)
         self.title = title if title is not None else "Quelques questions de maths..."
         self.secure = secure
+        self.display = display
+        self.get_game = fct_game
+        if display is None:
+            raise ValueError("display cannot be None")
+        if fct_game is None:
+            raise ValueError("fct_game cannot be None")
 
     def log_any(self, tag, msg, request, session=None, **data):
         """
@@ -87,24 +97,6 @@ class QCMApp(BaseLogging):
         @param      data    addition data
         """
         self.log_any('[DATA]', msg, request, session=session, **data)
-
-    async def homepage(self, request):
-        """
-        Defines the main page.
-        """
-        session = self.get_session(request, notnone=True)
-        if 'alias' in session:
-            self.log_event("home-logged", request, session=session)
-            template = self.app.get_template('index.html')
-            content = template.render(
-                request=request, title=self.title, **session)
-            return HTMLResponse(content)
-        else:
-            self.log_event("home-unlogged", request, session=session)
-            template = self.app.get_template('notlogged.html')
-            content = template.render(
-                request=request, title=self.title, **session)
-            return HTMLResponse(content)
 
     async def login(self, request):
         """
@@ -223,10 +215,105 @@ class QCMApp(BaseLogging):
         """
         self.info('[QCMApp] cleanup', None)
 
+    def unlogged_response(self, request, session):
+        """
+        Returns an answer for somebody looking to access
+        the questions without being authentified.
+        """
+        self.log_event("home-unlogged", request, session=session)
+        template = self.app.get_template('notlogged.html')
+        content = template.render(
+            request=request, title=self.title, **session)
+        return HTMLResponse(content)
+
+    def unknown_game(self, request, session):
+        """
+        Returns an answer for somebody looking to access
+        the questions without being authentified.
+        """
+        self.log_event("home-nogame", request, session=session)
+        template = self.app.get_template('nogame.html')
+        content = template.render(
+            request=request, title=self.title, **session)
+        return HTMLResponse(content)
+
+    async def homepage(self, request):
+        """
+        Defines the main page.
+        """
+        session = self.get_session(request, notnone=True)
+        if 'alias' in session:
+            self.log_event("home-logged", request, session=session)
+            template = self.app.get_template('index.html')
+            content = template.render(
+                request=request, title=self.title, **session)
+            return HTMLResponse(content)
+        else:
+            return self.unlogged_response(request, session)
+
+    async def qcm(self, request):
+        """
+        Defines the main page.
+        """
+        session = self.get_session(request, notnone=True)
+        if 'alias' in session:
+            game = request.query_params.get('game', None)
+            if game is None:
+                return self.unknown_game(request, session)
+            else:
+                obj_game = self.get_game(game)
+                qn = request.query_params.get('qn', 0)
+                self.log_event("qcm", request, session=session,
+                               game=game, qn=qn)
+                template = self.app.get_template('qcm.html')
+                disp = self.display
+                context = disp.get_context(obj_game, qn)
+                context.update(session)
+                context['game'] = game
+                content = template.render(request=request, **context)
+                return HTMLResponse(content)
+        else:
+            return self.unlogged_response(request, session)
+
+    async def answer(self, request):
+        """
+        Captures an answer.
+
+        @param      request         request
+        @return                     response
+        """
+        try:
+            fo = await request.form()
+        except Exception as e:
+            raise RuntimeError(
+                "Unable to read answer due to '{0}'".format(e))
+        session = self.get_session(request, notnone=True)
+        ps = request.query_params
+        fo.update(ps)
+        self.log_event("answer", request, session=session, data=fo)
+        if fo['next'] in (None, 'None'):
+            response = RedirectResponse(url='/last')
+        else:
+            response = RedirectResponse(
+                url='/qcm?game={0}&qn={1}'.format(fo['game'], fo['next']))
+        return response
+
+    async def lastpage(self, request):
+        """
+        Defines the last page.
+        """
+        session = self.get_session(request, notnone=True)
+        template = self.app.get_template('lastpage.html')
+        content = template.render(request=request, alias=session.get('alias'))
+        return HTMLResponse(content)
+
     @staticmethod
     def create_app(secret_key="test", secret_log=None,
                    session_cookie="mathenjeuqcmapp",
                    folder='.', middles=None, title=None,
+                   max_age=14 * 24 * 60 * 60,
+                   secure=False, domain=None,
+                   display=None, fct_game=None,
                    **kwargs):
         """
         Builds a :epkg:`starlette` application.
@@ -237,6 +324,10 @@ class QCMApp(BaseLogging):
         @param      folder          folder where to write the logs (None to disable the logging)
         @param      middles         list of ``[(middle ward, kwargs)]``
         @param      title           title
+        @param      domain          domain (where the website is deployed)
+        @param      secure          use secured connection for cookies
+        @param      display         display such as @see cl DisplayQuestionChoiceHTML
+        @param      fct_game        function *lambda name:* @see cl ActivityGroup
         @param      kwargs          see @see cl QCMApp
         """
         if secret_key is None:
@@ -255,6 +346,7 @@ class QCMApp(BaseLogging):
 
         qcm = QCMApp(app, secret_log=secret_log, secret_key=secret_key,
                      session_cookie=session_cookie, folder=folder, title=title,
+                     max_age=max_age, domain=domain, display=display, fct_game=fct_game,
                      **kwargs)
         statics = os.path.join(this, "statics")
         if not os.path.exists(statics):
@@ -264,18 +356,23 @@ class QCMApp(BaseLogging):
         app.add_route('/logout', qcm.logout)
         app.add_route('/error', qcm.on_error)
         app.add_route('/authenticate', qcm.authenticate, methods=['POST'])
+        app.add_route('/answer', qcm.answer, methods=['POST', 'GET'])
         app.add_exception_handler(404, qcm.not_found)
         app.add_exception_handler(500, qcm.server_error)
         app.add_event_handler("startup", qcm.startup)
         app.add_event_handler("shutdown", qcm.cleanup)
         app.add_route('/', qcm.homepage)
+        app.add_route('/qcm', qcm.qcm)
+        app.add_route('/last', qcm.lastpage)
         qcm.info("[QCMApp.create_app] create application", None)
         return app
 
 
 if __name__ == "__main__":
+    from mathenjeu.tests import get_game, DisplayQuestionChoiceHTML
     import uvicorn  # pylint: disable=C0412
     from uvicorn.middleware.proxy_headers import ProxyHeadersMiddleware
     app2 = QCMApp.create_app(secret_session="dummypwd",
-                             middles=[(ProxyHeadersMiddleware, {})])
+                             middles=[(ProxyHeadersMiddleware, {})],
+                             fct_game=get_game, display=DisplayQuestionChoiceHTML())
     uvicorn.run(app2, host='127.0.0.1', port=8099)
