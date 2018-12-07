@@ -41,7 +41,7 @@ class TestRepr(ExtTestCase):
             self.assertIn("fr", s)
         r = repr(test)
         self.assertStartsWith("ActivityGroup(_col_acts=[", r)
-        self.assertIn("'a0': '$\\\\pi R$'", r)
+        self.assertIn("OrderedDict([('a0', '$\\\\pi R$')", r)
 
 
 if __name__ == "__main__":

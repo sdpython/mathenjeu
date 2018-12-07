@@ -11,7 +11,7 @@ from starlette.responses import HTMLResponse, RedirectResponse
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 from itsdangerous import URLSafeTimedSerializer
 import ujson
-from lightmlrestapi.mlapp.base_logging import BaseLogging
+from lightmlrestapi.mlapp.base_logging import BaseLogging  # pylint: disable=C0411
 
 
 class QCMApp(BaseLogging):
@@ -374,7 +374,7 @@ class QCMApp(BaseLogging):
 
 
 if __name__ == "__main__":
-    from mathenjeu.tests import get_game, DisplayQuestionChoiceHTML
+    from mathenjeu.tests import get_game, DisplayQuestionChoiceHTML  # pylint: disable=C0411
     import uvicorn  # pylint: disable=C0412
     from uvicorn.middleware.proxy_headers import ProxyHeadersMiddleware
     app2 = QCMApp.create_app(secret_session="dummypwd",
