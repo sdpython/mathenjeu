@@ -14,7 +14,7 @@ class QuestionChoice(Activity):
 
     def __init__(self, eid, name, lang, title, notion=None,
                  description=None, answers=None,
-                 expected_answers=None):
+                 expected_answers=None, show=None):
         """
         @param      eid                 identifier
         @param      name                unique name
@@ -24,6 +24,7 @@ class QuestionChoice(Activity):
         @param      description         description
         @param      answers             answers (dictionary ``{ code, display }``)
         @param      expected_answers    expected_answers, list of codes
+        @param      show                one image to show
         """
         if not isinstance(expected_answers, list):
             raise TypeError("expected_answers must be a list")
@@ -45,10 +46,12 @@ class QuestionChoice(Activity):
             if exp not in answers:
                 raise ValueError(
                     "One expected answer '{0}' is unknown.".format(exp))
+        content = dict(answers=answers,
+                       expected_answers=expected_answers)
+        if show:
+            content['show'] = show
         Activity.__init__(self, eid, name, lang, title, notion=notion,
-                          description=description,
-                          content=dict(answers=answers,
-                                       expected_answers=expected_answers))
+                          description=description, content=content)
 
     @property
     def Answers(self):

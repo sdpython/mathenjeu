@@ -263,13 +263,16 @@ class QCMApp(BaseLogging):
             else:
                 obj_game = self.get_game(game)
                 qn = request.query_params.get('qn', 0)
+                events = request.query_params.get('events', None)
                 self.log_event("qcm", request, session=session,
-                               game=game, qn=qn)
+                               game=game, qn=qn, events=events)
                 template = self.app.get_template('qcm.html')
                 disp = self.display
                 context = disp.get_context(obj_game, qn)
                 context.update(session)
                 context['game'] = game
+                if events:
+                    context['events'] = events
                 content = template.render(request=request, **context)
                 return HTMLResponse(content)
         else:
@@ -292,7 +295,7 @@ class QCMApp(BaseLogging):
         fo.update(ps)
         self.log_event("answer", request, session=session, data=fo)
         if fo['next'] in (None, 'None'):
-            response = RedirectResponse(url='/last')
+            response = RedirectResponse(url='/last?game=' + fo['game'])
         else:
             response = RedirectResponse(
                 url='/qcm?game={0}&qn={1}'.format(fo['game'], fo['next']))
@@ -304,6 +307,8 @@ class QCMApp(BaseLogging):
         """
         session = self.get_session(request, notnone=True)
         template = self.app.get_template('lastpage.html')
+        ps = request.query_params
+        self.log_event("finish", request, session=session, data=ps)
         content = template.render(request=request, alias=session.get('alias'))
         return HTMLResponse(content)
 

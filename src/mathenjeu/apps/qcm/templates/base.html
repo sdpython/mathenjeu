@@ -22,9 +22,31 @@
     src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_CHTML">
     </script>
 
-  </head>
+<script>
+function onloadFunction() {
+    this.storage = [];
+}
+function handleClick(cb) {
+    var chk = document.getElementById(cb).value;
+    this.storage.push(String(cb) + ',' + String(chk));
+}
+function get_form_action(fo, game, qn, next) {
+    var res = "";
+    for (i = 0; i < this.storage.length; i++)
+        res += "-" + this.storage[i];
+    fo.action = "/answer?game=" + game + "&qn=" + qn + "&next=" + next + "&events=" + res;
+}
+function get_link(a, game, qn) {
+    var res = "";
+    for (i = 0; i < this.storage.length; i++)
+        res += "-" + this.storage[i];
+    var url = "/qcm?game=" + game + "&qn=" + qn + "&events=" + res;
+    a.setAttribute('href', url);
+}
+</script>
+</head>
 
-  <body>
+  <body onload="onloadFunction()">
 
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
       <a class="navbar-brand" href="/">Mathenjeu</a>

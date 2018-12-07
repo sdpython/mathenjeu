@@ -39,6 +39,7 @@ packages = find_packages('src', exclude='src')
 package_dir = {k: "src/" + k.replace(".", "/") for k in packages}
 package_data = {project_var_name + ".apps.qcm.statics.css": ["*.css"],
                 project_var_name + ".apps.qcm.statics.js": ["*.js"],
+                project_var_name + ".apps.qcm.statics.img": ["*.png"],
                 project_var_name + ".apps.qcm.templates": ["*.html"],
                 }
 
@@ -131,7 +132,7 @@ if is_local():
         add_htmlhelp=sys.platform.startswith("win"),
         coverage_options=dict(omit=["*exclude*.py"]),
         github_owner="sdpython",
-        fLOG=logging_function, covtoken=("983adc1c-d7b1-4afa-8673-4345163704d2", "'_UT_37_std' in outfile"))
+        fLOG=logging_function, covtoken=("edb05dc5-c703-4043-a0fa-aeabda20fa27", "'_UT_37_std' in outfile"))
     if not r and not ({"bdist_msi", "sdist",
                        "bdist_wheel", "publish", "publish_doc", "register",
                        "upload_docs", "bdist_wininst", "build_ext"} & set(sys.argv)):
