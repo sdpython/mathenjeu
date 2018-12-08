@@ -5,6 +5,20 @@
 
 <main role="main">
 
+<script>
+document.onfocusin = document.onfocusout = onChangeFocus
+
+function onChangeFocus() {
+    var focus = document.hasFocus();
+    var theUrl = "/event?game={{game}}&qn={{qn}}&focus=" + String(focus);
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function() { 
+    }
+    xmlHttp.open("GET", theUrl, true); // true for asynchronous 
+    xmlHttp.send(null);
+};
+</script>
+
   <div class="jumbotron">
     <div class="container">
       <div class="row">

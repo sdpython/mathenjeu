@@ -34,7 +34,15 @@ class QuestionChoice(Activity):
                 ans["a%d" % i] = k
             answers = ans
             rev = {v: k for k, v in answers.items()}
-            expected_answers = [rev[a] for a in expected_answers]
+            expe = []
+            for a in expected_answers:
+                try:
+                    v = rev[a]
+                except KeyError:
+                    raise KeyError("Unable to find '{0}' in {1}".format(
+                        a, list(sorted(rev))))
+                expe.append(v)
+            expected_answers = expe
         elif isinstance(answers, dict):
             ans = OrderedDict()
             for i, k in enumerate(sorted(answers.items())):

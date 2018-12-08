@@ -6,7 +6,7 @@
 import os
 from starlette.applications import Starlette
 from starlette.staticfiles import StaticFiles
-from starlette.responses import HTMLResponse, RedirectResponse
+from starlette.responses import HTMLResponse, RedirectResponse, PlainTextResponse
 # from starlette.middleware.httpsredirect import HTTPSRedirectMiddleware
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 from itsdangerous import URLSafeTimedSerializer
@@ -35,7 +35,8 @@ class QCMApp(BaseLogging):
                  secret_log=None, session_cookie='QCMApp',
                  title=None, secure=False, domain=None,
                  max_age=14 * 24 * 60 * 60,
-                 display=None, fct_game=None, **kwargs):
+                 display=None, fct_game=None, games=None,
+                 **kwargs):
         """
         @param      app             :epkg:`starlette` application
         @param      secret_key      secret to encrypt the cookie for session,
@@ -50,6 +51,8 @@ class QCMApp(BaseLogging):
         @param      domain          domain (where the website is deployed)
         @param      display         display such as @see cl DisplayQuestionChoiceHTML
         @param      fct_game        function *lambda name:* @see cl ActivityGroup
+        @param      games           defines which games is available as a dictionary
+                                    ``{ game_id: (game name, first page) }``
         @param      kwargs          addition parameter for :epkg:`BaseLogging`
         """
         BaseLogging.__init__(self, secret=secret_log, folder=folder, **kwargs)
@@ -64,10 +67,13 @@ class QCMApp(BaseLogging):
         self.secure = secure
         self.display = display
         self.get_game = fct_game
+        self.games = games
+        if games is None:
+            raise ValueError("games cannot be None.")
         if display is None:
-            raise ValueError("display cannot be None")
+            raise ValueError("display cannot be None.")
         if fct_game is None:
-            raise ValueError("fct_game cannot be None")
+            raise ValueError("fct_game cannot be None.")
 
     def log_any(self, tag, msg, request, session=None, **data):
         """
@@ -246,7 +252,7 @@ class QCMApp(BaseLogging):
             self.log_event("home-logged", request, session=session)
             template = self.app.get_template('index.html')
             content = template.render(
-                request=request, title=self.title, **session)
+                request=request, title=self.title, games=self.games, **session)
             return HTMLResponse(content)
         else:
             return self.unlogged_response(request, session)
@@ -312,6 +318,16 @@ class QCMApp(BaseLogging):
         content = template.render(request=request, alias=session.get('alias'))
         return HTMLResponse(content)
 
+    async def event(self, request):
+        """
+        Defines the last page.
+        """
+        session = self.get_session(request, notnone=True)
+        ps = request.query_params
+        tostr = ','.join('{0}:{1}'.format(k, v) for k, v in sorted(ps.items()))
+        self.log_event("event", request, session=session, events=[tostr])
+        return PlainTextResponse("")
+
     @staticmethod
     def create_app(secret_key="test", secret_log=None,
                    session_cookie="mathenjeuqcmapp",
@@ -319,7 +335,7 @@ class QCMApp(BaseLogging):
                    max_age=14 * 24 * 60 * 60,
                    secure=False, domain=None,
                    display=None, fct_game=None,
-                   **kwargs):
+                   games=None, **kwargs):
         """
         Builds a :epkg:`starlette` application.
 
@@ -333,8 +349,12 @@ class QCMApp(BaseLogging):
         @param      secure          use secured connection for cookies
         @param      display         display such as @see cl DisplayQuestionChoiceHTML
         @param      fct_game        function *lambda name:* @see cl ActivityGroup
+        @param      games           defines which games is available as a dictionary
+                                    ``{ game_id: (game name, first page) }``
         @param      kwargs          see @see cl QCMApp
         """
+        if games is None:
+            raise ValueError("You must define a game.")
         if secret_key is None:
             raise ValueError("secret_session cannot be empty.")
         this = os.path.abspath(os.path.dirname(__file__))
@@ -352,7 +372,7 @@ class QCMApp(BaseLogging):
         qcm = QCMApp(app, secret_log=secret_log, secret_key=secret_key,
                      session_cookie=session_cookie, folder=folder, title=title,
                      max_age=max_age, domain=domain, display=display, fct_game=fct_game,
-                     **kwargs)
+                     games=games, **kwargs)
         statics = os.path.join(this, "statics")
         if not os.path.exists(statics):
             raise FileNotFoundError("Unable to find '{0}'".format(statics))
@@ -369,6 +389,7 @@ class QCMApp(BaseLogging):
         app.add_route('/', qcm.homepage)
         app.add_route('/qcm', qcm.qcm)
         app.add_route('/last', qcm.lastpage)
+        app.add_route('/event', qcm.event)
         qcm.info("[QCMApp.create_app] create application", None)
         return app
 
@@ -379,5 +400,6 @@ if __name__ == "__main__":
     from uvicorn.middleware.proxy_headers import ProxyHeadersMiddleware
     app2 = QCMApp.create_app(secret_session="dummypwd",
                              middles=[(ProxyHeadersMiddleware, {})],
-                             fct_game=get_game, display=DisplayQuestionChoiceHTML())
+                             fct_game=get_game, display=DisplayQuestionChoiceHTML(),
+                             games=dict(test_qcm1=('Maths', 0)))
     uvicorn.run(app2, host='127.0.0.1', port=8099)

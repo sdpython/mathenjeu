@@ -55,7 +55,7 @@ def simple_french_qcm():
                        notion=math_sixieme,
                        answers=['8 euros', '9.2', '10 * 0.8', '10 / 1.2', '7.8',
                                 '10 / 1.2'],
-                       expected_answers=['rectangle', 'losange']),
+                       expected_answers=['10 / 1.2']),
         QuestionChoice('ch8', 'dalton', 'fr', 'Gilles et Jean sont demi-frères, Jean et Charles sont demi-frères. Gilles et Charles sont...',
                        notion=math_sixieme,
                        answers=['frères, demi-frères',

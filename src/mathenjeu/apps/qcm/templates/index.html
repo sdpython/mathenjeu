@@ -8,7 +8,11 @@
       <h1 class="display-4">{{title}}</h1>
       <p>Vous êtes connecté en tant que {{alias}}. </p>
       <p>Cliquer pour jouer.</p>
-      <p><a class="btn btn-primary btn-lg" href="/qcm?game=test_qcm1&qn=0" role="button">Maths</a></p>
+      <p>
+      {% for k, v in games.items() %}
+      <a class="btn btn-primary btn-lg" href="/qcm?game={{k}}&qn={{v[1]}}" role="button">{{v[0]}}</a>
+      {% endfor %}
+      </p>
     </div>
   </div>
 
