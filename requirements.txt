@@ -5,7 +5,7 @@ jinja2
 jyquickhelper
 itsdangerous
 lightmlrestapi
-pyquickhelper
+pyquickhelper>=1.8.2884
 python-multipart
 sphinx_bootstrap_theme
 sphinxcontrib.blockdiag
