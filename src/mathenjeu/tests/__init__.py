@@ -4,7 +4,7 @@
 @brief Shortcut to *tests*.
 """
 
-from .qcms import simple_french_qcm, DisplayQuestionChoiceHTML
+from .qcms import simple_french_qcm
 
 
 def get_game(name):
