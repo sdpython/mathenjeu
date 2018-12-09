@@ -23,7 +23,7 @@ def create_local_app(
         fct_game=None, games=None,
         port=8868, middles=None,
         start=False, debug=False,
-        uniquepwd=None):
+        userpwd=None):
     """
     Creates a local web-application with very simple authentification.
 
@@ -49,7 +49,7 @@ def create_local_app(
     @param      middles         middles ware, list of couple ``[(class, **kwargs)]``
                                 where *kwargs* are the parameter constructor
     @param      start           starts the application with :epkg:`uvicorn`
-    @param      uniquepwd       users are authentified with any alias but a common password
+    @param      userpwd         users are authentified with any alias but a common password
     @param      debug           display debug information (:epkg:`starlette` option)
     @return                     @see cl QCMApp
 
@@ -65,7 +65,7 @@ def create_local_app(
                  cookie_domain=cookie_domain, cookie_path=cookie_path,
                  title=title, short_title=short_title,
                  secure=secure, display=display, fct_game=fct_game,
-                 games=games, page_doc=page_doc, uniquepwd=uniquepwd)
+                 games=games, page_doc=page_doc, userpwd=userpwd)
     if start:
         uvicorn.run(app.app, host=cookie_domain, port=port)
     return app
