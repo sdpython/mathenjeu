@@ -61,5 +61,9 @@ def simple_french_qcm():
                        answers=['frères, demi-frères',
                                 'rien du tout', 'on ne sait pas'],
                        expected_answers=['on ne sait pas']),
+        QuestionChoice('ch9', 'zoo', 'fr', 'Quel est le théorème de maths qui a servi à mesurer les Pyramides ?',
+                       notion=math_sixieme,
+                       answers=None,
+                       expected_answers=['Thalès']),
     ]
     return ActivityGroup("test_qcm1", "test_qcm1", objs)

@@ -23,7 +23,7 @@ class AuthentificationAnswers:
                  redirect_logout="/", max_age=14 * 24 * 60 * 60,
                  cookie_key=None, cookie_name="mathenjeu",
                  cookie_domain="127.0.0.1", cookie_path="/",
-                 secure=False, page_context=None):
+                 secure=False, page_context=None, uniquepwd=None):
         """
         @param      app             :epkg:`starlette` application
         @param      login_page      name of the login page
@@ -38,6 +38,7 @@ class AuthentificationAnswers:
         @param      page_context    to retrieve additional context
                                     before rendering the pages (as a function
                                     which returns a dictionary)
+        @param      uniquepwd       users are authentified with any alias but a common password
         """
         if cookie_key is None:
             raise ValueError("cookie_key cannot be None")
@@ -52,6 +53,7 @@ class AuthentificationAnswers:
         self.max_age = max_age
         self.secure = secure
         self.signer = URLSafeTimedSerializer(self.cookie_key)
+        self.uniquepwd = uniquepwd
         self._get_page_context = page_context
 
     async def login(self, request):
@@ -75,6 +77,10 @@ class AuthentificationAnswers:
             raise RuntimeError(
                 "Unable to read login and password due to '{0}'".format(e))
 
+        loge = getattr(self, 'logevent', None)
+        if loge:
+            loge("authenticate", request, session={},  # pylint: disable=E1102
+                 alias=fo['alias'])
         res = self.is_allowed(alias=fo['alias'], pwd=fo['pwd'],
                               request=request)
         if res is not None:
@@ -150,4 +156,4 @@ class AuthentificationAnswers:
         The current behavior is to allow anybody if the alias is not
         empty whatever the password.
         """
-        return not alias
+        return pwd == self.uniquepwd

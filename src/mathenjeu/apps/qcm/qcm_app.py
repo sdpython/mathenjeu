@@ -32,7 +32,7 @@ class QCMApp(LogApp, AuthentificationAnswers):
                  title="Web Application MathEnJeu", short_title="MathEnJeu",
                  page_doc="http://www.xavierdupre.fr/app/mathenjeu/",
                  secure=False, display=None, fct_game=None, games=None,
-                 middles=None, debug=False):
+                 middles=None, debug=False, uniquepwd=None):
         """
         @param      secret_log      to encrypt log (None to ignore)
         @param      folder          folder where to write the logs (None to disable the logging)
@@ -54,6 +54,7 @@ class QCMApp(LogApp, AuthentificationAnswers):
                                     ``{ game_id: (game name, first page id) }``
         @param      middles         middles ware, list of couple ``[(class, **kwargs)]``
                                     where *kwargs* are the parameter constructor
+        @param      uniquepwd       users are authentified with any alias but a common password
         @param      debug           display debug information (:epkg:`starlette` option)
         """
         if title is None:
@@ -84,7 +85,7 @@ class QCMApp(LogApp, AuthentificationAnswers):
                                          notauth_page=notauth_page, redirect_logout=redirect_logout,
                                          max_age=max_age, cookie_name=cookie_name, cookie_key=cookie_key,
                                          cookie_domain=cookie_domain, cookie_path=cookie_path,
-                                         page_context=self.page_context)
+                                         page_context=self.page_context, uniquepwd=uniquepwd)
         LogApp.__init__(self, folder=folder, secret_log=secret_log,
                         fct_session=self.get_session)
 
@@ -220,9 +221,11 @@ class QCMApp(LogApp, AuthentificationAnswers):
             else:
                 obj_game = self.get_game(game)
                 qn = request.query_params.get('qn', 0)
+                data = dict(game=game, qn=qn)
                 events = request.query_params.get('events', None)
-                self.log_event("qcm", request, session=session,
-                               game=game, qn=qn, events=events)
+                if events:
+                    data['events'] = events
+                self.log_event("qcm", request, session=session, **data)
                 template = self.app.get_template('qcm.html')
                 disp = self.display
                 context = disp.get_context(obj_game, qn)
@@ -231,7 +234,7 @@ class QCMApp(LogApp, AuthentificationAnswers):
                 if events:
                     context['events'] = events
                 content = template.render(
-                    request=request, **self.page_context(**session))
+                    request=request, **self.page_context(**context))
                 return HTMLResponse(content)
         else:
             return self.unlogged_response(request, session)
@@ -256,8 +259,7 @@ class QCMApp(LogApp, AuthentificationAnswers):
             response = RedirectResponse(url='/last?game=' + fo['game'])
         else:
             response = RedirectResponse(
-                url='/qcm?game={0}&qn={1}'.format(fo.get('game', ''),
-                                                  fo.get('next', '')))
+                url='/qcm?game={0}&qn={1}'.format(fo.get('game', ''), fo.get('next', '')))
         return response
 
     async def lastpage(self, request):

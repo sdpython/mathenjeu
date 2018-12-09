@@ -7,7 +7,7 @@ itsdangerous
 lightmlrestapi
 pyquickhelper>=1.8.2884
 python-multipart
-sphinx_bootstrap_theme
+sphinx_modern_theme
 sphinxcontrib.blockdiag
 starlette
 ujson

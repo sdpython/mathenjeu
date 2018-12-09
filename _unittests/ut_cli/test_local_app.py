@@ -55,6 +55,12 @@ class TestLocalAppCli(unittest.TestCase):
         self.assertIn("python -m mathenjeu <command>", res)
         self.assertIn("Creates a local web-application", res)
 
+    def test_local_webapp(self):
+        st = TempBuffer()
+        main(args=['local_webapp', '--help'], fLOG=st.fprint)
+        res = str(st)
+        self.assertIn("Creates a local web-application", res)
+
 
 if __name__ == "__main__":
     unittest.main()

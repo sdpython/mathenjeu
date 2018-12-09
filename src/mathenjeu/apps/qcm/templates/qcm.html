@@ -41,25 +41,26 @@ function onChangeFocus() {
     </div>    
     {% endif %}
     </div>
-
     </div>
-    
-    <script>
-    
-</script>
-  
+
     <div class="container"> 
     <form method="post" name="qa" id="qa" onsubmit="get_form_action(this, '{{game}}', '{{qn}}', '{{next_button}}')">
     <div class="form-group row">
       <div class="col-sm-10">
+        {% if answers %}
     {% for k, v in answers.items() %}    
         <div class="form-check">
           <label class="form-check-label">
-            <input class="form-check-input" type="checkbox" id="{{k}}" name="{{k}}" 
+            <input class="form-check-input" type="checkbox" id="{{k}}" name="{{k}}"            
               onclick='handleClick("{{k}}");'> {{v}}
           </label>
-        </div>      
+        </div>
     {% endfor %}
+        {% else %}
+    <label for="{{k}}">{{v}}</label>
+    <textarea type="text" class="form-control" id="ANS" name="ANS" cols="40" rows="3" 
+          style="width:50%; height:75px;"> </textarea>
+        {% endif %}
       </div>
     </div>
     </p>

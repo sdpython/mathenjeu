@@ -48,12 +48,16 @@ class QuestionChoice(Activity):
             for i, k in enumerate(sorted(answers.items())):
                 ans["a%d" % i] = k
             answers = ans
+        elif answers is None:
+            # input, not checkboxes
+            answers = None
         elif not isinstance(answers, OrderedDict):
             raise TypeError("answers must be a of OrderedDict")
-        for exp in expected_answers:
-            if exp not in answers:
-                raise ValueError(
-                    "One expected answer '{0}' is unknown.".format(exp))
+        if answers is not None:
+            for exp in expected_answers:
+                if exp not in answers:
+                    raise ValueError(
+                        "One expected answer '{0}' is unknown.".format(exp))
         content = dict(answers=answers,
                        expected_answers=expected_answers)
         if show:

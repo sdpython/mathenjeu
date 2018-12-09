@@ -17,16 +17,13 @@ def create_local_app(
         cookie_domain="127.0.0.1",
         cookie_path="/",
         # application parameters
-        title="Web Application MathEnJeu",
-        short_title="MathEnJeu",
+        title="Web Application MathEnJeu", short_title="MathEnJeu",
         page_doc="http://www.xavierdupre.fr/app/mathenjeu/",
-        secure=False,
-        display=None,
-        fct_game=None,
-        games=None,
-        port=8868,
-        middles=None,
-        start=False):
+        secure=False, display=None,
+        fct_game=None, games=None,
+        port=8868, middles=None,
+        start=False, debug=False,
+        uniquepwd=None):
     """
     Creates a local web-application with very simple authentification.
 
@@ -48,23 +45,27 @@ def create_local_app(
     @param      fct_game        function *lambda name:* @see cl ActivityGroup
     @param      games           defines which games is available as a dictionary
                                 ``{ game_id: (game name, first page id) }``
-    @param      debug           display debug information (:epkg:`starlette` option)
+    @param      port            port to deploy the application
     @param      middles         middles ware, list of couple ``[(class, **kwargs)]``
                                 where *kwargs* are the parameter constructor
     @param      start           starts the application with :epkg:`uvicorn`
+    @param      uniquepwd       users are authentified with any alias but a common password
+    @param      debug           display debug information (:epkg:`starlette` option)
     @return                     @see cl QCMApp
 
     .. cmdref::
         :title: Creates a local web-application with very simple authentification
         :cmd: -m mathenjeu local_webapp --help
     """
+    if secret_log == '':
+        raise ValueError("secret_log must be not empty or None, not ''")
     app = QCMApp(secret_log=secret_log, middles=middles,
                  folder=folder, max_age=max_age,
                  cookie_key=cookie_key, cookie_name=cookie_name,
                  cookie_domain=cookie_domain, cookie_path=cookie_path,
                  title=title, short_title=short_title,
                  secure=secure, display=display, fct_game=fct_game,
-                 games=games, page_doc=page_doc)
+                 games=games, page_doc=page_doc, uniquepwd=uniquepwd)
     if start:
-        uvicorn.run(app, host=cookie_domain, port=port)
+        uvicorn.run(app.app, host=cookie_domain, port=port)
     return app
