@@ -54,6 +54,10 @@ def create_local_app(
     .. cmdref::
         :title: Creates a local web-application with very simple authentification
         :cmd: -m mathenjeu local_webapp --help
+
+        The command line runs a web application meant to be local
+        as there is not *https* involved. The web app relies
+        on :epkg:`starlette`, the server relies on :epkg:`uvicorn`.
     """
     if secret_log == '':
         raise ValueError("secret_log must be not empty or None, not ''")

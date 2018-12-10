@@ -11,7 +11,7 @@ def get_game(name):
     """
     Retrieves a game.
 
-    @param      game        game
+    @param      name        game name
     @return                 game
     """
     if name == "test_qcm1":

@@ -44,7 +44,6 @@ class LogApp(BaseLogging):
         """
         Logs information about events.
 
-        @param      tag     tag (to filter rows in logs)
         @param      msg     event kind
         @param      request request
         @param      session information about the session

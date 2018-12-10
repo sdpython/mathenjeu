@@ -5,5 +5,5 @@
 Command lines
 =============
 
-.. excmdlist::
+.. cmdreflist::
     :contents:

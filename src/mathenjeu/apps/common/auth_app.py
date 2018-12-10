@@ -134,8 +134,9 @@ class AuthentificationAnswers:
         Checks that a user is allowed. Returns None if it is allowed,
         otherwise an page with an error message.
 
-        @param      user        user
-        @param      alias       alias
+        @param      alias       alias or iser
+        @param      pwd         password
+        @param      request     received request
         @return                 None if allowed, *HTMLResponse* otherwise
         """
         if not self.authentify_user(alias, pwd):
@@ -149,8 +150,8 @@ class AuthentificationAnswers:
         """
         Overwrites this method to allow or reject users.
 
-        @param      user        user
-        @param      alias       alias
+        @param      alias       alias or user
+        @param      pwd         password
         @return                 boolean
 
         The current behavior is to allow anybody if the alias is not
