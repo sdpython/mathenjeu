@@ -45,6 +45,18 @@ Maths en Jeux (ou exercices sur internet)
         :target: http://www.xavierdupre.fr/app/mathenjeu/helpsphinx/all_notebooks_coverage.html
         :alt: Notebook Coverage
 
+**Links:** `github <https://github.com/sdpython/mathenjeu/>`_,
+`documentation <http://www.xavierdupre.fr/app/mathenjeu/helpsphinx/index.html>`_,
+:ref:`l-README`,
+:ref:`blog <ap-main-0>`
+
+Ce package implémente des applications web pour faire
+des QCM ou autre. Il s'appuie
+sur le module :epkg:`starlette`.
+
+This module implements web applications which propose
+QCMs or other forms. It relies on module :epkg:`starlette`.
+
 .. toctree::
     :maxdepth: 1
 
@@ -60,9 +72,3 @@ Maths en Jeux (ou exercices sur internet)
 +----------------------+---------------------+---------------------+--------------------+------------------------+------------------------------------------------+
 | :ref:`genindex`      |  :ref:`l-FAQ2`      | :ref:`l-notebooks`  | :ref:`l-CMD2`      | :ref:`l-statcode`      | `Unit Test Coverage <coverage/index.html>`_    |
 +----------------------+---------------------+---------------------+--------------------+------------------------+------------------------------------------------+
-
-**Links:** `github <https://github.com/sdpython/mathenjeu/>`_,
-`documentation <http://www.xavierdupre.fr/app/mathenjeu/helpsphinx/index.html>`_,
-:ref:`l-README`,
-:ref:`blog <ap-main-0>`,
-:ref:`l-issues-todolist`

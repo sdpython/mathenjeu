@@ -20,6 +20,4 @@ Classes génériques
 Classes moins génératiques
 ++++++++++++++++++++++++++
 
-.. autosignature:: mathenjeu.activities.act_question.HTMLForm
-
 .. autosignature:: mathenjeu.activities.act_question.QuestionChoice
