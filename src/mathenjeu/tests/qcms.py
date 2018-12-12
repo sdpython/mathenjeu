@@ -49,7 +49,7 @@ def simple_french_qcm():
         QuestionChoice('ch6', 'carre', 'fr', 'Un carré est un...',
                        notion=math_sixieme,
                        answers=['rectangle', 'parallélépidède', 'losange', 'un cercle',
-                                'Je n\'ai rien compris au réchauffement climatique.'],
+                                'Je n\'ai toujours rien compris au réchauffement climatique.'],
                        expected_answers=['rectangle', 'losange']),
         QuestionChoice('ch7', 'tva', 'fr', 'Vous avez acheté un produit à 10 euros. La TVA est à 20%, quelle est le prix sans la TVA ?',
                        notion=math_sixieme,

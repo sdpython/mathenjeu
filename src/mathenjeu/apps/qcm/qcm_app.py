@@ -221,6 +221,8 @@ class QCMApp(LogApp, AuthentificationAnswers):
                 return self.unknown_game(request, session)
             else:
                 obj_game = self.get_game(game)
+                if isinstance(obj_game, str):
+                    raise RuntimeError("obj_game for '{0}' cannot be string".format(game))
                 qn = request.query_params.get('qn', 0)
                 data = dict(game=game, qn=qn)
                 events = request.query_params.get('events', None)

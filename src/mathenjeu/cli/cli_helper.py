@@ -29,8 +29,10 @@ def name2activity(name):
             raise NameError(
                 "Unable to find '{0}' in '{1}'".format(spl[1], spl[0]))
         return spl[1], getattr(mod, spl[1])()
+    elif isinstance(name, str):
+        raise TypeError("name '{0}' cannot be a string.".format(name))
     else:
-        return name, name
+        return name.__class__.__name__, name
 
 
 def build_games(games, fct_game):
@@ -48,15 +50,16 @@ def build_games(games, fct_game):
         games_obj = {}
 
         for k, n, p in apps:
-            name, obj = name2activity(k)
-            games[name] = (n, p)
-            games_obj[name] = obj
+            try:
+                name, obj = name2activity(k)
+                games[name] = (n, p)
+                games_obj[name] = obj
+            except TypeError:
+                games[k] = (n, p)
+                games_obj[k] = get_game(k)
 
         def get_games2(name):
-            if name in games:
-                return games_obj[name]
-            else:
-                return get_game(name)
+            return games_obj[name]
 
         return games, get_games2
     else:
