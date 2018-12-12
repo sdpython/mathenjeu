@@ -66,7 +66,8 @@ class TestLocalAppCli(unittest.TestCase):
         main(args=['local_webapp', '--cookie_key=dummypwd', '--port=8889',
                    '--userpwd=abc'], fLOG=st.fprint)
         res = str(st)
-        self.assertEqual('', res)
+        self.assertIn(
+            "[create_local_app] games={'simple_french_qcm': ('simple_french_qcm', '0')}", res)
 
 
 if __name__ == "__main__":
