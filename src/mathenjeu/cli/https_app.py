@@ -29,7 +29,7 @@ def create_https_app(
         access_log_format="%(h)s %(r)s %(s)s %(b)s %(D)s",
         ca_certs=None, certfile=None, error_log='-',
         keep_alive=600, keyfile=None, root_path='', workers=1,
-        reload=False, ciphers=None, fLOG=print):
+        reload=False, ciphers="ECDHE+AESGCM", fLOG=print):
     """
     Creates a https web-application with https authentification.
 
@@ -120,7 +120,7 @@ def create_https_app(
     if fLOG:
         fLOG("[create_https_app] saved file '{0}'".format(name))
 
-    binds = "https://{0}:{1}".format(cookie_domain, port)
+    binds = "{0}:{1}".format(cookie_domain, port)
     folder = os.path.abspath(folder)
     sys.path.append(folder)
     try:

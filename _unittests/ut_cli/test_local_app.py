@@ -63,8 +63,8 @@ class TestLocalAppCli(unittest.TestCase):
 
     def test_local_webapp_start(self):
         st = TempBuffer()
-        main(args=['local_webapp', '--cookie_key=dummypwd', '--port=8889',
-                   '--userpwd=abc'], fLOG=st.fprint)
+        main(args=['local_webapp', '-c', 'dummypwd', '-po', '8889',
+                   '-u', 'abc'], fLOG=st.fprint)
         res = str(st)
         self.assertIn(
             "[create_local_app] games={'simple_french_qcm': ('simple_french_qcm', '0')}", res)
