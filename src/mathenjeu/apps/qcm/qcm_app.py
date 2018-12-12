@@ -101,6 +101,7 @@ class QCMApp(LogApp, AuthentificationAnswers):
                 app.add_middleware(middle, **kwargs)
         app.add_middleware(TrustedHostMiddleware,
                            allowed_hosts=[cookie_domain])
+        # app.add_middleware(HTTPSRedirectMiddleware)
 
         app.mount('/static', StaticFiles(directory=statics), name='static')
         app.add_route('/login', self.login)

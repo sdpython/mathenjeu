@@ -14,7 +14,7 @@ def get_game(name):
     @param      name        game name
     @return                 game
     """
-    if name == "test_qcm1":
+    if name in ("test_qcm1", "simple_french_qcm"):
         return simple_french_qcm()
     else:
         raise ValueError("Unknown game '{0}'".format(name))

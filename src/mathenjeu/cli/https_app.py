@@ -99,7 +99,7 @@ def create_https_app(
                   cookie_key=cookie_key, cookie_name=cookie_name,
                   cookie_domain=cookie_domain, cookie_path=cookie_path,
                   title=title, short_title=short_title,
-                  secure=secure, display=display,
+                  secure=secure, display=display, debug=debug,
                   page_doc=page_doc, userpwd=userpwd)
     app = QCMApp(games=games, fct_game=fct_game, **kwargs)
     if app.app is None:
