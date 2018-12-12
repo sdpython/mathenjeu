@@ -13,6 +13,8 @@ Command line
 
 .. autosignature:: mathenjeu.cli.local_app.create_local_app
 
+.. autosignature:: mathenjeu.cli.local_app.create_self_signed_cert
+
 Common
 ++++++
 
