@@ -9,6 +9,8 @@ Application Web
 Command line
 ++++++++++++
 
+.. autosignature:: mathenjeu.cli.https_app.create_https_app
+
 .. autosignature:: mathenjeu.cli.local_app.create_local_app
 
 Common
@@ -27,6 +29,11 @@ HTML
 ++++
 
 .. autosignature:: mathenjeu.apps.display.html_display.DisplayQuestionChoiceHTML
+
+Server
+++++++
+
+.. autosignature:: mathenjeu.apps.server.server_hypercorn.ServerHypercorn
 
 WebApp
 ++++++

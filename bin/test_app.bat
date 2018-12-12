@@ -10,4 +10,5 @@ set pythonexe=c:\Python370_x64\python
 
 @echo ~SET pythonexe=%pythonexe%
 
-python -m mathenjeu local_webapp --cookie_key=dummypwd --start=1 --port=8889 --uniquepwd=abc
+rem python -m mathenjeu local_webapp --cookie_key=dummypwd --start=1 --port=8889 --userpwd=abc
+python -m mathenjeu https_webapp --cookie_key=dummypwd --start=1 --port=8889 --userpwd=abc

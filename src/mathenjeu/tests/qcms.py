@@ -66,4 +66,4 @@ def simple_french_qcm():
                        answers=None,
                        expected_answers=['Thalès']),
     ]
-    return ActivityGroup("test_qcm1", "test_qcm1", objs)
+    return ActivityGroup("simple_french_qcm", "simple_french_qcm", objs)

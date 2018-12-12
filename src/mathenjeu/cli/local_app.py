@@ -18,9 +18,10 @@ def create_local_app(
         # application parameters
         title="Web Application MathEnJeu", short_title="MathEnJeu",
         page_doc="http://www.xavierdupre.fr/app/mathenjeu/",
-        secure=False, display=None, fct_game=None, games=None,
-        port=8868, middles=None, start=False, debug=False,
-        userpwd=None):
+        secure=False, display=None, fct_game=None,
+        games="simple_french_qcm,simple_french_qcm,0",
+        port=8868, middles=None, start=False,
+        userpwd=None, debug=False, fLOG=print):
     """
     Creates a local web-application with very simple authentification.
 
@@ -49,6 +50,7 @@ def create_local_app(
     @param      start           starts the application with :epkg:`uvicorn`
     @param      userpwd         users are authentified with any alias but a common password
     @param      debug           display debug information (:epkg:`starlette` option)
+    @param      fLOG            logging function
     @return                     @see cl QCMApp
 
     .. cmdref::
@@ -58,10 +60,17 @@ def create_local_app(
         The command line runs a web application meant to be local
         as there is not *https* involved. The web app relies
         on :epkg:`starlette`, the server relies on :epkg:`uvicorn`.
+        Example of use::
+
+            python -m mathenjeu local_webapp --cookie_key=dummypwd --start=1 --port=8889 --userpwd=abc
+
+        With that application, every user can login with a unique password *abc*.
     """
     if secret_log == '':
         raise ValueError("secret_log must be not empty or None, not ''")
     games, fct_game = build_games(games, fct_game)
+    if fLOG:
+        fLOG("[create_local_app] games=" + str(games))
 
     app = QCMApp(secret_log=secret_log, middles=middles,
                  folder=folder, max_age=max_age,
@@ -71,5 +80,8 @@ def create_local_app(
                  secure=secure, display=display, fct_game=fct_game,
                  games=games, page_doc=page_doc, userpwd=userpwd)
     if start:
+        if fLOG:
+            fLOG(
+                "[create_local_app] start server 'http://{0}:{1}'".format(cookie_domain, port))
         uvicorn.run(app.app, host=cookie_domain, port=port)
     return app

@@ -5,6 +5,7 @@ jinja2
 jyquickhelper
 itsdangerous
 lightmlrestapi
+pyopenssl
 pyquickhelper>=1.8.2884
 python-multipart
 sphinx_modern_theme
