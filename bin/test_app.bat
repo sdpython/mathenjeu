@@ -16,3 +16,4 @@ python -m mathenjeu https_webapp --debug=1 --start=1 --port=8892 --userpwd=abc -
 
 rem daphne -e ssl:interface=127.0.0.1:port=8443:privateKey=key.pem:certKey=cert.pem apphyper:app
 rem hypercorn apphyper:app --keyfile=key.pem --certfile=cert.pem --bind=127.0.0.1:9443
+rem gunicorn apphyper:app --keyfile=key.pem --certfile=cert.pem --bind=127.0.0.1:9443

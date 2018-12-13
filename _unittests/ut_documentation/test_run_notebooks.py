@@ -6,6 +6,7 @@
 import sys
 import os
 import unittest
+import shutil
 from pyquickhelper.loghelper import fLOG
 from pyquickhelper.pycode import get_temp_folder
 from pyquickhelper.ipythonhelper import execute_notebook_list, execute_notebook_list_finalize_ut
@@ -36,6 +37,8 @@ class TestRunNotebooksPython(unittest.TestCase):
             OutputPrint=__name__ == "__main__")
 
         temp = get_temp_folder(__file__, "temp_run_notebooks")
+        logs = os.path.join(temp, "logs")
+        os.mkdir(logs)
 
         # selection of notebooks
         fnb = os.path.normpath(os.path.join(
@@ -44,6 +47,8 @@ class TestRunNotebooksPython(unittest.TestCase):
         for f in os.listdir(fnb):
             if os.path.splitext(f)[-1] == ".ipynb" and "_long" not in f:
                 keepnote.append(os.path.join(fnb, f))
+
+        shutil.copy(os.path.join(fnb, "logs", "QCMApp.log"), logs)
 
         # run the notebooks
         res = execute_notebook_list(temp, keepnote, fLOG=fLOG)
