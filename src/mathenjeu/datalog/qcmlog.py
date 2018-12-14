@@ -5,6 +5,8 @@
 """
 from datetime import datetime
 import ujson
+import numpy
+import pandas
 
 
 def _duration(seq):
@@ -15,7 +17,8 @@ def _duration(seq):
             t1 = t
         elif e == 'leave':
             if t1 is None:
-                raise RuntimeError("Wrong logging {0}".format(seq))
+                # raise RuntimeError("Wrong logging {0}".format(seq))
+                return datetime(2018, 1, 2) - datetime(2018, 1, 1)
             if dt is None:
                 dt = t - t1
             else:
@@ -159,3 +162,102 @@ def enumerate_qcmlog(files):
                 for obs in obss:
                     yield obs
                 rows.append(data)
+
+
+def _aggnotnan_serie(values):
+    res = []
+    for v in values:
+        if isinstance(v, float) and numpy.isnan(v):
+            continue
+        if pandas.isnull(v):
+            continue
+        if v in ('ok', 'on'):
+            v = 1
+        elif v == 'skip':
+            v = 1000
+        res.append(v)
+    if len(res) > 0:
+        if isinstance(res[0], str):
+            r = ",".join(str(_) for _ in res)
+        else:
+            if len(res) == 1:
+                r = res[0]
+            else:
+                try:
+                    r = sum(res)
+                except:
+                    r = 0
+    else:
+        r = numpy.nan
+    return r
+
+
+def _aggnotnan(values):
+    if isinstance(values, pandas.core.series.Series):
+        r = _aggnotnan_serie(values)
+        return r
+    else:
+        res = []
+        for col in values.columns:
+            val = list(values[col])
+            res.append(_aggnotnan_serie(val))
+        df = pandas.DataFrame(res, columns)
+        return df
+
+
+def enumerate_qcmlogdf(files):
+    """
+    Processes many files of logs produced by application
+    @see cl QCMApp in dataframe.
+
+    @param      files       list of filenames
+    @return                 iterator on observations as dictionary
+
+    Example of data it processes::
+
+        2018-12-12 17:56:42,833,INFO,[DATA],{"msg":"event","session":{"alias":"xavierd"},"events":["game:simple_french_qcm,qn:2"]}
+        2018-12-12 17:56:44,270,INFO,[DATA],{"msg":"event","session":{"alias":"xavierd"},"events":["game:simple_french_qcm,qn:2"]}
+        2018-12-12 17:56:44,349,INFO,[DATA],{"msg":"event","session":{"alias":"xavierd"},"events":["game:simple_french_qcm,qn:2"]}
+        2018-12-12 17:56:44,458,INFO,[DATA],{"msg":"qcm","session":{"alias":"xavierd"},"game":"simple_french_qcm","qn":"3"}
+        2018-12-12 17:56:49,427,INFO,[DATA],{"msg":"event","session":{"alias":"xavierd"},"events":["game:simple_french_qcm,qn:3"]}
+        2018-12-12 17:56:50,817,INFO,[DATA],{"msg":"event","session":{"alias":"xavierd"},"events":["game:simple_french_qcm,qn:3"]}
+        2018-12-12 17:56:50,864,INFO,[DATA],{"msg":"event","session":{"alias":"xavierd"},"events":["game:simple_french_qcm,qn:3"]}
+        2018-12-12 17:56:53,302,INFO,[DATA],{"msg":"event","session":{"alias":"xavierd"},"events":["game:simple_french_qcm,qn:3"]}
+        2018-12-12 17:56:53,333,INFO,[DATA],{"msg":"event","session":{"alias":"xavierd"},"events":["game:simple_french_qcm,qn:3"]}
+        2018-12-12 17:56:54,208,INFO,[DATA],{"msg":"event","session":{"alias":"xavierd"},"events":["game:simple_french_qcm,qn:3"]}
+        2018-12-12 17:56:54,239,INFO,[DATA],{"msg":"event","session":{"alias":"xavierd"},"events":["game:simple_french_qcm,qn:3"]}
+    """
+    def select_name(col):
+        return "-" in col
+
+    def prepare_df(rows):
+        df = pandas.DataFrame(rows)
+        df2 = df[df.qtime == 'end']
+        cols = ['alias']
+        cols2 = [c for c in df2.columns if select_name(c)]
+        cols2.sort()
+        df_question = df2[cols + cols2]
+        gr_ans = df_question.groupby("alias").agg(_aggnotnan)
+        return gr_ans
+
+    stack = {}
+    index = {}
+    for i, row in enumerate(enumerate_qcmlog(files)):
+        alias = row.get('alias', None)
+        if alias is None:
+            continue
+        index[alias] = i
+        if alias not in stack:
+            stack[alias] = []
+        stack[alias].append(row)
+
+        rem = []
+        for k, ind in index.items():
+            if i - ind > 500:
+                rem.append(k)
+        for k in rem:
+            yield prepare_df(stack[k])
+            del stack[k]
+            del index[k]
+    for k, rows in stack.items():
+        yield prepare_df(stack[k])

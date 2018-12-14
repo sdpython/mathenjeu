@@ -4,4 +4,4 @@
 @brief Shortcut to *datalog*.
 """
 
-from .qcmlog import enumerate_qcmlog
+from .qcmlog import enumerate_qcmlog, enumerate_qcmlogdf

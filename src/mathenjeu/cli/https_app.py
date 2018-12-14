@@ -76,7 +76,7 @@ def create_https_app(
     @return                         @see cl QCMApp
 
     .. cmdref::
-        :title: Creates a local web-application with very simple authentification
+        :title: Creates a https web-application with https authentification
         :cmd: -m mathenjeu https_webapp --help
 
         The command line runs a web application meant to be local

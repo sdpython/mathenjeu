@@ -34,7 +34,7 @@ def create_self_signed_cert(keyfile="key.pem", certfile="cert.pem",
     <https://medium.com/python-pandemonium/how-to-serve-http-2-using-python-5e5bbd1e7ff1>`_.
 
     .. cmdref::
-        :title: Creates a local web-application with very simple authentification
+        :title: Creates a signed certificate
         :cmd: -m mathenjeu create_self_signed_cert --help
 
         The command line creates a certificate used later by
