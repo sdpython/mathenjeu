@@ -4,9 +4,9 @@
 @brief Helpers to process data from logs.
 """
 from datetime import datetime
-import ujson
 import numpy
 import pandas
+import ujson
 
 
 def _duration(seq):
@@ -185,7 +185,7 @@ def _aggnotnan_serie(values):
             else:
                 try:
                     r = sum(res)
-                except:
+                except TypeError:
                     r = 0
     else:
         r = numpy.nan
@@ -201,7 +201,7 @@ def _aggnotnan(values):
         for col in values.columns:
             val = list(values[col])
             res.append(_aggnotnan_serie(val))
-        df = pandas.DataFrame(res, columns)
+        df = pandas.DataFrame(res, values.columns)
         return df
 
 
@@ -260,4 +260,4 @@ def enumerate_qcmlogdf(files):
             del stack[k]
             del index[k]
     for k, rows in stack.items():
-        yield prepare_df(stack[k])
+        yield prepare_df(rows)

@@ -51,8 +51,8 @@ class TestLocalAppCli(ExtTestCase):
         merged = pandas.concat(dfs, sort=False)
         self.assertEqual(merged.shape[0], 4)
         self.assertEqual(merged.shape[1], 49)
-        values = merged["simple_french_qcm-8-ANS"]
-        self.assertIn("Prout", values)
+        values = list(merged["simple_french_qcm-8-ANS"])
+        self.assertIn(" Prout", values)
 
 
 if __name__ == "__main__":

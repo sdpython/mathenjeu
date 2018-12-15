@@ -51,7 +51,8 @@ class TestRunNotebooksPython(unittest.TestCase):
         shutil.copy(os.path.join(fnb, "logs", "QCMApp.log"), logs)
 
         # run the notebooks
-        res = execute_notebook_list(temp, keepnote, fLOG=fLOG)
+        res = execute_notebook_list(temp, keepnote, fLOG=fLOG,
+                                    additional_path=[os.path.dirname(src.__file__)])
         execute_notebook_list_finalize_ut(res, fLOG=fLOG, dump=src.mathenjeu)
 
 
