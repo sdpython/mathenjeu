@@ -12,5 +12,6 @@ pandas>=0.20.0
 pillow
 scikit-learn
 scipy
+seaborn
 setuptools
 Sphinx
