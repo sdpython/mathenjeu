@@ -2,7 +2,7 @@
 """
 @file
 @brief Module *mathenjeu*.
-Materials for a book about programming with :epkg:`Python`.
+Building an web application with QCM.
 """
 
 __version__ = "0.1"

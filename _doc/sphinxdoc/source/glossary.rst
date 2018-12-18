@@ -5,7 +5,7 @@
 Glossary
 ========
 
-.. glossary::>`_
+.. glossary::
 
     cheatsheet
 
