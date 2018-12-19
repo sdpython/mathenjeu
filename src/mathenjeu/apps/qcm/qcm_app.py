@@ -66,7 +66,8 @@ class QCMApp(LogApp, AuthentificationAnswers):
         if fct_game is None:
             fct_game = get_game
         if games is None:
-            games = dict(test_qcm1=('Maths', 0))
+            games = dict(test_qcm1=('Maths', 0),
+                         test_ml1=('ML', 0))
 
         this = os.path.abspath(os.path.dirname(__file__))
         templates = os.path.join(this, "templates")

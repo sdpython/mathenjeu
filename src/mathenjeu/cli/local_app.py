@@ -19,7 +19,7 @@ def create_local_app(
         title="Web Application MathEnJeu", short_title="MathEnJeu",
         page_doc="http://www.xavierdupre.fr/app/mathenjeu/",
         secure=False, display=None, fct_game=None,
-        games="simple_french_qcm,simple_french_qcm,0",
+        games="simple_french_qcm,simple_french_qcm,0;ml_french_qcm,ml_french_qcm,0",
         port=8868, middles=None, start=False,
         userpwd=None, debug=False, fLOG=print):
     """
