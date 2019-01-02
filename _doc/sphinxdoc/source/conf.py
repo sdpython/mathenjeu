@@ -85,13 +85,16 @@ latex_elements['preamble'] = preamble + custom_preamble
 mathdef_link_only = True
 
 epkg_dictionary.update({
+    'BaseLogging': 'http://www.xavierdupre.fr/app/lightmlrestapi/helpsphinx/lightmlrestapi/mlapp/base_logging.html#lightmlrestapi.mlapp.base_logging.BaseLogging',
     'HTTP 404': 'https://en.wikipedia.org/wiki/HTTP_404',
     'HTTP 500': 'https://en.wikipedia.org/wiki/List_of_HTTP_status_codes',
     'hypercorn': 'https://pgjones.gitlab.io/hypercorn/',
     "QCM": 'https://en.wikipedia.org/wiki/Multiple_choice',
+    'pyformat': 'https://github.com/myint/pyformat',
     'SessionMiddleware': 'https://github.com/encode/starlette/blob/master/starlette/middleware/sessions.py',
     'starlette': 'https://github.com/encode/starlette',
     "ujson": 'https://github.com/esnme/ultrajson',
     'uvicorn': 'https://github.com/encode/uvicorn',
+    'waitress': 'https://docs.pylonsproject.org/projects/waitress/en/latest/',
     'wikipedia': 'https://fr.wikipedia.org/wiki/Wikip%C3%A9dia:Accueil_principal',
 })

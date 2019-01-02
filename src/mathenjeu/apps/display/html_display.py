@@ -11,6 +11,9 @@ class DisplayQuestionChoiceHTML(Display):
     """
 
     def __init__(self):
+        """
+        constructor
+        """
         Display.__init__(self, "qcm_html1", self.__class__.__name__)
 
     def get_context(self, group, item):
