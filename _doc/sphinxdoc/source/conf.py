@@ -86,6 +86,7 @@ mathdef_link_only = True
 
 epkg_dictionary.update({
     'BaseLogging': 'http://www.xavierdupre.fr/app/lightmlrestapi/helpsphinx/lightmlrestapi/mlapp/base_logging.html#lightmlrestapi.mlapp.base_logging.BaseLogging',
+    'format': 'https://docs.python.org/3/library/functions.html?highlight=format#format',
     'HTTP 404': 'https://en.wikipedia.org/wiki/HTTP_404',
     'HTTP 500': 'https://en.wikipedia.org/wiki/List_of_HTTP_status_codes',
     'hypercorn': 'https://pgjones.gitlab.io/hypercorn/',
