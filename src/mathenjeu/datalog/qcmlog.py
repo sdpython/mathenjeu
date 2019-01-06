@@ -4,6 +4,7 @@
 @brief Helpers to process data from logs.
 """
 from datetime import datetime
+import hashlib
 import numpy
 import pandas
 import ujson
@@ -52,15 +53,28 @@ def _enumerate_processed_row(rows, data, cache, last_key):
                 raise ValueError("Unable to parse value '{0}'".format(st))
         return res
 
+    def hash4alias(st):
+        by = st.encode("utf-8")
+        m = hashlib.sha256()
+        m.update(by)
+        res = m.hexdigest()
+        return res[:20] if len(res) > 20 else res
+
     session = data.get('session', None)
+    ipadd = data.get('client', ['NN.NN.NN.NN'])[0]
+    if ipadd is None:
+        raise ValueError(
+            "Unable to extract an ip address from {0}".format(data))
     keys = {'qn', 'game', 'next', 'events'}
     if session is not None:
         alias = session['alias']
-        res = dict(alias=alias, time=data['time'])
+        person_id = hash4alias(alias + ipadd)
+
+        res = dict(person_id=person_id, alias=alias, time=data['time'])
         event = data.get('msg', None)
         if event == 'qcm':
             res['qtime'] = 'begin'
-            key = alias, data['game'], data['qn']
+            key = person_id, alias, data['game'], data['qn']
             if key not in cache:
                 cache[key] = []
             cache[key].append((data['time'], 'enter'))
@@ -95,7 +109,7 @@ def _enumerate_processed_row(rows, data, cache, last_key):
                     else:
                         q2["{0}-{1}-{2}".format(game, qn, k)] = v
                 res.update(q2)
-            key = alias, q['game'], q['qn']
+            key = person_id, alias, q['game'], q['qn']
             if key not in cache:
                 cache[key] = []
             cache[key].append((data['time'], 'leave'))
@@ -215,17 +229,17 @@ def enumerate_qcmlogdf(files):
 
     Example of data it processes::
 
-        2018-12-12 17:56:42,833,INFO,[DATA],{"msg":"event","session":{"alias":"xavierd"},"events":["game:simple_french_qcm,qn:2"]}
-        2018-12-12 17:56:44,270,INFO,[DATA],{"msg":"event","session":{"alias":"xavierd"},"events":["game:simple_french_qcm,qn:2"]}
-        2018-12-12 17:56:44,349,INFO,[DATA],{"msg":"event","session":{"alias":"xavierd"},"events":["game:simple_french_qcm,qn:2"]}
-        2018-12-12 17:56:44,458,INFO,[DATA],{"msg":"qcm","session":{"alias":"xavierd"},"game":"simple_french_qcm","qn":"3"}
-        2018-12-12 17:56:49,427,INFO,[DATA],{"msg":"event","session":{"alias":"xavierd"},"events":["game:simple_french_qcm,qn:3"]}
-        2018-12-12 17:56:50,817,INFO,[DATA],{"msg":"event","session":{"alias":"xavierd"},"events":["game:simple_french_qcm,qn:3"]}
-        2018-12-12 17:56:50,864,INFO,[DATA],{"msg":"event","session":{"alias":"xavierd"},"events":["game:simple_french_qcm,qn:3"]}
-        2018-12-12 17:56:53,302,INFO,[DATA],{"msg":"event","session":{"alias":"xavierd"},"events":["game:simple_french_qcm,qn:3"]}
-        2018-12-12 17:56:53,333,INFO,[DATA],{"msg":"event","session":{"alias":"xavierd"},"events":["game:simple_french_qcm,qn:3"]}
-        2018-12-12 17:56:54,208,INFO,[DATA],{"msg":"event","session":{"alias":"xavierd"},"events":["game:simple_french_qcm,qn:3"]}
-        2018-12-12 17:56:54,239,INFO,[DATA],{"msg":"event","session":{"alias":"xavierd"},"events":["game:simple_french_qcm,qn:3"]}
+        2018-12-12 17:56:42,833,INFO,[DATA],{"msg":"event","session":{"alias":"xavierd"},"client":["N.N.N.N",N]", events":["game:sfq,qn:2"]}
+        2018-12-12 17:56:44,270,INFO,[DATA],{"msg":"event","session":{"alias":"xavierd"},"client":["N.N.N.N",N]","events":["game:sfq,qn:2"]}
+        2018-12-12 17:56:44,349,INFO,[DATA],{"msg":"event","session":{"alias":"xavierd"},"client":["N.N.N.N",N]","events":["game:sfq,qn:2"]}
+        2018-12-12 17:56:44,458,INFO,[DATA],{"msg":"qcm","session":{"alias":"xavierd"},"client":["N.N.N.N",N]","game":"sfq","qn":"3"}
+        2018-12-12 17:56:49,427,INFO,[DATA],{"msg":"event","session":{"alias":"xavierd"},"client":["N.N.N.N",N]","events":["game:sfq,qn:3"]}
+        2018-12-12 17:56:50,817,INFO,[DATA],{"msg":"event","session":{"alias":"xavierd"},"client":["N.N.N.N",N]","events":["game:sfq,qn:3"]}
+        2018-12-12 17:56:50,864,INFO,[DATA],{"msg":"event","session":{"alias":"xavierd"},"client":["N.N.N.N",N]","events":["game:sfq,qn:3"]}
+        2018-12-12 17:56:53,302,INFO,[DATA],{"msg":"event","session":{"alias":"xavierd"},"client":["N.N.N.N",N]","events":["game:sfq,qn:3"]}
+        2018-12-12 17:56:53,333,INFO,[DATA],{"msg":"event","session":{"alias":"xavierd"},"client":["N.N.N.N",N]","events":["game:sfq,qn:3"]}
+        2018-12-12 17:56:54,208,INFO,[DATA],{"msg":"event","session":{"alias":"xavierd"},"client":["N.N.N.N",N]","events":["game:sfq,qn:3"]}
+        2018-12-12 17:56:54,239,INFO,[DATA],{"msg":"event","session":{"alias":"xavierd"},"client":["N.N.N.N",N]","events":["game:sfq,qn:3"]}
     """
     def select_name(col):
         return "-" in col
@@ -233,23 +247,25 @@ def enumerate_qcmlogdf(files):
     def prepare_df(rows):
         df = pandas.DataFrame(rows)
         df2 = df[df.qtime == 'end']
-        cols = ['alias']
+        cols = ['person_id']
         cols2 = [c for c in df2.columns if select_name(c)]
         cols2.sort()
         df_question = df2[cols + cols2]
-        gr_ans = df_question.groupby("alias").agg(_aggnotnan)
+        gr_ans = df_question.groupby("person_id").agg(_aggnotnan)
         return gr_ans
 
     stack = {}
     index = {}
     for i, row in enumerate(enumerate_qcmlog(files)):
-        alias = row.get('alias', None)
-        if alias is None:
+
+        person_id = row.get('person_id', None)
+        if person_id is None:
             continue
-        index[alias] = i
-        if alias not in stack:
-            stack[alias] = []
-        stack[alias].append(row)
+
+        index[person_id] = i
+        if person_id not in stack:
+            stack[person_id] = []
+        stack[person_id].append(row)
 
         rem = []
         for k, ind in index.items():
