@@ -130,7 +130,8 @@ def create_https_app(
             raise RuntimeError("pa should not be None")
     except ImportError as e:
         raise ImportError(
-            "Unable to import 'apphyper' from '{0}'.".format(folder)) from e
+            "Unable to import 'apphyper' from '{0}'\n--sys.path--\n{1}".format(
+                folder, "\n".join(sys.path))) from e
 
     application_path = "apphyper:app"
     kwargs = dict(application_path=application_path, access_log=access_log,
