@@ -6,7 +6,7 @@ jyquickhelper
 itsdangerous
 lightmlrestapi
 pyopenssl
-pyquickhelper>=1.8.2884
+pyquickhelper>=1.8.2924
 python-multipart
 sphinx_modern_theme_modified
 sphinxcontrib.blockdiag
