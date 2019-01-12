@@ -129,9 +129,25 @@ def create_https_app(
         if pa is None:
             raise RuntimeError("pa should not be None")
     except ImportError as e:
-        raise ImportError(
-            "Unable to import 'apphyper' from '{0}'\n--sys.path--\n{1}".format(
-                folder, "\n".join(sys.path))) from e
+        # For unit test purposes.
+        from .. import __file__ as mejfile
+        main_folder = os.path.abspath(os.path.dirname(mejfile))
+        main_folder = os.path.normpath(os.path.join(main_folder, ".."))
+        if main_folder not in sys.path:
+            sys.path.append(main_folder)
+            try:
+                import apphyper
+                pa = apphyper.app
+                if pa is None:
+                    raise RuntimeError("pa should not be None")
+            except ImportError as e:
+                raise ImportError(
+                    "Unable to import 'apphyper' from '{0}'\n--sys.path--\n{1}".format(
+                        folder, "\n".join(sys.path))) from e
+        else:
+            raise ImportError(
+                "Unable to import 'apphyper' from '{0}'\nFolder '{1}' already present.\n--sys.path--\n{2}".format(
+                    folder, main_folder, "\n".join(sys.path))) from e
 
     application_path = "apphyper:app"
     kwargs = dict(application_path=application_path, access_log=access_log,
