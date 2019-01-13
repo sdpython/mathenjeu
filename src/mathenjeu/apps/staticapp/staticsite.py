@@ -9,7 +9,9 @@ from starlette.staticfiles import StaticFiles
 from starlette.responses import HTMLResponse, PlainTextResponse
 # from starlette.middleware.httpsredirect import HTTPSRedirectMiddleware
 from starlette.middleware.trustedhost import TrustedHostMiddleware
+from starlette.routing import Mount
 from ..common import LogApp, AuthentificationAnswers
+from .authmount import AuthMount
 
 
 class StaticApp(LogApp, AuthentificationAnswers):
@@ -118,7 +120,12 @@ class StaticApp(LogApp, AuthentificationAnswers):
                     raise ValueError(
                         "Route '{0}' is forbidden (cannot be in {1})".format(route, impossible))
                 st = StaticFiles(directory=local_folder)
-                app.mount('/' + route, st, name=route)
+                if userpwd:
+                    rt = AuthMount('/' + route, app=st, name=route)
+                else:
+                    rt = Mount('/' + route, app=st, name=route)
+                app.router.routes.append(rt)
+
                 index = os.path.join(local_folder, 'index.html')
                 if os.path.exists(index):
                     self.approutes.append(

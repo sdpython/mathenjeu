@@ -10,7 +10,7 @@ set pythonexe=c:\Python370_x64\python
 
 @echo ~SET pythonexe=%pythonexe%
 set pathserver=this,%~dp0..
-python -m mathenjeu static_local --cookie_key=dummypwd --start=1 --port=8886 --userpwd=abc --content=%pathserver%
+python -m mathenjeu static_local --cookie_key=dummypwd --start=1 --port=8877 --userpwd=abc --content=%pathserver%
 
 
 rem python -m mathenjeu qcm_local --cookie_key=dummypwd --start=1 --port=8889 --userpwd=abc

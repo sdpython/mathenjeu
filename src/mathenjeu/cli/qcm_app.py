@@ -20,7 +20,7 @@ def create_qcm_local_app(
         cookie_domain="127.0.0.1", cookie_path="/",
         # application parameters
         title="Web Application MathEnJeu", short_title="MathEnJeu",
-        page_doc="http://www.xavierdupre.fr/app/mathenjeu/helpsphinx/helpsphinx",
+        page_doc="http://www.xavierdupre.fr/app/mathenjeu/helpsphinx/",
         secure=False, display=None, fct_game=None,
         games="simple_french_qcm,simple_french_qcm,0;ml_french_qcm,ml_french_qcm,0",
         port=8868, middles=None, start=False,
@@ -100,7 +100,7 @@ def create_qcm_https_app(
         cookie_domain="127.0.0.1", cookie_path="/",
         # application parameters
         title="Web Application MathEnJeu", short_title="MathEnJeu",
-        page_doc="http://www.xavierdupre.fr/app/mathenjeu/helpsphinx/helpsphinx",
+        page_doc="http://www.xavierdupre.fr/app/mathenjeu/helpsphinx/",
         secure=False, display=None,
         games="simple_french_qcm,simple_french_qcm,0;ml_french_qcm,ml_french_qcm,0",
         port=8868, middles=None, start=False,

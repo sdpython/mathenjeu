@@ -21,7 +21,7 @@ def create_static_local_app(
         content=None,
         # application parameters
         title="Web Application MathEnJeu", short_title="MathEnJeu",
-        page_doc="http://www.xavierdupre.fr/app/mathenjeu/helpsphinx/helpsphinx",
+        page_doc="http://www.xavierdupre.fr/app/mathenjeu/helpsphinx/",
         secure=False, port=8868, middles=None, start=False,
         userpwd=None, debug=False, fLOG=print):
     """
@@ -61,7 +61,7 @@ def create_static_local_app(
         The web app relies on :epkg:`starlette`, the server relies
         on :epkg:`uvicorn`. Example of use::
 
-            python -m mathenjeu local_static --cookie_key=dummypwd --start=1 --port=8889 --userpwd=abc
+            python -m mathenjeu local_static --cookie_key=dummypwd --start=1 --port=8889 --userpwd=abc --content=display_name,local_folder
 
         With that application, every user can login with a unique password *abc*.
     """
@@ -101,7 +101,7 @@ def create_static_https_app(
         cookie_domain="127.0.0.1", cookie_path="/",
         # application parameters
         title="Web Application MathEnJeu", short_title="MathEnJeu",
-        page_doc="http://www.xavierdupre.fr/app/mathenjeu/helpsphinx/helpsphinx",
+        page_doc="http://www.xavierdupre.fr/app/mathenjeu/helpsphinx/",
         secure=False, port=8868, middles=None, start=False,
         userpwd=None, debug=False, content=None,
         # hypercorn parameters

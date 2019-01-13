@@ -6,7 +6,7 @@
   <div class="jumbotron">
     <div class="container">
       <h1 class="display-4">Login</h1>
-        <form class="form-inline my-2 my-lg-0" method="post" action="/authenticate">
+        <form class="form-inline my-2 my-lg-0" method="post" action="/authenticate?returnto={{returnto}}">
           <p>Alias <input class="form-control mr-sm-2" id="alias" name="alias"
                      type="text" placeholder="" aria-label="alias"></p>
           <p>Mot de passe <input class="form-control mr-sm-2" id="pwd" name="pwd"

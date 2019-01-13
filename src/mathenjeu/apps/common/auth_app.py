@@ -55,13 +55,19 @@ class AuthentificationAnswers:
         self.signer = URLSafeTimedSerializer(self.cookie_key)
         self.userpwd = userpwd
         self._get_page_context = page_context
+        app._get_session = self.get_session
+        app._log_event = self.log_event
+        app._log_any = self.log_any
 
     async def login(self, request):
         """
-        Login page.
+        Login page. If paramater *returnto* is specified in the url,
+        the user will go to this page after being logged.
         """
         template = self.app.get_template(self.login_page)
-        content = template.render(request=request, **self._get_page_context())
+        ps = request.query_params
+        content = template.render(request=request, returnto=ps.get('returnto', '/'),
+                                  **self._get_page_context())
         return HTMLResponse(content)
 
     async def authenticate(self, request):
@@ -77,6 +83,7 @@ class AuthentificationAnswers:
             raise RuntimeError(
                 "Unable to read login and password due to '{0}'".format(e))
 
+        ps = request.query_params
         loge = getattr(self, 'logevent', None)
         if loge:
             loge("authenticate", request, session={},  # pylint: disable=E1102
@@ -86,7 +93,8 @@ class AuthentificationAnswers:
         if res is not None:
             return res
         data = dict(alias=fo['alias'])
-        response = RedirectResponse(url='/')
+        returnto = ps.get('returnto', '/')
+        response = RedirectResponse(url=returnto)
         self.save_session(response, data)
         return response
 
