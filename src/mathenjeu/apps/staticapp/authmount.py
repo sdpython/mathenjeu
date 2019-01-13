@@ -2,7 +2,6 @@
 @file
 @brief Custom Router to check for authentification.
 """
-import logging
 from starlette.responses import RedirectResponse
 from starlette.routing import Mount
 from starlette.types import ASGIApp, Scope, ASGIInstance
@@ -50,8 +49,6 @@ class AuthMount(Mount):
             if app is not None:
                 app._log_event("staticpage", scope, session=session)
             alias = session.get('alias', None)
-            logger = logging.getLogger('uvicorn')
-            logger.info("app is None {} alias={}".format(app is None, alias))
             if alias is not None:
                 return Mount.__call__(self, scope)
         # Requires authentification.

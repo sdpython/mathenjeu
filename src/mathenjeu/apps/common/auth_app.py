@@ -56,8 +56,9 @@ class AuthentificationAnswers:
         self.userpwd = userpwd
         self._get_page_context = page_context
         app._get_session = self.get_session
-        app._log_event = self.log_event
-        app._log_any = self.log_any
+        for method in ['log_event', 'log_any']:
+            if hasattr(self, method):
+                setattr(app, '_' + method, getattr(self, method))
 
     async def login(self, request):
         """
