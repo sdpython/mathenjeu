@@ -4,8 +4,8 @@
 import sys
 import os
 import unittest
-from io import StringIO
 from pyquickhelper.pycode import get_temp_folder, ExtTestCase
+from pyquickhelper.loghelper import BufferedPrint
 
 try:
     import src
@@ -23,24 +23,6 @@ except ImportError:
 from src.mathenjeu.__main__ import main
 
 
-class TempBuffer:
-    "simple buffer"
-
-    def __init__(self):
-        "constructor"
-        self.buffer = StringIO()
-
-    def fprint(self, *args, **kwargs):  # pylint: disable=W0613
-        "print function"
-        mes = " ".join(str(_) for _ in args)
-        self.buffer.write(mes)
-        self.buffer.write("\n")
-
-    def __str__(self):
-        "usual"
-        return self.buffer.getvalue()
-
-
 class TestQcmHttpsAppCli(ExtTestCase):
 
     def test_src_import(self):
@@ -48,14 +30,14 @@ class TestQcmHttpsAppCli(ExtTestCase):
         self.assertTrue(src is not None)
 
     def test_https_webapp(self):
-        st = TempBuffer()
+        st = BufferedPrint()
         main(args=['qcm_https', '--help'], fLOG=st.fprint)
         res = str(st)
         self.assertIn("Creates a https web-application", res)
 
     def test_https_webapp_start(self):
-        temp = get_temp_folder(__file__, "temp_https")
-        st = TempBuffer()
+        temp = get_temp_folder(__file__, "temp_qcm_https")
+        st = BufferedPrint()
         key_file = os.path.join(temp, "key.pem")
         cert_file = os.path.join(temp, "cert.pem")
         main(args=['create_self_signed_cert', '--keyfile=' +

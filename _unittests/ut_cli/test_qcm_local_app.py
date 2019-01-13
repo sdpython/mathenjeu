@@ -6,7 +6,7 @@
 import sys
 import os
 import unittest
-from io import StringIO
+from pyquickhelper.loghelper import BufferedPrint
 
 try:
     import src
@@ -24,24 +24,6 @@ except ImportError:
 from src.mathenjeu.__main__ import main
 
 
-class TempBuffer:
-    "simple buffer"
-
-    def __init__(self):
-        "constructor"
-        self.buffer = StringIO()
-
-    def fprint(self, *args, **kwargs):  # pylint: disable=W0613
-        "print function"
-        mes = " ".join(str(_) for _ in args)
-        self.buffer.write(mes)
-        self.buffer.write("\n")
-
-    def __str__(self):
-        "usual"
-        return self.buffer.getvalue()
-
-
 class TestQcmLocalAppCli(unittest.TestCase):
 
     def test_src_import(self):
@@ -49,20 +31,20 @@ class TestQcmLocalAppCli(unittest.TestCase):
         self.assertTrue(src is not None)
 
     def test_local_app(self):
-        st = TempBuffer()
+        st = BufferedPrint()
         main(args=[], fLOG=st.fprint)
         res = str(st)
         self.assertIn("python -m mathenjeu <command>", res)
         self.assertIn("Creates a local web-application", res)
 
     def test_local_webapp(self):
-        st = TempBuffer()
+        st = BufferedPrint()
         main(args=['qcm_local', '--help'], fLOG=st.fprint)
         res = str(st)
         self.assertIn("Creates a local web-application", res)
 
     def test_local_webapp_start(self):
-        st = TempBuffer()
+        st = BufferedPrint()
         main(args=['qcm_local', '-c', 'dummypwd', '-po', '8889',
                    '-u', 'abc'], fLOG=st.fprint)
         res = str(st)

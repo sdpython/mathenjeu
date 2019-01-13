@@ -6,8 +6,8 @@
 import sys
 import os
 import unittest
-from io import StringIO
 from pyquickhelper.pycode import get_temp_folder, ExtTestCase
+from pyquickhelper.loghelper import BufferedPrint
 
 try:
     import src
@@ -25,24 +25,6 @@ except ImportError:
 from src.mathenjeu.__main__ import main
 
 
-class TempBuffer:
-    "simple buffer"
-
-    def __init__(self):
-        "constructor"
-        self.buffer = StringIO()
-
-    def fprint(self, *args, **kwargs):  # pylint: disable=W0613
-        "print function"
-        mes = " ".join(str(_) for _ in args)
-        self.buffer.write(mes)
-        self.buffer.write("\n")
-
-    def __str__(self):
-        "usual"
-        return self.buffer.getvalue()
-
-
 class TestCertCli(ExtTestCase):
 
     def test_src_import(self):
@@ -50,7 +32,7 @@ class TestCertCli(ExtTestCase):
         self.assertTrue(src is not None)
 
     def test_cert(self):
-        st = TempBuffer()
+        st = BufferedPrint()
         main(args=['create_self_signed_cert', '--help'], fLOG=st.fprint)
         res = str(st)
         self.assertIn("Creates a signed certificate", res)
@@ -59,7 +41,7 @@ class TestCertCli(ExtTestCase):
         temp = get_temp_folder(__file__, "temp_cert")
         key_file = os.path.join(temp, "key.pem")
         cert_file = os.path.join(temp, "cert.pem")
-        st = TempBuffer()
+        st = BufferedPrint()
         main(args=['create_self_signed_cert', '-k',
                    key_file, '-c', cert_file], fLOG=st.fprint)
         res = str(st)
