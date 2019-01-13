@@ -5,6 +5,7 @@ jinja2
 jyquickhelper
 itsdangerous
 lightmlrestapi
+missingno
 pyopenssl
 pyquickhelper>=1.8.2924
 python-multipart
