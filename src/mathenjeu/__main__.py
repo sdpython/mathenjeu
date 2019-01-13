@@ -15,12 +15,16 @@ def main(args, fLOG=print):
     @param      fLOG        logging function
     """
     try:
-        from .cli import create_local_app, create_https_app, create_self_signed_cert
+        from .cli import create_qcm_local_app, create_qcm_https_app, create_self_signed_cert
+        from .cli import create_static_local_app, create_static_https_app
     except ImportError:
-        from mathenjeu.cli import create_local_app, create_https_app, create_self_signed_cert
+        from mathenjeu.cli import create_qcm_local_app, create_qcm_https_app, create_self_signed_cert
+        from mathenjeu.cli import create_static_local_app, create_static_https_app
 
-    fcts = dict(local_webapp=create_local_app,
-                https_webapp=create_https_app,
+    fcts = dict(qcm_local=create_qcm_local_app,
+                qcm_https=create_qcm_https_app,
+                static_local=create_static_local_app,
+                static_https=create_static_https_app,
                 create_self_signed_cert=create_self_signed_cert)
     cli_main_helper(fcts, args=args, fLOG=fLOG)
 

@@ -42,7 +42,7 @@ class TempBuffer:
         return self.buffer.getvalue()
 
 
-class TestLocalAppCli(unittest.TestCase):
+class TestStaticLocalAppCli(unittest.TestCase):
 
     def test_src_import(self):
         """for pylint"""
@@ -57,18 +57,17 @@ class TestLocalAppCli(unittest.TestCase):
 
     def test_local_webapp(self):
         st = TempBuffer()
-        main(args=['local_webapp', '--help'], fLOG=st.fprint)
+        main(args=['static_local', '--help'], fLOG=st.fprint)
         res = str(st)
         self.assertIn("Creates a local web-application", res)
 
     def test_local_webapp_start(self):
         st = TempBuffer()
-        main(args=['local_webapp', '-c', 'dummypwd', '-po', '8889',
+        main(args=['static_local', '-c', 'dummypwd', '-po', '8889',
                    '-u', 'abc'], fLOG=st.fprint)
         res = str(st)
-        print(res)
         self.assertIn(
-            "[create_local_app] games={'simple_french_qcm': ('simple_french_qcm', '0'), 'ml_french_qcm': ('ml_french_qcm', '0')}", res)
+            "[create_static_local_app] create", res)
 
 
 if __name__ == "__main__":

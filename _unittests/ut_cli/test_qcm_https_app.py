@@ -41,7 +41,7 @@ class TempBuffer:
         return self.buffer.getvalue()
 
 
-class TestHttpsAppCli(ExtTestCase):
+class TestQcmHttpsAppCli(ExtTestCase):
 
     def test_src_import(self):
         """for pylint"""
@@ -49,7 +49,7 @@ class TestHttpsAppCli(ExtTestCase):
 
     def test_https_webapp(self):
         st = TempBuffer()
-        main(args=['https_webapp', '--help'], fLOG=st.fprint)
+        main(args=['qcm_https', '--help'], fLOG=st.fprint)
         res = str(st)
         self.assertIn("Creates a https web-application", res)
 
@@ -60,14 +60,14 @@ class TestHttpsAppCli(ExtTestCase):
         cert_file = os.path.join(temp, "cert.pem")
         main(args=['create_self_signed_cert', '--keyfile=' +
                    key_file, '--certfile=' + cert_file], fLOG=st.fprint)
-        main(args=['https_webapp', '--cookie_key=dummypwd', '--port=8889',
+        main(args=['qcm_https', '--cookie_key=dummypwd', '--port=8889',
                    '--userpwd=abc', '--ca_certs="{0}"'.format(temp),
                    '--keyfile=key.pem', '--certfile=cert.pem',
                    '--folder=' + temp],
              fLOG=st.fprint)
         res = str(st)
         self.assertIn('[create_self_signed_cert]', res)
-        self.assertIn('[create_https_app] saved file', res)
+        self.assertIn('[create_qcm_https_app] saved file', res)
         self.assertIn('apphyper.py', res)
 
 

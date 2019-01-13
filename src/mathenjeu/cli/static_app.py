@@ -4,12 +4,94 @@
 """
 import os
 import sys
-from .cli_helper import build_games
-from ..apps import QCMApp
+import uvicorn
+from ..apps import StaticApp
 from ..apps.server import ServerHypercorn
 
 
-def create_https_app(
+def create_static_local_app(
+        # log parameters
+        secret_log=None,
+        folder='.',
+        # authentification parameters
+        max_age=14 * 24 * 60 * 60,
+        cookie_key=None, cookie_name="mathenjeu",
+        cookie_domain="127.0.0.1", cookie_path="/",
+        # content parameters
+        content=None,
+        # application parameters
+        title="Web Application MathEnJeu", short_title="MathEnJeu",
+        page_doc="http://www.xavierdupre.fr/app/mathenjeu/",
+        secure=False, port=8868, middles=None, start=False,
+        userpwd=None, debug=False, fLOG=print):
+    """
+    Creates a local web-application with very simple authentification.
+
+    @param      secret_log      to encrypt log (None to ignore)
+    @param      folder          folder where to write the logs (None to disable the logging)
+
+    @param      max_age         cookie's duration in seconds
+    @param      cookie_key      to encrypt information in the cookie (cannot be None)
+    @param      cookie_name     name of the session cookie
+    @param      cookie_domain   cookie is valid for this path only, also defines the
+                                domain of the web app (its url)
+    @param      cookie_path     path of the cookie once storeds
+    @param      secure          use secured connection for cookies
+    @param      content         list tuple ``route, folder`` to server or a string
+                                ``route1,folder1;route2,folder2;...``
+
+    @param      title           title
+    @param      short_title     short application title
+    @param      page_doc        page documentation (default is :epkg:`mathenjeu`)
+    @param      port            port to deploy the application
+    @param      middles         middles ware, list of couple ``[(class, **kwargs)]``
+                                where *kwargs* are the parameter constructor
+    @param      start           starts the application with :epkg:`uvicorn`
+    @param      userpwd         users are authentified with any alias but a common password
+    @param      debug           display debug information (:epkg:`starlette` option)
+    @param      fLOG            logging function
+    @return                     @see cl StaticApp
+
+    .. cmdref::
+        :title: Creates a local web-application with very simple authentification
+        :cmd: -m mathenjeu local_static --help
+
+        The command line runs a web application meant to be local
+        as there is not *https* involved. It serves static content.
+        The web app relies on :epkg:`starlette`, the server relies
+        on :epkg:`uvicorn`. Example of use::
+
+            python -m mathenjeu local_static --cookie_key=dummypwd --start=1 --port=8889 --userpwd=abc
+
+        With that application, every user can login with a unique password *abc*.
+    """
+    if secret_log == '':
+        raise ValueError("secret_log must be not empty or None, not ''")
+    if fLOG:
+        fLOG("[create_static_local_app] create")
+
+    if isinstance(content, str):
+        if fLOG:
+            fLOG("[create_static_local_app] parsing '{0}'".format(content))
+        content = [tuple(ct.split(',')) for ct in content.split(';')]
+        if fLOG:
+            fLOG("[create_static_local_app] int '{0}'".format(content))
+
+    app = StaticApp(secret_log=secret_log, middles=middles,
+                    folder=folder, max_age=max_age,
+                    cookie_key=cookie_key, cookie_name=cookie_name,
+                    cookie_domain=cookie_domain, cookie_path=cookie_path,
+                    title=title, short_title=short_title, content=content,
+                    secure=secure, page_doc=page_doc, userpwd=userpwd)
+    if start:
+        if fLOG:
+            fLOG(
+                "[create_static_local_app] start server 'http://{0}:{1}'".format(cookie_domain, port))
+        uvicorn.run(app.app, host=cookie_domain, port=port)
+    return app
+
+
+def create_static_https_app(
         # log parameters
         secret_log=None,
         folder='.',
@@ -19,11 +101,9 @@ def create_https_app(
         cookie_domain="127.0.0.1", cookie_path="/",
         # application parameters
         title="Web Application MathEnJeu", short_title="MathEnJeu",
-        page_doc="http://www.xavierdupre.fr/app/mathenjeu/",
-        secure=False, display=None,
-        games="simple_french_qcm,simple_french_qcm,0;ml_french_qcm,ml_french_qcm,0",
-        port=8868, middles=None, start=False,
-        userpwd=None, debug=False,
+        page_doc="http://www.xavierdupre.fr/app/mathenjeu/helpsphinx/",
+        secure=False, port=8868, middles=None, start=False,
+        userpwd=None, debug=False, content=None,
         # hypercorn parameters
         access_log="-",
         access_log_format="%(h)s %(r)s %(s)s %(b)s %(D)s",
@@ -47,16 +127,14 @@ def create_https_app(
     @param      title               title
     @param      short_title         short application title
     @param      page_doc            page documentation (default is 'http://www.xavierdupre.fr/app/mathenjeu/')
-    @param      display             display such as @see cl DisplayQuestionChoiceHTML
-    @param      games               defines which games is available as a dictionary
-                                    ``{ game_id: (game name, first page id) }`` or
-                                    ``id,name,page;id,name,page``, *id* can be a filename.
     @param      port                port to deploy the application
     @param      middles             middles ware, list of couple ``[(class, **kwargs)]``
                                     where *kwargs* are the parameter constructor
     @param      start               starts the application with :epkg:`uvicorn`
     @param      userpwd             users are authentified with any alias but a common password
     @param      debug               display debug information (:epkg:`starlette` option)
+    @param      content             list tuple ``route, folder`` to server or a string
+                                    ``route1,folder1;route2,folder2;...``
 
     @param      access_log          The target location for the access log, use - for stdout.
     @param      access_log_format   The log format for the access log, see help docs,
@@ -73,52 +151,53 @@ def create_https_app(
     @param      reload              Enable automatic reloads on code changes.
     @param      fLOG                logging function
 
-    @return                         @see cl QCMApp
+    @return                         @see cl StaticApp
 
     .. cmdref::
-        :title: Creates a https web-application with https authentification
-        :cmd: -m mathenjeu https_webapp --help
+        :title: Creates a https static web-application with authentification
+        :cmd: -m mathenjeu local_https --help
 
         The command line runs a web application meant to be local
-        as there is not *https* involved. The web app relies
-        on :epkg:`starlette`, the server relies on :epkg:`hypercorn`.
-        Example::
+        as there is not :epkg:`https` involved. It servers static content.
+        The web app relies on :epkg:`starlette`, the server relies
+        on :epkg:`hypercorn`. Example::
 
-            python -m mathenjeu https_webapp
+            python -m mathenjeu local_https
 
         With that application, every user can login with a unique password *abc*.
     """
     if secret_log == '':
         raise ValueError("secret_log must be not empty or None, not ''")
 
-    games, fct_game = build_games(games, None)
-    if fLOG:
-        fLOG("[create_https_app] games=" + str(games))
+    if isinstance(content, str):
+        if fLOG:
+            fLOG("[create_static_local_app] parsing '{0}'".format(content))
+        content = [tuple(ct.split(',')) for ct in content.split(';')]
+        if fLOG:
+            fLOG("[create_static_local_app] int '{0}'".format(content))
+
     kwargs = dict(secret_log=secret_log, middles=middles,
                   folder=folder, max_age=max_age,
                   cookie_key=cookie_key, cookie_name=cookie_name,
                   cookie_domain=cookie_domain, cookie_path=cookie_path,
                   title=title, short_title=short_title,
-                  secure=secure, display=display, debug=debug,
+                  secure=secure, debug=debug, content=content,
                   page_doc=page_doc, userpwd=userpwd)
-    app = QCMApp(games=games, fct_game=fct_game, **kwargs)
+    app = StaticApp(**kwargs)
     if app.app is None:
         raise RuntimeError("Unable to create a starlette application.")
     if fLOG:
-        fLOG("[create_https_app] app is created")
+        fLOG("[create_static_https_app] app is created")
     rows = []
     rows.append('"Creates a starlette application."')
-    rows.append("from mathenjeu.cli.cli_helper import build_games")
-    rows.append("from mathenjeu.apps import QCMApp")
-    rows.append("games = {0}".format(games))
-    rows.append("games, fct_game = build_games(games, None)")
+    rows.append("from mathenjeu.apps import StaticApp")
     rows.append("kwargs = " + str(kwargs))
-    rows.append("app = QCMApp(games=games, fct_game=fct_game, **kwargs).app")
+    rows.append("app = StaticApp(**kwargs).app")
     name = os.path.join(folder, "apphyper.py")
     with open(name, "w", encoding="utf-8") as f:
         f.write("\n".join(rows))
     if fLOG:
-        fLOG("[create_https_app] saved file '{0}'".format(name))
+        fLOG("[create_static_https_app] saved file '{0}'".format(name))
 
     binds = "{0}:{1}".format(cookie_domain, port)
     folder = os.path.abspath(folder)
@@ -157,11 +236,12 @@ def create_https_app(
                   reload=reload, ciphers=ciphers)
 
     if fLOG:
-        fLOG("[create_https_app] create server")
+        fLOG("[create_static_https_app] create server")
     server = ServerHypercorn(**kwargs)
     if start:
         if fLOG:
-            fLOG("[create_https_app] starts server on '{0}'".format(binds))
+            fLOG(
+                "[create_static_https_app] starts server on '{0}'".format(binds))
         server.run()
     while folder in sys.path:
         del sys.path[sys.path.index(folder)]

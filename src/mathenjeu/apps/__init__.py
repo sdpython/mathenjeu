@@ -4,3 +4,4 @@
 """
 
 from .qcm import QCMApp
+from .staticapp import StaticApp

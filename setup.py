@@ -41,6 +41,10 @@ package_data = {project_var_name + ".apps.qcm.statics.css": ["*.css"],
                 project_var_name + ".apps.qcm.statics.js": ["*.js"],
                 project_var_name + ".apps.qcm.statics.img": ["*.png"],
                 project_var_name + ".apps.qcm.templates": ["*.html"],
+                project_var_name + ".apps.staticapp.statics.css": ["*.css"],
+                project_var_name + ".apps.staticapp.statics.js": ["*.js"],
+                project_var_name + ".apps.staticapp.statics.img": ["*.png"],
+                project_var_name + ".apps.staticapp.templates": ["*.html"],
                 }
 
 

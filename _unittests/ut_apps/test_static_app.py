@@ -24,16 +24,16 @@ except ImportError:
         sys.path.append(path)
     import src
 
-from src.mathenjeu.cli import create_qcm_local_app
+from src.mathenjeu.cli import create_static_local_app
 
 
-class TestQcmApp(ExtTestCase):
+class TestStaticApp(ExtTestCase):
 
-    def test_qcm_app(self):
-        temp = get_temp_folder(__file__, "temp_run_qcm_app")
+    def test_static_app_empty(self):
+        temp = get_temp_folder(__file__, "temp_run_static_app")
         middles = [(ProxyHeadersMiddleware, {})]
-        app = create_qcm_local_app(cookie_key="dummypwd",
-                                   folder=temp, middles=middles)
+        app = create_static_local_app(cookie_key="dummypwd",
+                                      folder=temp, middles=middles)
         client = TestClient(app.app.router)
         page = client.get("/")
         self.assertNotEqual(page.status_code, 400)
@@ -53,20 +53,23 @@ class TestQcmApp(ExtTestCase):
 
         self.assertRaise(lambda: client.get("/error"), RuntimeError)
 
-        page = client.get("/qcm")
-        self.assertEqual(page.status_code, 200)
-        self.assertIn(b"MathEnJeu", page.content)
-
-        page = client.get("/last")
-        self.assertEqual(page.status_code, 200)
-        self.assertIn(b"MathEnJeu", page.content)
-
         page = client.get("/event")
         self.assertEqual(page.status_code, 200)
 
-        page = client.get("/answer")
+    def test_static_app_content(self):
+        temp = get_temp_folder(__file__, "temp_run_static_app_content")
+        folder = os.path.normpath(os.path.join(temp, '..'))
+        middles = [(ProxyHeadersMiddleware, {})]
+        app = create_static_local_app(cookie_key="dummypwd",
+                                      folder=temp, middles=middles,
+                                      content=[('zoo', folder)])
+        client = TestClient(app.app.router)
+        page = client.get("/zoo")
+        self.assertNotEqual(page.status_code, 200)
+        page = client.get("/zoo/test_static_app.py")
         self.assertEqual(page.status_code, 200)
-        self.assertIn(b"MathEnJeu", page.content)
+        self.assertIn(
+            b'page = client.get("/zoo/test_static_app.py"', page.content)
 
 
 if __name__ == "__main__":

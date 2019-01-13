@@ -9,7 +9,7 @@ from ..activities import Notion, QuestionChoice, ActivityGroup
 
 def simple_french_qcm():
     """
-    Builds a simple French :epkg:`QCM` about mathémtiques.
+    Builds a simple French :epkg:`QCM` about mathématiques.
     """
     math_sixieme = Notion('not-math-1', 'not-math-1', 'fr',
                           domain='maths', level='6A')

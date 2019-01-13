@@ -9,9 +9,9 @@ Application Web
 Command line
 ++++++++++++
 
-.. autosignature:: mathenjeu.cli.https_app.create_https_app
+.. autosignature:: mathenjeu.cli.qcm_app.create_https_app
 
-.. autosignature:: mathenjeu.cli.local_app.create_local_app
+.. autosignature:: mathenjeu.cli.qcm_app.create_local_app
 
 .. autosignature:: mathenjeu.cli.openssl.create_self_signed_cert
 
@@ -41,3 +41,5 @@ WebApp
 ++++++
 
 .. autosignature:: mathenjeu.apps.qcm.qcm_app.QCMApp
+
+.. autosignature:: mathenjeu.apps.staticapp.staticfile.StaticApp
