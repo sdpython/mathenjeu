@@ -83,6 +83,7 @@ class StaticApp(LogApp, AuthentificationAnswers):
         self.title = title
         self.short_title = short_title
         self.page_doc = page_doc
+        self.approutes = []
 
         if middles is not None:
             for middle, kwargs in middles:
@@ -118,6 +119,22 @@ class StaticApp(LogApp, AuthentificationAnswers):
                         "Route '{0}' is forbidden (cannot be in {1})".format(route, impossible))
                 st = StaticFiles(directory=local_folder)
                 app.mount('/' + route, st, name=route)
+                index = os.path.join(local_folder, 'index.html')
+                if os.path.exists(index):
+                    self.approutes.append(
+                        (route, '/{}/index.html'.format(route)))
+                else:
+                    res = os.listdir(local_folder)
+                    found = False
+                    for r in res:
+                        full = os.path.join(local_folder, r)
+                        if os.path.isfile(full):
+                            self.approutes.append(
+                                (route, '/{}/{}'.format(route, r)))
+                            found = True
+                            break
+                    if not found:
+                        self.approutes.append((route, '/' + route))
 
     #########
     # common
@@ -131,7 +148,7 @@ class StaticApp(LogApp, AuthentificationAnswers):
         @return                 parameters
         """
         res = dict(title=self.title, short_title=self.short_title,
-                   page_doc=self.page_doc)
+                   page_doc=self.page_doc, approutes=self.approutes)
         res.update(kwargs)
         return res
 

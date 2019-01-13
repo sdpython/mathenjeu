@@ -20,7 +20,7 @@ def create_qcm_local_app(
         cookie_domain="127.0.0.1", cookie_path="/",
         # application parameters
         title="Web Application MathEnJeu", short_title="MathEnJeu",
-        page_doc="http://www.xavierdupre.fr/app/mathenjeu/helpsphinx/",
+        page_doc="http://www.xavierdupre.fr/app/mathenjeu/helpsphinx/helpsphinx",
         secure=False, display=None, fct_game=None,
         games="simple_french_qcm,simple_french_qcm,0;ml_french_qcm,ml_french_qcm,0",
         port=8868, middles=None, start=False,
@@ -100,7 +100,7 @@ def create_qcm_https_app(
         cookie_domain="127.0.0.1", cookie_path="/",
         # application parameters
         title="Web Application MathEnJeu", short_title="MathEnJeu",
-        page_doc="http://www.xavierdupre.fr/app/mathenjeu/helpsphinx/",
+        page_doc="http://www.xavierdupre.fr/app/mathenjeu/helpsphinx/helpsphinx",
         secure=False, display=None,
         games="simple_french_qcm,simple_french_qcm,0;ml_french_qcm,ml_french_qcm,0",
         port=8868, middles=None, start=False,
@@ -127,7 +127,7 @@ def create_qcm_https_app(
 
     @param      title               title
     @param      short_title         short application title
-    @param      page_doc            page documentation (default is 'http://www.xavierdupre.fr/app/mathenjeu/')
+    @param      page_doc            page documentation (default is 'http://www.xavierdupre.fr/app/mathenjeu/helpsphinx')
     @param      display             display such as @see cl DisplayQuestionChoiceHTML
     @param      games               defines which games is available as a dictionary
                                     ``{ game_id: (game name, first page id) }`` or

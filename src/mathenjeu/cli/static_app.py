@@ -21,7 +21,7 @@ def create_static_local_app(
         content=None,
         # application parameters
         title="Web Application MathEnJeu", short_title="MathEnJeu",
-        page_doc="http://www.xavierdupre.fr/app/mathenjeu/",
+        page_doc="http://www.xavierdupre.fr/app/mathenjeu/helpsphinx/helpsphinx",
         secure=False, port=8868, middles=None, start=False,
         userpwd=None, debug=False, fLOG=print):
     """
@@ -75,7 +75,7 @@ def create_static_local_app(
             fLOG("[create_static_local_app] parsing '{0}'".format(content))
         content = [tuple(ct.split(',')) for ct in content.split(';')]
         if fLOG:
-            fLOG("[create_static_local_app] int '{0}'".format(content))
+            fLOG("[create_static_local_app] int {0}".format(content))
 
     app = StaticApp(secret_log=secret_log, middles=middles,
                     folder=folder, max_age=max_age,
@@ -101,7 +101,7 @@ def create_static_https_app(
         cookie_domain="127.0.0.1", cookie_path="/",
         # application parameters
         title="Web Application MathEnJeu", short_title="MathEnJeu",
-        page_doc="http://www.xavierdupre.fr/app/mathenjeu/helpsphinx/",
+        page_doc="http://www.xavierdupre.fr/app/mathenjeu/helpsphinx/helpsphinx",
         secure=False, port=8868, middles=None, start=False,
         userpwd=None, debug=False, content=None,
         # hypercorn parameters
@@ -126,7 +126,7 @@ def create_static_https_app(
 
     @param      title               title
     @param      short_title         short application title
-    @param      page_doc            page documentation (default is 'http://www.xavierdupre.fr/app/mathenjeu/')
+    @param      page_doc            page documentation (default is 'http://www.xavierdupre.fr/app/mathenjeu/helpsphinx')
     @param      port                port to deploy the application
     @param      middles             middles ware, list of couple ``[(class, **kwargs)]``
                                     where *kwargs* are the parameter constructor
@@ -174,7 +174,7 @@ def create_static_https_app(
             fLOG("[create_static_local_app] parsing '{0}'".format(content))
         content = [tuple(ct.split(',')) for ct in content.split(';')]
         if fLOG:
-            fLOG("[create_static_local_app] int '{0}'".format(content))
+            fLOG("[create_static_local_app] int {0}".format(content))
 
     kwargs = dict(secret_log=secret_log, middles=middles,
                   folder=folder, max_age=max_age,

@@ -7,10 +7,9 @@
     <div class="container">
       <h1 class="display-4">{{title}}</h1>
       <p>Vous êtes connecté en tant que {{alias}}. </p>
-      <p>Cliquer pour jouer.</p>
       <p>
-      {% for k, v in games.items() %}
-      <a class="btn btn-primary btn-lg" href="/qcm?game={{k}}&qn={{v[1]}}" role="button">{{v[0]}}</a>
+      {% for route, url in approutes %}
+      <a class="btn btn-primary btn-lg" href="{{url}}" role="button">{{route}}</a>
       {% endfor %}
       </p>
     </div>
