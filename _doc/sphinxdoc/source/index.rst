@@ -60,6 +60,7 @@ QCMs or other forms. It relies on module :epkg:`starlette`.
 .. toctree::
     :maxdepth: 1
 
+    tutorial/index
     api/index
     i_examples
     i_index
