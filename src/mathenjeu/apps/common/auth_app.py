@@ -3,6 +3,7 @@
 @file
 @brief Starts an application.
 """
+import hashlib
 from starlette.responses import HTMLResponse, RedirectResponse
 from itsdangerous import URLSafeTimedSerializer
 import ujson
@@ -54,6 +55,8 @@ class AuthentificationAnswers:
         self.secure = secure
         self.signer = URLSafeTimedSerializer(self.cookie_key)
         self.userpwd = userpwd
+        self.hashed_userpwd = None if userpwd is None else self.hash_pwd(
+            userpwd)
         self._get_page_context = page_context
         app._get_session = self.get_session
         for method in ['log_event', 'log_any']:
@@ -70,6 +73,17 @@ class AuthentificationAnswers:
         content = template.render(request=request, returnto=ps.get('returnto', '/'),
                                   **self._get_page_context())
         return HTMLResponse(content)
+
+    def hash_pwd(self, pwd):
+        """
+        Hashes a password.
+
+        @param      pwd     password
+        @return             hashed password in hexadecimal format
+        """
+        m = hashlib.sha256()
+        m.update(pwd.encode("utf-8"))
+        return m.hexdigest()
 
     async def authenticate(self, request):
         """
@@ -93,7 +107,7 @@ class AuthentificationAnswers:
                               request=request)
         if res is not None:
             return res
-        data = dict(alias=fo['alias'])
+        data = dict(alias=fo['alias'], hashpwd=self.hash_pwd(fo['pwd']))
         returnto = ps.get('returnto', '/')
         response = RedirectResponse(url=returnto)
         self.save_session(response, data)
@@ -134,7 +148,13 @@ class AuthentificationAnswers:
         if cook is not None:
             unsigned = self.signer.loads(cook)
             data = unsigned[0]
-            return ujson.loads(data)  # pylint: disable=E1101
+            jsdata = ujson.loads(data)  # pylint: disable=E1101
+            # We check the hashed password is still good.
+            hashpwd = jsdata.get('hashpwd', '')
+            if not self.authentify_user(jsdata.get('alias', ''), hashpwd, False):
+                # We cancel the authentification.
+                return {}
+            return jsdata
         else:
             return {} if notnone else None
 
@@ -155,15 +175,25 @@ class AuthentificationAnswers:
             return HTMLResponse(content)
         return None
 
-    def authentify_user(self, alias, pwd):
+    def authentify_user(self, alias, pwd, hash_before=True):
         """
         Overwrites this method to allow or reject users.
 
         @param      alias       alias or user
         @param      pwd         password
+        @param      hash_before hashes the password before comparing, otherwise,
+                                the function assumes it is already hashed
         @return                 boolean
 
-        The current behavior is to allow anybody if the alias is not
-        empty whatever the password.
+        The current behavior is to allow anybody if the alias is longer
+        than 3 characters.
         """
-        return pwd == self.userpwd
+        if alias is None or len(alias.strip()) <= 3:
+            return False
+        if self.hashed_userpwd is None:
+            return True
+        if hash_before:
+            hashed_pwd = self.hash_pwd(pwd)
+            return hashed_pwd == self.hashed_userpwd
+        else:
+            return pwd == self.hashed_userpwd
