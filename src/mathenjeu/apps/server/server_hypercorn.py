@@ -28,8 +28,11 @@ class ServerHypercorn:
                 continue
             setattr(config, k, v)
 
-        if len(kwargs['binds']) > 0:
-            config.update_bind(kwargs['binds'])
+        if len(kwargs['bind']) > 0:
+            bind = kwargs['bind']
+            if not isinstance(bind, list):
+                bind = [bind]
+            config.bind = bind
         self.config = config
 
     def run(self, verbose=True):
@@ -41,5 +44,5 @@ class ServerHypercorn:
         if verbose:
             scheme = "https" if self.config.ssl_enabled else "http"
             print("[mathenjeu] running on {}://{}:{}".format(scheme, self.config.host,
-                                                             self.config.port))
+                                                           self.config.port))
         self._run(self.config)

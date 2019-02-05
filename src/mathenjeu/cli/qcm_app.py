@@ -201,7 +201,7 @@ def create_qcm_https_app(
     if fLOG:
         fLOG("[create_qcm_https_app] saved file '{0}'".format(name))
 
-    binds = "{0}:{1}".format(cookie_domain, port)
+    bind = "{0}:{1}".format(cookie_domain, port)
     folder = os.path.abspath(folder)
     sys.path.append(folder)
     try:
@@ -232,7 +232,7 @@ def create_qcm_https_app(
 
     application_path = "apphyper:app"
     kwargs = dict(application_path=application_path, access_log=access_log,
-                  access_log_format=access_log_format, binds=binds,
+                  access_log_format=access_log_format, bind=bind,
                   ca_certs=ca_certs, certfile=certfile, debug=debug, error_log=error_log,
                   keep_alive=keep_alive, keyfile=keyfile, root_path=root_path, workers=workers,
                   reload=reload, ciphers=ciphers)
@@ -242,7 +242,7 @@ def create_qcm_https_app(
     server = ServerHypercorn(**kwargs)
     if start:
         if fLOG:
-            fLOG("[create_qcm_https_app] starts server on '{0}'".format(binds))
+            fLOG("[create_qcm_https_app] starts server on '{0}'".format(bind))
         server.run()
     while folder in sys.path:
         del sys.path[sys.path.index(folder)]
