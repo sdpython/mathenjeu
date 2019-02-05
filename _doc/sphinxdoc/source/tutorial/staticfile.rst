@@ -35,3 +35,29 @@ et :epkg:`uvicorn`. Le service se lance avec la commande suivante :
 ::
 
     nohup python3.7 -m mathenjeu static_local --cookie_domain "addresse ip de la machine" --cookie_key "mot de passe" --start=1 --port=<port> --userpwd "<quelquechose>" --content "2A,/home/ftpuser/ftp/quelquechose" > webapp.log &
+
+Arrêter le serveur
+++++++++++++++++++
+
+Le plus simple est de rechercher le processus qui
+exécute le serveur.
+
+::
+
+    ps -ef | grep mathenjeu
+
+Il suffit ensuite de le tuer.
+
+::
+
+    kill <process id>
+
+Il est possible qu'il existe un processus résiduel
+associé au port de la machine utilisé pour lancer le site.
+Pour le trouver, il suffit de remplacer *3000* par le port
+utilisé puis de tuer le processus trouvé par ce biais.
+
+::
+
+    lsof -i tcp:3000
+
