@@ -267,14 +267,15 @@ class QCMApp(LogApp, AuthentificationAnswers):
             raise RuntimeError(
                 "Unable to read answer due to '{0}'".format(e))
         session = self.get_session(request, notnone=True)
+        values = {k: v for k, v in fo.items()}
         ps = request.query_params
-        fo.update(ps)
-        self.log_event("answer", request, session=session, data=fo)
-        if 'next' in fo and fo['next'] in (None, 'None'):
+        values.update(ps)
+        self.log_event("answer", request, session=session, data=values)
+        if 'next' in values and values['next'] in (None, 'None'):
             response = RedirectResponse(url='/last?game=' + fo['game'])
         else:
             response = RedirectResponse(
-                url='/qcm?game={0}&qn={1}'.format(fo.get('game', ''), fo.get('next', '')))
+                url='/qcm?game={0}&qn={1}'.format(values.get('game', ''), values.get('next', '')))
         return response
 
     async def lastpage(self, request):
