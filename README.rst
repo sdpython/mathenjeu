@@ -1,9 +1,4 @@
 
-.. _l-README:
-
-README
-======
-
 .. image:: https://travis-ci.org/sdpython/mathenjeu.svg?branch=master
     :target: https://travis-ci.org/sdpython/mathenjeu
     :alt: Build status
@@ -41,14 +36,17 @@ README
     :target: http://www.xavierdupre.fr/app/mathenjeu/helpsphinx/all_notebooks_coverage.html
     :alt: Notebook Coverage
 
-**Links:**
+.. _l-README:
+
+mathenjeu
+=========
+
+Web application to retrieve answers to questions asked to students.
+Easy and light way to ask for informations.
+Some content are in French. Relies on *starlette*, *uvicorn*,
+*hypercorn*.
 
 * `GitHub/mathenjeu <https://github.com/sdpython/mathenjeu/>`_
 * `documentation <http://www.xavierdupre.fr/app/mathenjeu/helpsphinx/index.html>`_
 * `Blog <http://www.xavierdupre.fr/app/mathenjeu/helpsphinx/blog/main_0000.html#ap-main-0>`_
 
-**mathenjeu**
-
-Web application to retrieve answers to questions, maybe more.
-Some content are in French. Relies on *starlette*, *uvicorn*,
-*hypercorn*.
