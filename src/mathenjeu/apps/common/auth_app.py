@@ -4,7 +4,7 @@
 @brief Starts an application.
 """
 import hashlib
-from starlette.responses import HTMLResponse, RedirectResponse
+from starlette.responses import RedirectResponse
 from itsdangerous import URLSafeTimedSerializer
 import ujson
 
@@ -68,11 +68,10 @@ class AuthentificationAnswers:
         Login page. If paramater *returnto* is specified in the url,
         the user will go to this page after being logged.
         """
-        template = self.app.get_template(self.login_page)
         ps = request.query_params
-        content = template.render(request=request, returnto=ps.get('returnto', '/'),
-                                  **self._get_page_context())
-        return HTMLResponse(content)
+        context = {'request': request, 'returnto': ps.get('returnto', '/')}
+        context.update(self._get_page_context())
+        return self.templates.TemplateResponse(self.login_page, context)  # pylint: disable=E1101
 
     def hash_pwd(self, pwd):
         """
@@ -169,10 +168,9 @@ class AuthentificationAnswers:
         @return                 None if allowed, *HTMLResponse* otherwise
         """
         if not self.authentify_user(alias, pwd):
-            template = self.app.get_template('notauthorized.html')
-            content = template.render(request=request, alias=alias,
-                                      **self._get_page_context())
-            return HTMLResponse(content)
+            context = {'request': request, 'alias': alias}
+            context.update(self._get_page_context())
+            return self.templates.TemplateResponse('notauthorized.html', context)  # pylint: disable=E1101
         return None
 
     def authentify_user(self, alias, pwd, hash_before=True):

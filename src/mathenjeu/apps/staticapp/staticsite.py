@@ -6,10 +6,11 @@
 import os
 from starlette.applications import Starlette
 from starlette.staticfiles import StaticFiles
-from starlette.responses import HTMLResponse, PlainTextResponse
+from starlette.responses import PlainTextResponse
 # from starlette.middleware.httpsredirect import HTTPSRedirectMiddleware
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 from starlette.routing import Mount
+from starlette.templating import Jinja2Templates
 from ..common import LogApp, AuthentificationAnswers
 from .authmount import AuthMount
 
@@ -72,7 +73,7 @@ class StaticApp(LogApp, AuthentificationAnswers):
         login_page = "login.html"
         notauth_page = "notauthorized.html"
         redirect_logout = "/"
-        app = Starlette(template_directory=templates, debug=debug)
+        app = Starlette(debug=debug)
 
         AuthentificationAnswers.__init__(self, app, login_page=login_page,
                                          notauth_page=notauth_page, redirect_logout=redirect_logout,
@@ -86,6 +87,7 @@ class StaticApp(LogApp, AuthentificationAnswers):
         self.short_title = short_title
         self.page_doc = page_doc
         self.approutes = []
+        self.templates = Jinja2Templates(directory=templates)
 
         if middles is not None:
             for middle, kwargs in middles:
@@ -177,10 +179,9 @@ class StaticApp(LogApp, AuthentificationAnswers):
         the questions without being authentified.
         """
         self.log_event("home-unlogged", request, session=session)
-        template = self.app.get_template('notlogged.html')
-        content = template.render(
-            request=request, **self.page_context(**session))
-        return HTMLResponse(content)
+        context = {'request': request}
+        context.update(self.page_context(**session))
+        return self.templates.TemplateResponse('notlogged.html', context)
 
     ########
     # route
@@ -193,10 +194,9 @@ class StaticApp(LogApp, AuthentificationAnswers):
         session = self.get_session(request, notnone=True)
         if 'alias' in session:
             self.log_event("home-logged", request, session=session)
-            template = self.app.get_template('index.html')
-            content = template.render(
-                request=request, **self.page_context(**session))
-            return HTMLResponse(content)
+            context = {'request': request}
+            context.update(self.page_context(**session))
+            return self.templates.TemplateResponse('index.html', context)
         else:
             return self.unlogged_response(request, session)
 
@@ -211,17 +211,17 @@ class StaticApp(LogApp, AuthentificationAnswers):
         """
         Returns an :epkg:`HTTP 404` page.
         """
-        template = self.app.get_template('404.html')
-        content = template.render(request=request, **self.page_context())
-        return HTMLResponse(content, status_code=404)
+        context = {'request': request}
+        context.update(self.page_context())
+        return self.templates.TemplateResponse('404.html', context, status_code=404)
 
     async def server_error(self, request, exc):
         """
         Returns an :epkg:`HTTP 500` page.
         """
-        template = self.app.get_template('500.html')
-        content = template.render(request=request, **self.page_context())
-        return HTMLResponse(content, status_code=500)
+        context = {'request': request}
+        context.update(self.page_context())
+        return self.templates.TemplateResponse('500.html', context, status_code=500)
 
     #########
     # event route

@@ -49,4 +49,3 @@ Some content are in French. Relies on *starlette*, *uvicorn*,
 * `GitHub/mathenjeu <https://github.com/sdpython/mathenjeu/>`_
 * `documentation <http://www.xavierdupre.fr/app/mathenjeu/helpsphinx/index.html>`_
 * `Blog <http://www.xavierdupre.fr/app/mathenjeu/helpsphinx/blog/main_0000.html#ap-main-0>`_
-

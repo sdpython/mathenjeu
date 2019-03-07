@@ -173,5 +173,5 @@ if not r:
         setup_requires=["pyquickhelper"],
         install_requires=['aiofiles', 'itsdangerous', 'jinja2', 'lightmlrestapi',
                           'numpy', 'pandas', 'python-multipart',
-                          'starlette>=0.10.1', 'hypercorn', 'pyopenssl'],
+                          'starlette>=0.11.0', 'hypercorn', 'pyopenssl'],
     )

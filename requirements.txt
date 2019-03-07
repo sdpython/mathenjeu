@@ -11,7 +11,7 @@ pyquickhelper>=1.8.2924
 python-multipart
 sphinx_modern_theme_modified
 sphinxcontrib.blockdiag
-starlette>=0.10.1
+starlette>=0.11.0
 ujson
 uvicorn
 wheel
