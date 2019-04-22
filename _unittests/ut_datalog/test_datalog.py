@@ -1,36 +1,15 @@
 """
 @brief      test tree node (time=2s)
 """
-
-
-import sys
 import os
 import unittest
 import datetime
 import pandas
 from pyquickhelper.pycode import ExtTestCase
-
-try:
-    import src
-except ImportError:
-    path = os.path.normpath(
-        os.path.abspath(
-            os.path.join(
-                os.path.split(__file__)[0],
-                "..",
-                "..")))
-    if path not in sys.path:
-        sys.path.append(path)
-    import src
-
-from src.mathenjeu.datalog import enumerate_qcmlog, enumerate_qcmlogdf
+from mathenjeu.datalog import enumerate_qcmlog, enumerate_qcmlogdf
 
 
 class TestLocalAppCli(ExtTestCase):
-
-    def test_src_import(self):
-        """for pylint"""
-        self.assertTrue(src is not None)
 
     def test_datalog(self):
         this = os.path.abspath(os.path.dirname(__file__))

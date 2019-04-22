@@ -9,7 +9,8 @@ missingno
 pyopenssl
 pyquickhelper>=1.8.2924
 python-multipart
-sphinx_modern_theme_modified
+sphinx
+sphinx_readable_theme
 sphinxcontrib.blockdiag
 starlette>=0.11.0
 ujson
