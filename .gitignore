@@ -279,3 +279,4 @@ _doc/notebooks/python/schema_pb2.py
 _doc/notebooks/python/schema.proto
 _doc/notebooks/python/protoc-*.zip
 src/mathenjeu/apps/test_hypercorn_qcm.py
+_unittests/unittests.out

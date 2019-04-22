@@ -7,7 +7,7 @@ itsdangerous
 lightmlrestapi
 missingno
 pyopenssl
-pyquickhelper>=1.8.2924
+pyquickhelper>=1.9
 python-multipart
 sphinx
 sphinx_readable_theme
