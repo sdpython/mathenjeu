@@ -33,10 +33,6 @@ Maths en Jeux (ou exercices sur internet)
     .. image:: https://codecov.io/github/sdpython/mathenjeu/coverage.svg?branch=master
         :target: https://codecov.io/github/sdpython/mathenjeu?branch=master
 
-    .. image:: https://badge.waffle.io/sdpython/mathenjeu.png?label=ready&title=Ready
-        :alt: Waffle
-        :target: https://waffle.io/sdpython/mathenjeu
-
     .. image:: http://img.shields.io/github/issues/sdpython/mathenjeu.svg
         :alt: GitHub Issues
         :target: https://github.com/sdpython/mathenjeu/issues
