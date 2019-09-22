@@ -4,7 +4,7 @@
 """
 from starlette.responses import RedirectResponse
 from starlette.routing import Mount
-from starlette.types import ASGIApp, Scope, ASGIInstance
+from starlette.types import ASGIApp, Scope
 from starlette.requests import Request
 
 
@@ -38,7 +38,7 @@ class AuthMount(Mount):
         session = app._get_session(request)
         return app, session
 
-    def __call__(self, scope: Scope) -> ASGIInstance:
+    def __call__(self, scope: Scope):
         """
         Checks the user is authenticated, falls back in
         the previous behavior, otherwise redirect to the
