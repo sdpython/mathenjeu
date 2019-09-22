@@ -43,5 +43,6 @@ class ServerHypercorn:
         """
         if verbose:
             scheme = "https" if self.config.ssl_enabled else "http"
-            print("[mathenjeu] running on '{}' and {}".format(scheme, self.config.bind))
+            print("[mathenjeu] running on '{}' and {}".format(
+                scheme, self.config.bind))
         self._run(self.config)

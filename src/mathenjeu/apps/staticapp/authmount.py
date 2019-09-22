@@ -4,7 +4,7 @@
 """
 from starlette.responses import RedirectResponse
 from starlette.routing import Mount
-from starlette.types import ASGIApp, Scope
+from starlette.types import ASGIApp, Scope, Receive, Send
 from starlette.requests import Request
 
 
@@ -38,20 +38,24 @@ class AuthMount(Mount):
         session = app._get_session(request)
         return app, session
 
-    def __call__(self, scope: Scope):
+    async def __call__(self, scope: Scope, receive: Receive, send: Send):
         """
         Checks the user is authenticated, falls back in
         the previous behavior, otherwise redirect to the
         authentification page (``/login``).
         """
+        redirect = True
         app, session = self.get_app_session(scope)
         if session is not None:
             if app is not None:
                 app._log_event("staticpage", scope, session=session)
             alias = session.get('alias', None)
             if alias is not None:
-                return Mount.__call__(self, scope)
-        # Requires authentification.
-        path = scope.get('root_path', '') + '%2F' + scope.get('path', '')
-        path = path.replace('/', "%2F")
-        return RedirectResponse(url='/login?returnto=' + path)
+                await Mount.__call__(self, scope, receive, send)
+                redirect = False
+        if redirect:
+            # Requires authentification.
+            path = scope.get('root_path', '') + '%2F' + scope.get('path', '')
+            path = path.replace('/', "%2F")
+            resp = RedirectResponse(url='/login?returnto=' + path)
+            await resp(scope, receive, send)
