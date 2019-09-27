@@ -215,7 +215,7 @@ def create_static_https_app(
         if main_folder not in sys.path:
             sys.path.append(main_folder)
             try:
-                import apphyper
+                import apphyper  # pylint: disable=C0415
                 pa = apphyper.app
                 if pa is None:
                     raise RuntimeError("pa should not be None")
