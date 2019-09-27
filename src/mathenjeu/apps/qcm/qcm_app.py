@@ -265,7 +265,7 @@ class QCMApp(LogApp, AuthentificationAnswers):
             raise RuntimeError(
                 "Unable to read answer due to '{0}'".format(e))
         session = self.get_session(request, notnone=True)
-        values = fo.copy()
+        values = {k: v for k, v in fo.items()}  # pylint: disable=R1721
         ps = request.query_params
         values.update(ps)
         self.log_event("answer", request, session=session, data=values)
