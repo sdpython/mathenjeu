@@ -6,6 +6,7 @@ jyquickhelper
 itsdangerous
 lightmlrestapi
 missingno
+pylint>=2.4.2
 pyopenssl
 pyquickhelper>=1.9
 python-multipart
