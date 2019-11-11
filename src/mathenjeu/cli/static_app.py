@@ -54,14 +54,14 @@ def create_static_local_app(
 
     .. cmdref::
         :title: Creates a local web-application with very simple authentification
-        :cmd: -m mathenjeu local_static --help
+        :cmd: -m mathenjeu static_local --help
 
         The command line runs a web application meant to be local
         as there is not *https* involved. It serves static content.
         The web app relies on :epkg:`starlette`, the server relies
         on :epkg:`uvicorn`. Example of use::
 
-            python -m mathenjeu local_static --cookie_key=dummypwd --start=1 --port=8889 --userpwd=abc --content=display_name,local_folder
+            python -m mathenjeu static_local --cookie_key=dummypwd --start=1 --port=8889 --userpwd=abc --content=display_name,local_folder
 
         With that application, every user can login with a unique password *abc*.
     """
