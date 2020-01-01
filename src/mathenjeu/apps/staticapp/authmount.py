@@ -81,7 +81,15 @@ class AuthStaticFiles(_CommonMethods, StaticFiles):
                 app._log_event("staticpage", scope, session=session)
             alias = session.get('alias', None)
             if alias is not None:
-                await Mount.__call__(self, scope, receive, send)
+                assert scope["type"] == "http"
+
+                if not self.config_checked:
+                    await self.check_config()
+                    self.config_checked = True
+
+                path = self.get_path(scope)
+                response = await self.get_response(path, scope)
+                await response(scope, receive, send)
                 redirect = False
         if redirect:
             # Requires authentification.
@@ -89,13 +97,3 @@ class AuthStaticFiles(_CommonMethods, StaticFiles):
             path = path.replace('/', "%2F")
             resp = RedirectResponse(url='/login?returnto=' + path)
             await resp(scope, receive, send)
-        else:
-            assert scope["type"] == "http"
-
-            if not self.config_checked:
-                await self.check_config()
-                self.config_checked = True
-
-            path = self.get_path(scope)
-            response = await self.get_response(path, scope)
-            await response(scope, receive, send)
