@@ -87,7 +87,9 @@ def create_static_local_app(
         if fLOG:
             fLOG(
                 "[create_static_local_app] start server 'http://{0}:{1}'".format(cookie_domain, port))
-        uvicorn.run(app.app, host=cookie_domain, port=port)
+        uvicorn.run(app.app, host=cookie_domain, port=port,
+                    log_level="debug" if debug else "info",
+                    access_log=True)
     return app
 
 
@@ -171,10 +173,10 @@ def create_static_https_app(
 
     if isinstance(content, str):
         if fLOG:
-            fLOG("[create_static_local_app] parsing '{0}'".format(content))
+            fLOG("[create_static_https_app] parsing '{0}'".format(content))
         content = [tuple(ct.split(',')) for ct in content.split(';')]
         if fLOG:
-            fLOG("[create_static_local_app] int {0}".format(content))
+            fLOG("[create_static_https_app] int {0}".format(content))
 
     kwargs = dict(secret_log=secret_log, middles=middles,
                   folder=folder, max_age=max_age,

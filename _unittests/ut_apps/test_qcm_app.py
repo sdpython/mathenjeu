@@ -16,39 +16,39 @@ class TestQcmApp(ExtTestCase):
         middles = [(ProxyHeadersMiddleware, {})]
         app = create_qcm_local_app(cookie_key="dummypwd",
                                    folder=temp, middles=middles)
-        client = TestClient(app.app.router)
-        page = client.get("/")
-        self.assertNotEqual(page.status_code, 400)
-        self.assertIn(b"MathJax.Hub.Config", page.content)
-        self.assertIn(b"MathEnJeu", page.content)
+        with TestClient(app.app.router) as client:
+            page = client.get("/")
+            self.assertNotEqual(page.status_code, 400)
+            self.assertIn(b"MathJax.Hub.Config", page.content)
+            self.assertIn(b"MathEnJeu", page.content)
 
-        page = client.get("/login")
-        self.assertNotEqual(page.status_code, 400)
-        self.assertIn(b"MathEnJeu", page.content)
+            page = client.get("/login")
+            self.assertNotEqual(page.status_code, 400)
+            self.assertIn(b"MathEnJeu", page.content)
 
-        page = client.get("/logout")
-        self.assertNotEqual(page.status_code, 400)
-        self.assertIn(b"MathEnJeu", page.content)
+            page = client.get("/logout")
+            self.assertNotEqual(page.status_code, 400)
+            self.assertIn(b"MathEnJeu", page.content)
 
-        page = client.get("/authenticate")
-        self.assertNotEqual(page.status_code, 400)
+            page = client.get("/authenticate")
+            self.assertNotEqual(page.status_code, 400)
 
-        self.assertRaise(lambda: client.get("/error"), RuntimeError)
+            self.assertRaise(lambda: client.get("/error"), RuntimeError)
 
-        page = client.get("/qcm")
-        self.assertEqual(page.status_code, 200)
-        self.assertIn(b"MathEnJeu", page.content)
+            page = client.get("/qcm")
+            self.assertEqual(page.status_code, 200)
+            self.assertIn(b"MathEnJeu", page.content)
 
-        page = client.get("/last")
-        self.assertEqual(page.status_code, 200)
-        self.assertIn(b"MathEnJeu", page.content)
+            page = client.get("/last")
+            self.assertEqual(page.status_code, 200)
+            self.assertIn(b"MathEnJeu", page.content)
 
-        page = client.get("/event")
-        self.assertEqual(page.status_code, 200)
+            page = client.get("/event")
+            self.assertEqual(page.status_code, 200)
 
-        page = client.get("/answer")
-        self.assertEqual(page.status_code, 200)
-        self.assertIn(b"MathEnJeu", page.content)
+            page = client.get("/answer")
+            self.assertEqual(page.status_code, 200)
+            self.assertIn(b"MathEnJeu", page.content)
 
 
 if __name__ == "__main__":
