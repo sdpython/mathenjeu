@@ -27,7 +27,7 @@ class _CommonMethods:
         return app, session
 
 
-class AuthMount(Mount, _CommonMethods):
+class AuthMount(_CommonMethods, Mount):
     """
     The router checks for authentification by looking for a cookie
     which contains an alias. This alias can only be set if the user
@@ -65,7 +65,7 @@ class AuthMount(Mount, _CommonMethods):
             await resp(scope, receive, send)
 
 
-class AuthStaticFiles(StaticFiles, _CommonMethods):
+class AuthStaticFiles(_CommonMethods, StaticFiles):
     """
     Overloads *StaticFiles* to check authentification.
     """
