@@ -20,7 +20,9 @@ class AuthentificationAnswers:
     """
 
     def __init__(self, app,
-                 login_page="login.html", notauth_page="notauthorized.html",
+                 login_page="login.html",
+                 notauth_page="notauthorized.html",
+                 auth_page="authorized.html",
                  redirect_logout="/", max_age=14 * 24 * 60 * 60,
                  cookie_key=None, cookie_name="mathenjeu",
                  cookie_domain="127.0.0.1", cookie_path="/",
@@ -29,6 +31,7 @@ class AuthentificationAnswers:
         @param      app             :epkg:`starlette` application
         @param      login_page      name of the login page
         @param      notauth_page    page displayed when a user is not authorized
+        @param      auth_page       page displayed when a user is authorized
         @param      redirect_logout a not authorized used is redirected to this page
         @param      max_age         cookie's duration in seconds
         @param      cookie_key      to encrypt information in the cookie (cannot be None)
@@ -46,6 +49,7 @@ class AuthentificationAnswers:
         self.app = app
         self.login_page = login_page
         self.notauth_page = notauth_page
+        self.auth_page = auth_page
         self.redirect_logout = redirect_logout
         self.cookie_name = cookie_name
         self.cookie_domain = cookie_domain
@@ -108,9 +112,15 @@ class AuthentificationAnswers:
             return res
         data = dict(alias=fo['alias'], hashpwd=self.hash_pwd(fo['pwd']))
         returnto = ps.get('returnto', '/')
-        response = RedirectResponse(url=returnto)
+        context = {'request': request,
+                   'alias': fo['alias'], 'returnto': returnto}
+        context.update(self._get_page_context())
+        response = self.templates.TemplateResponse(  # pylint: disable=E1101
+            'authorized.html', context)
         self.save_session(response, data)
         return response
+        # response = RedirectResponse(url=returnto)
+        # return response
 
     async def logout(self, request):
         """
@@ -154,8 +164,7 @@ class AuthentificationAnswers:
                 # We cancel the authentification.
                 return {}
             return jsdata
-        else:
-            return {} if notnone else None
+        return {} if notnone else None
 
     def is_allowed(self, alias, pwd, request):
         """
@@ -193,5 +202,4 @@ class AuthentificationAnswers:
         if hash_before:
             hashed_pwd = self.hash_pwd(pwd)
             return hashed_pwd == self.hashed_userpwd
-        else:
-            return pwd == self.hashed_userpwd
+        return pwd == self.hashed_userpwd

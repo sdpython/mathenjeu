@@ -72,10 +72,11 @@ class StaticApp(LogApp, AuthentificationAnswers):
 
         login_page = "login.html"
         notauth_page = "notauthorized.html"
+        auth_page = "authorized.html"
         redirect_logout = "/"
         app = Starlette(debug=debug)
 
-        AuthentificationAnswers.__init__(self, app, login_page=login_page,
+        AuthentificationAnswers.__init__(self, app, login_page=login_page, auth_page=auth_page,
                                          notauth_page=notauth_page, redirect_logout=redirect_logout,
                                          max_age=max_age, cookie_name=cookie_name, cookie_key=cookie_key,
                                          cookie_domain=cookie_domain, cookie_path=cookie_path,

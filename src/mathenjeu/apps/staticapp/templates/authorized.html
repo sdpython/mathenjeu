@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<main role="main">
+
+  <div class="jumbotron">
+    <div class="container">
+      <h1 class="display-4">Connexion réussie.</h1>
+      <p>L'alias '{{alias}}' est reconnu. Bienvenue.</p>
+    </div>    
+  </div>
+  
+<div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        <p><a class="btn btn-secondary" href="{{returnto}}" role="button">Retour.</a></p>
+      </div>
+    </div>  
+
+    <hr />
+
+  </div> <!-- /container -->
+
+</main>
+{% endblock %}
