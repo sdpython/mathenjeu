@@ -54,7 +54,7 @@ def create_qcm_local_app(
     :param userpwd         users are authentified with any alias but a common password
     :param debug           display debug information (:epkg:`starlette` option)
     :param fLOG            logging function
-    @return                     @see cl QCMApp
+    :return: @see cl QCMApp
 
     .. cmdref::
         :title: Creates a local web-application with very simple authentification

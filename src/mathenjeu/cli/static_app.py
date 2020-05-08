@@ -50,7 +50,7 @@ def create_static_local_app(
     :param userpwd         users are authentified with any alias but a common password
     :param debug           display debug information (:epkg:`starlette` option)
     :param fLOG            logging function
-    @return                     @see cl StaticApp
+    :return: @see cl StaticApp
 
     .. cmdref::
         :title: Creates a local web-application with very simple authentification
