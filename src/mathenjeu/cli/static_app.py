@@ -27,29 +27,29 @@ def create_static_local_app(
     """
     Creates a local web-application with very simple authentification.
 
-    @param      secret_log      to encrypt log (None to ignore)
-    @param      folder          folder where to write the logs (None to disable the logging)
+    :param secret_log      to encrypt log (None to ignore)
+    :param folder          folder where to write the logs (None to disable the logging)
 
-    @param      max_age         cookie's duration in seconds
-    @param      cookie_key      to encrypt information in the cookie (cannot be None)
-    @param      cookie_name     name of the session cookie
-    @param      cookie_domain   cookie is valid for this path only, also defines the
+    :param max_age         cookie's duration in seconds
+    :param cookie_key      to encrypt information in the cookie (cannot be None)
+    :param cookie_name     name of the session cookie
+    :param cookie_domain   cookie is valid for this path only, also defines the
                                 domain of the web app (its url)
-    @param      cookie_path     path of the cookie once storeds
-    @param      secure          use secured connection for cookies
-    @param      content         list tuple ``route, folder`` to server or a string
+    :param cookie_path     path of the cookie once storeds
+    :param secure          use secured connection for cookies
+    :param content         list tuple ``route, folder`` to server or a string
                                 ``route1,folder1;route2,folder2;...``
 
-    @param      title           title
-    @param      short_title     short application title
-    @param      page_doc        page documentation (default is :epkg:`mathenjeu`)
-    @param      port            port to deploy the application
-    @param      middles         middles ware, list of couple ``[(class, **kwargs)]``
+    :param title           title
+    :param short_title     short application title
+    :param page_doc        page documentation (default is :epkg:`mathenjeu`)
+    :param port            port to deploy the application
+    :param middles         middles ware, list of couple ``[(class, **kwargs)]``
                                 where *kwargs* are the parameter constructor
-    @param      start           starts the application with :epkg:`uvicorn`
-    @param      userpwd         users are authentified with any alias but a common password
-    @param      debug           display debug information (:epkg:`starlette` option)
-    @param      fLOG            logging function
+    :param start           starts the application with :epkg:`uvicorn`
+    :param userpwd         users are authentified with any alias but a common password
+    :param debug           display debug information (:epkg:`starlette` option)
+    :param fLOG            logging function
     @return                     @see cl StaticApp
 
     .. cmdref::
@@ -115,45 +115,41 @@ def create_static_https_app(
     """
     Creates a https web-application with https authentification.
 
-    @param      secret_log          to encrypt log (None to ignore)
-    @param      folder              folder where to write the logs (None to disable the logging)
-
-    @param      max_age             cookie's duration in seconds
-    @param      cookie_key          to encrypt information in the cookie (cannot be None)
-    @param      cookie_name         name of the session cookie
-    @param      cookie_domain       cookie is valid for this path only, also defines the
-                                    domain of the web app (its url)
-    @param      cookie_path         path of the cookie once storeds
-    @param      secure              use secured connection for cookies
-
-    @param      title               title
-    @param      short_title         short application title
-    @param      page_doc            page documentation (default is 'http://www.xavierdupre.fr/app/mathenjeu/helpsphinx')
-    @param      port                port to deploy the application
-    @param      middles             middles ware, list of couple ``[(class, **kwargs)]``
-                                    where *kwargs* are the parameter constructor
-    @param      start               starts the application with :epkg:`uvicorn`
-    @param      userpwd             users are authentified with any alias but a common password
-    @param      debug               display debug information (:epkg:`starlette` option)
-    @param      content             list tuple ``route, folder`` to server or a string
-                                    ``route1,folder1;route2,folder2;...``
-
-    @param      access_log          The target location for the access log, use - for stdout.
-    @param      access_log_format   The log format for the access log, see help docs,
-                                    see `Logging <https://pgjones.gitlab.io/hypercorn/logging.html>`_.
-    @param      ca_certs            Path to the SSL CA certificate file.
-    @param      certfile            Path to the SSL certificate file.
-    @param      ciphers             Ciphers to use for the SSL setup, the default can be found at
-                                    `config.py <https://github.com/pgjones/hypercorn/blob/master/hypercorn/config.py#L32>`_
-    @param      error_log           The target location for the error log, use - for stderr.
-    @param      keep_alive          Seconds to keep inactive connections alive for.
-    @param      keyfile             Path to the SSL key file
-    @param      root_path           The setting for the ASGI root_path variable.
-    @param      workers             The number of workers to spawn and use.
-    @param      reload              Enable automatic reloads on code changes.
-    @param      fLOG                logging function
-
-    @return                         @see cl StaticApp
+    :param secret_log: to encrypt log (None to ignore)
+    :param folder: folder where to write the logs (None to disable the logging)
+    :param max_age: cookie's duration in seconds
+    :param cookie_key: to encrypt information in the cookie (cannot be None)
+    :param cookie_name: name of the session cookie
+    :param cookie_domain: cookie is valid for this path only, also defines the
+        domain of the web app (its url)
+    :param cookie_path: path of the cookie once storeds
+    :param secure: use secured connection for cookies
+    :param title: title
+    :param short_title: short application title
+    :param page_doc: page documentation (default is 'http://www.xavierdupre.fr/app/mathenjeu/helpsphinx')
+    :param port: port to deploy the application
+    :param middles: middles ware, list of couple ``[(class, **kwargs)]``
+        where *kwargs* are the parameter constructor
+    :param start: starts the application with :epkg:`uvicorn`
+    :param userpwd: users are authentified with any alias but a common password
+    :param debug: display debug information (:epkg:`starlette` option)
+    :param content: list tuple ``route, folder`` to server or a string
+        ``route1,folder1;route2,folder2;...``
+    :param access_log: The target location for the access log, use - for stdout.
+    :param access_log_format: The log format for the access log, see help docs,
+        see `Logging <https://pgjones.gitlab.io/hypercorn/logging.html>`_.
+    :param ca_certs: Path to the SSL CA certificate file.
+    :param certfile: Path to the SSL certificate file.
+    :param ciphers: Ciphers to use for the SSL setup, the default can be found at
+        `config.py <https://github.com/pgjones/hypercorn/blob/master/hypercorn/config.py#L32>`_
+    :param error_log: The target location for the error log, use - for stderr.
+    :param keep_alive: Seconds to keep inactive connections alive for.
+    :param keyfile: Path to the SSL key file
+    :param root_path: The setting for the ASGI root_path variable.
+    :param workers: The number of workers to spawn and use.
+    :param reload: Enable automatic reloads on code changes.
+    :param fLOG: logging function
+    :return: @see cl StaticApp
 
     .. cmdref::
         :title: Creates a https static web-application with authentification

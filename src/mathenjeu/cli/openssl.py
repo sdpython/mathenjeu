@@ -14,19 +14,19 @@ def create_self_signed_cert(keyfile="key.pem", certfile="cert.pem",
     """
     Creates a signed certificate.
 
-    @param      keyfile     key file
-    @param      certfile    certificate file
-    @param      country     country
-    @param      state       state
-    @param      location    location
-    @param      cn          common name
-    @param      organization organization
-    @param      organizational_unit_name organizational unit name (can be empty)
-    @param      email       email (can be empty)
-    @param      size        key size
-    @param      days        days it is valid
-    @param      algo        algorithm
-    @param      fLOG        logging function
+    :param keyfile: key file
+    :param certfile: certificate file
+    :param country: country
+    :param state: state
+    :param location: location
+    :param cn: common name
+    :param organization: organization
+    :param organizational_unit_name: organizational unit name (can be empty)
+    :param email: email (can be empty)
+    :param size: key size
+    :param days: days it is valid
+    :param algo: algorithm
+    :param fLOG: logging function
 
     See also `How to generate a certificate using pyOpenSSL to make it secure connection?
     <https://stackoverflow.com/questions/44055029/how-to-generate-a-certificate-using-pyopenssl-to-make-it-secure-connection>`_,

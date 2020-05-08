@@ -12,8 +12,8 @@ def name2activity(name):
     Converts something like ``mathenjeu.tests.qcms.py:simple_french_qcm``
     into a class name. Calls function *simple_french_qcm*.
 
-    @param      name        name
-    @return                 result of simple_french_qcm
+    :param name: name
+    :return: result of simple_french_qcm
 
     It works if *name* contains ``':'`` otherwise
     it returns *name*.
@@ -39,10 +39,10 @@ def build_games(games, fct_game):
     """
     Interprets parameters.
 
-    @param      games       string
-    @param      fct_game    function which returns a game
-                            based on its name
-    @return                 modified *games*, *fct_game*
+    :param games: string
+    :param fct_game: function which returns a game
+        based on its name
+    :return: modified *games*, *fct_game*
     """
     if isinstance(games, str) and fct_game is None:
         apps = [el.strip().split(',') for el in games.split(';')]
