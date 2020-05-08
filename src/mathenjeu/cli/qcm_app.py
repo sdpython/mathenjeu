@@ -28,32 +28,30 @@ def create_qcm_local_app(
     """
     Creates a local web-application with very simple authentification.
 
-    :param secret_log      to encrypt log (None to ignore)
-    :param folder          folder where to write the logs (None to disable the logging)
-
-    :param max_age         cookie's duration in seconds
-    :param cookie_key      to encrypt information in the cookie (cannot be None)
-    :param cookie_name     name of the session cookie
-    :param cookie_domain   cookie is valid for this path only, also defines the
-                                domain of the web app (its url)
-    :param cookie_path     path of the cookie once storeds
-    :param secure          use secured connection for cookies
-
-    :param title           title
-    :param short_title     short application title
-    :param page_doc        page documentation (default is :epkg:`mathenjeu`)
-    :param display         display such as @see cl DisplayQuestionChoiceHTML
-    :param fct_game        function *lambda name:* @see cl ActivityGroup
-    :param games           defines which games is available as a dictionary
-                                ``{ game_id: (game name, first page id) }`` or
-                                ``id,name,page;id,name,page``, *id* can be a filename.
-    :param port            port to deploy the application
-    :param middles         middles ware, list of couple ``[(class, **kwargs)]``
-                                where *kwargs* are the parameter constructor
-    :param start           starts the application with :epkg:`uvicorn`
-    :param userpwd         users are authentified with any alias but a common password
-    :param debug           display debug information (:epkg:`starlette` option)
-    :param fLOG            logging function
+    :param secret_log: to encrypt log (None to ignore)
+    :param folder: folder where to write the logs (None to disable the logging)
+    :param max_age: cookie's duration in seconds
+    :param cookie_key: to encrypt information in the cookie (cannot be None)
+    :param cookie_name: name of the session cookie
+    :param cookie_domain: cookie is valid for this path only, also defines the
+        domain of the web app (its url)
+    :param cookie_path: path of the cookie once storeds
+    :param secure: use secured connection for cookies
+    :param title: title
+    :param short_title: short application title
+    :param page_doc: page documentation (default is :epkg:`mathenjeu`)
+    :param display: display such as @see cl DisplayQuestionChoiceHTML
+    :param fct_game: function *lambda name:* @see cl ActivityGroup
+    :param games: defines which games is available as a dictionary
+        ``{ game_id: (game name, first page id) }`` or
+        ``id,name,page;id,name,page``, *id* can be a filename.
+    :param port: port to deploy the application
+    :param middles: middles ware, list of couple ``[(class, **kwargs)]``
+        where *kwargs* are the parameter constructor
+    :param start: starts the application with :epkg:`uvicorn`
+    :param userpwd: users are authentified with any alias but a common password
+    :param debug: display debug information (:epkg:`starlette` option)
+    :param fLOG: logging function
     :return: @see cl QCMApp
 
     .. cmdref::
