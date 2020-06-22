@@ -16,6 +16,7 @@ pyquickhelper>=1.9.3325
 python-multipart
 sphinx
 sphinxcontrib.blockdiag
+sphinxcontrib.imagesvg
 starlette>=0.11.0
 ujson
 uvicorn
