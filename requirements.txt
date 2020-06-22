@@ -1,11 +1,15 @@
+autopep8
 aiofiles
 coverage
 hypercorn
 jinja2
+jupyter_sphinx
 jyquickhelper
 itsdangerous
 lightmlrestapi
+matplotlib
 missingno
+pycodestyle
 pylint>=2.4.2
 pyopenssl
 pyquickhelper>=1.9.3325
