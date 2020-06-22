@@ -41,6 +41,10 @@ Maths en Jeux (ou exercices sur internet)
         :target: http://www.xavierdupre.fr/app/mathenjeu/helpsphinx/all_notebooks_coverage.html
         :alt: Notebook Coverage
 
+    .. image:: https://img.shields.io/github/repo-size/sdpython/mathenjeu
+        :target: https://github.com/sdpython/mathenjeu/
+        :alt: size
+
 **Links:** `github <https://github.com/sdpython/mathenjeu/>`_,
 `documentation <http://www.xavierdupre.fr/app/mathenjeu/helpsphinx/index.html>`_,
 :ref:`l-README`,

@@ -32,6 +32,10 @@
     :target: http://www.xavierdupre.fr/app/mathenjeu/helpsphinx/all_notebooks_coverage.html
     :alt: Notebook Coverage
 
+.. image:: https://img.shields.io/github/repo-size/sdpython/mathenjeu
+    :target: https://github.com/sdpython/mathenjeu/
+    :alt: size
+
 .. _l-README:
 
 mathenjeu
