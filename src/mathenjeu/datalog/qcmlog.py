@@ -50,7 +50,8 @@ def _enumerate_processed_row(rows, data, cache, last_key):
             elif len(spl) == 2:
                 res[spl[0]] = spl[1]
             else:
-                raise ValueError("Unable to parse value '{0}'".format(st))
+                raise ValueError(  # pragma: no cover
+                    "Unable to parse value '{0}'".format(st))
         return res
 
     def hash4alias(st):
@@ -63,7 +64,7 @@ def _enumerate_processed_row(rows, data, cache, last_key):
     session = data.get('session', None)
     ipadd = data.get('client', ['NN.NN.NN.NN'])[0]
     if ipadd is None:
-        raise ValueError(
+        raise ValueError(  # pragma: no cover
             "Unable to extract an ip address from {0}".format(data))
     keys = {'qn', 'game', 'next', 'events'}
     if session is not None:

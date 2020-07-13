@@ -42,11 +42,10 @@ class Base:
     def _format_value(v):
         if isinstance(v, str):
             return "'{0}'".format(v.replace("\\", "\\\\").replace("'", "\\'"))
-        elif isinstance(v, list):
+        if isinstance(v, list):
             rs = [repr(_) for _ in v]
             return '[{0}]'.format(', '.join(rs))
-        else:
-            return repr(v)
+        return repr(v)
 
     def __repr__(self):
         """

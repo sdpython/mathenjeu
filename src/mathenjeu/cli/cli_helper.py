@@ -23,16 +23,16 @@ def name2activity(name):
         modname = os.path.splitext(spl[0])[0]
         try:
             mod = importlib.import_module(modname)
-        except ImportError as e:
+        except ImportError as e:  # pragma: no cover
             raise ImportError("Unable to import '{0}'".format(spl[0])) from e
         if not hasattr(mod, spl[1]):
             raise NameError(
                 "Unable to find '{0}' in '{1}'".format(spl[1], spl[0]))
         return spl[1], getattr(mod, spl[1])()
-    elif isinstance(name, str):
-        raise TypeError("name '{0}' cannot be a string.".format(name))
-    else:
-        return name.__class__.__name__, name
+    if isinstance(name, str):
+        raise TypeError(  # pragma: no cover
+            "name '{0}' cannot be a string.".format(name))
+    return name.__class__.__name__, name  # pragma: no cover
 
 
 def build_games(games, fct_game):
@@ -62,5 +62,4 @@ def build_games(games, fct_game):
             return games_obj[name]
 
         return games, get_games2
-    else:
-        return games, fct_game
+    return games, fct_game

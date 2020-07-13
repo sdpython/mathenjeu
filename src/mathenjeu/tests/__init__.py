@@ -16,7 +16,7 @@ def get_game(name):
     """
     if name in ("test_qcm1", "simple_french_qcm"):
         return simple_french_qcm()
-    elif name in ("test_ml1", "ml_french_qcm"):
+    if name in ("test_ml1", "ml_french_qcm"):
         return ml_french_qcm()
-    else:
-        raise ValueError("Unknown game '{0}'".format(name))
+    raise ValueError(  # pragma: no cover
+        "Unknown game '{0}'".format(name))

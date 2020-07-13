@@ -17,7 +17,7 @@ def main(args, fLOG=print):
     try:
         from .cli import create_qcm_local_app, create_qcm_https_app, create_self_signed_cert
         from .cli import create_static_local_app, create_static_https_app
-    except ImportError:
+    except ImportError:  # pragma: no cover
         from mathenjeu.cli import create_qcm_local_app, create_qcm_https_app, create_self_signed_cert
         from mathenjeu.cli import create_static_local_app, create_static_https_app
 
@@ -30,4 +30,4 @@ def main(args, fLOG=print):
 
 
 if __name__ == "__main__":
-    main(sys.argv[1:])
+    main(sys.argv[1:])  # pragma: no cover

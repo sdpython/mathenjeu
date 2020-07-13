@@ -69,10 +69,10 @@ def create_static_local_app(
         fLOG("[create_static_local_app] create")
 
     if isinstance(content, str):
-        if fLOG:
+        if fLOG:  # pragma: no cover
             fLOG("[create_static_local_app] parsing '{0}'".format(content))
         content = [tuple(ct.split(',')) for ct in content.split(';')]
-        if fLOG:
+        if fLOG:  # pragma: no cover
             fLOG("[create_static_local_app] int {0}".format(content))
 
     app = StaticApp(secret_log=secret_log, middles=middles,
@@ -82,7 +82,7 @@ def create_static_local_app(
                     title=title, short_title=short_title, content=content,
                     secure=secure, page_doc=page_doc, userpwd=userpwd)
     if start:
-        if fLOG:
+        if fLOG:  # pragma: no cover
             fLOG(
                 "[create_static_local_app] start server 'http://{0}:{1}'".format(cookie_domain, port))
         uvicorn.run(app.app, host=cookie_domain, port=port,
@@ -163,13 +163,14 @@ def create_static_https_app(
         With that application, every user can login with a unique password *abc*.
     """
     if secret_log == '':
-        raise ValueError("secret_log must be not empty or None, not ''")
+        raise ValueError(  # pragma: no cover
+            "secret_log must be not empty or None, not ''")
 
     if isinstance(content, str):
-        if fLOG:
+        if fLOG:  # pragma: no cover
             fLOG("[create_static_https_app] parsing '{0}'".format(content))
         content = [tuple(ct.split(',')) for ct in content.split(';')]
-        if fLOG:
+        if fLOG:  # pragma: no cover
             fLOG("[create_static_https_app] int {0}".format(content))
 
     kwargs = dict(secret_log=secret_log, middles=middles,

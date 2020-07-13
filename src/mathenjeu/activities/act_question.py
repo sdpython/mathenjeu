@@ -27,7 +27,8 @@ class QuestionChoice(Activity):
         @param      show                one image to show
         """
         if not isinstance(expected_answers, list):
-            raise TypeError("expected_answers must be a list")
+            raise TypeError(  # pragma: no cover
+                "expected_answers must be a list")
         if isinstance(answers, list):
             ans = OrderedDict()
             for i, k in enumerate(answers):
@@ -38,7 +39,7 @@ class QuestionChoice(Activity):
             for a in expected_answers:
                 try:
                     v = rev[a]
-                except KeyError:
+                except KeyError:  # pragma: no cover
                     raise KeyError("Unable to find '{0}' in {1}".format(
                         a, list(sorted(rev))))
                 expe.append(v)
@@ -52,11 +53,12 @@ class QuestionChoice(Activity):
             # input, not checkboxes
             answers = None
         elif not isinstance(answers, OrderedDict):
-            raise TypeError("answers must be a of OrderedDict")
+            raise TypeError(  # pragma: no cover
+                "answers must be a of OrderedDict")
         if answers is not None:
             for exp in expected_answers:
                 if exp not in answers:
-                    raise ValueError(
+                    raise ValueError(  # pragma: no cover
                         "One expected answer '{0}' is unknown.".format(exp))
         content = dict(answers=answers,
                        expected_answers=expected_answers)

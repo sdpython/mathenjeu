@@ -68,7 +68,8 @@ def create_qcm_local_app(
         With that application, every user can login with a unique password *abc*.
     """
     if secret_log == '':
-        raise ValueError("secret_log must be not empty or None, not ''")
+        raise ValueError(  # pragma: no cover
+            "secret_log must be not empty or None, not ''")
     games, fct_game = build_games(games, fct_game)
     if fLOG:
         fLOG("[create_qcm_local_app] games=" + str(games))
@@ -165,7 +166,8 @@ def create_qcm_https_app(
         With that application, every user can login with a unique password *abc*.
     """
     if secret_log == '':
-        raise ValueError("secret_log must be not empty or None, not ''")
+        raise ValueError(  # pragma: no cover
+            "secret_log must be not empty or None, not ''")
 
     games, fct_game = build_games(games, None)
     if fLOG:
@@ -179,7 +181,8 @@ def create_qcm_https_app(
                   page_doc=page_doc, userpwd=userpwd)
     app = QCMApp(games=games, fct_game=fct_game, **kwargs)
     if app.app is None:
-        raise RuntimeError("Unable to create a starlette application.")
+        raise RuntimeError(  # pragma: no cover
+            "Unable to create a starlette application.")
     if fLOG:
         fLOG("[create_qcm_https_app] app is created")
     rows = []
@@ -204,7 +207,7 @@ def create_qcm_https_app(
         pa = apphyper.app
         if pa is None:
             raise RuntimeError("pa should not be None")
-    except ImportError as e:
+    except ImportError as e:  # pragma: no cover
         # For unit test purposes.
         from .. import __file__ as mejfile
         main_folder = os.path.abspath(os.path.dirname(mejfile))
@@ -236,7 +239,7 @@ def create_qcm_https_app(
         fLOG("[create_qcm_https_app] create server")
     server = ServerHypercorn(**kwargs)
     if start:
-        if fLOG:
+        if fLOG:  # pragma: no cover
             fLOG("[create_qcm_https_app] starts server on '{0}'".format(bind))
         server.run()
     while folder in sys.path:
