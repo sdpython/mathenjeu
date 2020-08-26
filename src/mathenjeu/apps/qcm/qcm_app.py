@@ -263,7 +263,7 @@ class QCMApp(LogApp, AuthentificationAnswers):
         try:
             fo = await request.form()
         except Exception as e:
-            raise RuntimeError(
+            raise RuntimeError(  # pylint: disable=W0707
                 "Unable to read answer due to '{0}'".format(e))
         session = self.get_session(request, notnone=True)
         values = {k: v for k, v in fo.items()}  # pylint: disable=R1721

@@ -40,8 +40,9 @@ class QuestionChoice(Activity):
                 try:
                     v = rev[a]
                 except KeyError:  # pragma: no cover
-                    raise KeyError("Unable to find '{0}' in {1}".format(
-                        a, list(sorted(rev))))
+                    raise KeyError(  # pylint: disable=W0707
+                        "Unable to find '{0}' in {1}".format(
+                            a, list(sorted(rev))))
                 expe.append(v)
             expected_answers = expe
         elif isinstance(answers, dict):

@@ -215,7 +215,8 @@ def create_static_https_app(
                 import apphyper  # pylint: disable=C0415
                 pa = apphyper.app
                 if pa is None:
-                    raise RuntimeError("pa should not be None")
+                    raise RuntimeError(  # pylint: disable=W0707
+                        "pa should not be None")
             except ImportError as e:
                 raise ImportError(
                     "Unable to import 'apphyper' from '{0}'\n--sys.path--\n{1}".format(

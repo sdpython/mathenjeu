@@ -190,7 +190,7 @@ class ActivityGroup(Base):
             try:
                 ii = int(item)
             except ValueError:
-                raise ValueError(
+                raise ValueError(  # pylint: disable=W0707
                     "Unable to retrieve question '{0}'.".format(item))
         else:
             ii = item

@@ -98,7 +98,7 @@ class AuthentificationAnswers:
         try:
             fo = await request.form()
         except Exception as e:
-            raise RuntimeError(
+            raise RuntimeError(  # pylint: disable=W0707
                 "Unable to read login and password due to '{0}'".format(e))
 
         ps = request.query_params
