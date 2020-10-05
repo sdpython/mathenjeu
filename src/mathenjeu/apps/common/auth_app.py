@@ -100,6 +100,9 @@ class AuthentificationAnswers:
         except Exception as e:
             raise RuntimeError(  # pylint: disable=W0707
                 "Unable to read login and password due to '{0}'".format(e))
+        if 'alias' not in fo or 'pwd' not in fo:
+            return self.is_allowed(
+                alias=None, pwd=None, request=request)
 
         ps = request.query_params
         loge = getattr(self, 'logevent', None)
