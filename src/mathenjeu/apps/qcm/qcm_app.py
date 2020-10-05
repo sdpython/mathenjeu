@@ -121,7 +121,7 @@ class QCMApp(LogApp, AuthentificationAnswers):
         app.add_route('/login', self.login)
         app.add_route('/logout', self.logout)
         app.add_route('/error', self.on_error)
-        app.add_route('/authenticate', self.authenticate)
+        app.add_route('/authenticate', self.authenticate, methods=['POST'])
         app.add_route('/answer', self.answer, methods=['POST', 'GET'])
         app.add_exception_handler(404, self.not_found)
         app.add_exception_handler(500, self.server_error)
