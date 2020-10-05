@@ -121,16 +121,16 @@ class QCMApp(LogApp, AuthentificationAnswers):
         app.add_route('/login', self.login)
         app.add_route('/logout', self.logout)
         app.add_route('/error', self.on_error)
-        app.add_route('/authenticate', self.authenticate, methods=['POST'])
+        app.add_route('/authenticate', self.authenticate)
         app.add_route('/answer', self.answer, methods=['POST', 'GET'])
         app.add_exception_handler(404, self.not_found)
         app.add_exception_handler(500, self.server_error)
         app.add_event_handler("startup", self.startup)
         app.add_event_handler("shutdown", self.cleanup)
         app.add_route('/', self.main)
-        app.add_route('/qcm', self.qcm)
-        app.add_route('/last', self.lastpage)
-        app.add_route('/event', self.event)
+        app.add_route('/qcm', self.qcm, methods=['GET', 'POST'])
+        app.add_route('/last', self.lastpage, methods=['GET', 'POST'])
+        app.add_route('/event', self.event, methods=['GET', 'POST'])
         self.info("[QCMApp.create_app] create application", None)
 
     #########
@@ -147,6 +147,7 @@ class QCMApp(LogApp, AuthentificationAnswers):
         res = dict(title=self.title, short_title=self.short_title,
                    page_doc=self.page_doc)
         res.update(kwargs)
+        self.info('[QCMApp] page_context', str(res))
         return res
 
     def startup(self):
@@ -169,6 +170,7 @@ class QCMApp(LogApp, AuthentificationAnswers):
         self.log_event("home-unlogged", request, session=session)
         context = {'request': request}
         context.update(self.page_context(**session))
+        self.info('[QCMApp] unlogged_response', str(context))
         return self.templates.TemplateResponse('notlogged.html', context)
 
     def unknown_game(self, request, session):
@@ -194,9 +196,10 @@ class QCMApp(LogApp, AuthentificationAnswers):
             self.log_event("home-logged", request, session=session)
             context = {'request': request}
             context.update(self.page_context(games=self.games, **session))
-            return self.templates.TemplateResponse('index.html', context)
-        else:
-            return self.unlogged_response(request, session)
+            page = self.templates.TemplateResponse('index.html', context)
+            self.info('[QCMApp] main', str(page))
+            return page
+        return self.unlogged_response(request, session)
 
     async def on_error(self, request):
         """
@@ -230,28 +233,28 @@ class QCMApp(LogApp, AuthentificationAnswers):
             game = request.query_params.get('game', None)
             if game is None:
                 return self.unknown_game(request, session)
-            else:
-                obj_game = self.get_game(game)
-                if isinstance(obj_game, str):
-                    raise RuntimeError(
-                        "obj_game for '{0}' cannot be string".format(game))
-                qn = request.query_params.get('qn', 0)
-                data = dict(game=game, qn=qn)
-                events = request.query_params.get('events', None)
-                if events:
-                    data['events'] = events
-                self.log_event("qcm", request, session=session, **data)
-                disp = self.display
-                context = disp.get_context(obj_game, qn)
-                context.update(session)
-                context['game'] = game
-                if events:
-                    context['events'] = events
-                context = {'request': request}
-                context.update(self.page_context(**context))
-                return self.templates.TemplateResponse('qcm.html', context)
-        else:
-            return self.unlogged_response(request, session)
+            obj_game = self.get_game(game)
+            self.info('[QCMApp] qcm.1', str(obj_game))
+            if isinstance(obj_game, str):
+                raise RuntimeError(
+                    "obj_game for '{0}' cannot be string".format(game))
+            qn = request.query_params.get('qn', 0)
+            data = dict(game=game, qn=qn)
+            events = request.query_params.get('events', None)
+            if events:
+                data['events'] = events
+            self.log_event("qcm", request, session=session, **data)
+            disp = self.display
+            context = disp.get_context(obj_game, qn)
+            context.update(session)
+            context['game'] = game
+            if events:
+                context['events'] = events
+            context_req = {'request': request}
+            context_req.update(self.page_context(**context))
+            page = self.templates.TemplateResponse('qcm.html', context_req)
+            return page
+        return self.unlogged_response(request, session)
 
     async def answer(self, request):
         """
@@ -270,8 +273,8 @@ class QCMApp(LogApp, AuthentificationAnswers):
         ps = request.query_params
         values.update(ps)
         self.log_event("answer", request, session=session, data=values)
-        if 'next' in values and values['next'] in (None, 'None'):
-            response = RedirectResponse(url='/last?game=' + fo['game'])
+        if 'next' in values and 'game' in values and values['next'] in (None, 'None'):
+            response = RedirectResponse(url='/last?game=' + values['game'])
         else:
             response = RedirectResponse(
                 url='/qcm?game={0}&qn={1}'.format(values.get('game', ''), values.get('next', '')))

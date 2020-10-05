@@ -6,15 +6,12 @@ set pythonexe=%1
 goto start_script:
 
 :default_value_python:
-set pythonexe=c:\Python370_x64\python
-
-@echo ~SET pythonexe=%pythonexe%
 set pathserver=this,%~dp0..
 
 
 rem QCM
 
-rem python -m mathenjeu qcm_local --cookie_key=dummypwd --start=1 --port=8889 --userpwd=abc
+python -m mathenjeu qcm_local --cookie_key=dummypwd --start=1 --port=8889 --userpwd=abc
 rem python -m mathenjeu create_self_signed_cert --keyfile=key.pem --certfile=cert.pem
 rem python -m mathenjeu qcm_https --debug=1 --start=1 --port=8892 --userpwd=abc --keyfile=key.pem --certfile=cert.pem --cookie_key=dummypwd
 
