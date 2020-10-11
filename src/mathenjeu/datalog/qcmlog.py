@@ -3,6 +3,7 @@
 @file
 @brief Helpers to process data from logs.
 """
+import re
 from datetime import datetime
 import hashlib
 import numpy
@@ -170,7 +171,33 @@ def enumerate_qcmlog(files):
                 spl = line.split(",INFO,[DATA],")
                 ti = spl[0]
                 sdata = ",INFO,[DATA],".join(spl[1:])
-                data = ujson.loads(sdata)  # pylint: disable=E1101
+                try:
+                    data = ujson.loads(sdata)  # pylint: disable=E1101
+                except ValueError:
+                    if '"' not in sdata and "'" in sdata:
+                        sdata2 = sdata.replace("'", '"')
+                        try:
+                            data = ujson.loads(sdata2)  # pragma: disable=E1101
+                        except ValueError:
+                            if '"msg": "finish"' in sdata2:
+                                # Fix the code somewhere else.
+                                sdata3 = sdata2.replace(
+                                    '"client": ("', '"client": ["')
+                                sdata3 = sdata3.replace(
+                                    '), "data": QueryParams', '], "data": QueryParams')
+                                sdata3 = re.sub(
+                                    'QueryParams\\(\\"game=([a-z_]+)\\"\\)', '{"game":"\\1"}', sdata3)
+                                try:
+                                    data = ujson.loads(sdata3)  # pragma: disable=E1101
+                                except ValueError as e:
+                                    raise ValueError(
+                                        "Unable to process line\n{}\n{}\n{}".format(
+                                            sdata, sdata2, sdata3)) from e
+                            else:
+                                raise ValueError(
+                                    "Unable to process line\n{}\n{}".format(
+                                        sdata, sdata2)) from e
+
                 tid = datetime.strptime(ti, '%Y-%m-%d %H:%M:%S,%f')
                 data['time'] = tid
                 obss = _enumerate_processed_row(rows, data, cache, last_key)
