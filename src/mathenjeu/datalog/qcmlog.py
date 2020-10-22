@@ -177,7 +177,7 @@ def enumerate_qcmlog(files):
                     if '"' not in sdata and "'" in sdata:
                         sdata2 = sdata.replace("'", '"')
                         try:
-                            data = ujson.loads(sdata2)  # pragma: disable=E1101
+                            data = ujson.loads(sdata2)  # pylint: disable=E1101
                         except ValueError:
                             if '"msg": "finish"' in sdata2:
                                 # Fix the code somewhere else.
@@ -188,7 +188,8 @@ def enumerate_qcmlog(files):
                                 sdata3 = re.sub(
                                     'QueryParams\\(\\"game=([a-z_]+)\\"\\)', '{"game":"\\1"}', sdata3)
                                 try:
-                                    data = ujson.loads(sdata3)  # pragma: disable=E1101
+                                    data = ujson.loads(  # pylint: disable=E1101
+                                        sdata3)
                                 except ValueError as e:
                                     raise ValueError(
                                         "Unable to process line\n{}\n{}\n{}".format(
