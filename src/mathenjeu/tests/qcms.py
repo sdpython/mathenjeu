@@ -193,3 +193,69 @@ def ml_french_qcm():
                        expected_answers=[]),
     ]
     return ActivityGroup("ml_french_qcm", "ml_french_qcm", objs)
+
+
+def simple_cinema_qcm():
+    """
+    Builds a simple French :epkg:`QCM` about movies.
+    """
+    cinema_seconde = Notion('not-cinema-1', 'not-cinema-1', 'fr',
+                            domain='cinema', level='2A')
+
+    objs = [
+        QuestionChoice(
+            'ch1', 'hp', 'fr', 'Quel est la deuxieme épreuve de la coupe de feu ?',
+            notion=cinema_seconde,
+            answers=["L'épreuve du dragon",
+                     "l'épreuve des sirènes", "le labyrinthe"],
+            expected_answers=["L'épreuve du dragon"]),
+        QuestionChoice(
+            'ch2', 'bond', 'fr', 'Quel acteur a joué en premier James Bond ?',
+            notion=cinema_seconde,
+            answers=["Emma Peel", "Sean Connery", "Michael Moore"],
+            expected_answers=["Sean Connery"]),
+        QuestionChoice(
+            'ch3', 'manga', 'fr', "Comment se nomme la sorcière dans 'Le voyage de Chihiro' ?",
+            notion=cinema_seconde,
+            answers=["yagaba", "Babayaga", "Yubaba"],
+            expected_answers=["Yubaba"]),
+        QuestionChoice(
+            'ch4', 'heros', 'fr', "Dans le film avengers endgame, qui meurt lorsque Thanos claque des doigts ?",
+            notion=cinema_seconde,
+            answers=["spiderman-blackpanther-docterStrange",
+                     "spiderman-ironman-gamorra", "Hulk-blackwidow-rocket"],
+            expected_answers=["spiderman-blackpanther-docterStrange"]),
+        QuestionChoice(
+            'ch5', 'cannes', 'fr', "Quelle est la dernière femme réalisatrice à avoir gagné la palme d'or à Cannes ?",
+            notion=cinema_seconde,
+            answers=["Agnès Varda", "Jane Campion", "Kathryn Bigelow"],
+            expected_answers=["Jane Campion"]),
+        QuestionChoice(
+            'ch6', 'bat', 'fr', "Quel est le tout premier acteur à avoir joué le Joker ?",
+            notion=cinema_seconde,
+            answers=["Heath Ledger", "Joaquin Phoenix", "Jack Nickolson"],
+            expected_answers=["Jack Nickolson"]),
+        QuestionChoice(
+            'ch7', 'sw', 'fr', "Quel est le compositeur de la musique de Star Wars ?",
+            notion=cinema_seconde,
+            answers=["Clint Eastwood", "John Williams",
+                     "Hans Zimmer", "Maurice Jarre"],
+            expected_answers=["John Williams"]),
+        QuestionChoice(
+            'ch8', 'rn', 'fr', "Comment se nomme le renne de Kristoff dans la Reine des Neiges ?",
+            notion=cinema_seconde,
+            answers=["Sven", "Hans", "Mark"],
+            expected_answers=["Sven"]),
+        QuestionChoice(
+            'ch9', 'as', 'fr', ("Dans les aristochats, comment se prénomme le dernier chat "
+                                "de Adélaïde Bonnefamille apres Toulouse, Berlioz et Duchesse ?"),
+            notion=cinema_seconde,
+            answers=["Juliette", "Chloé", "Marie"],
+            expected_answers=["Marie"]),
+        QuestionChoice(
+            'ch10', 'as', 'fr', "Qui joue Edward aux Mains d'argent ?",
+            notion=cinema_seconde,
+            answers=["Leonardo DiCaprio", "Johnny Depp", "Tom Hanks"],
+            expected_answers=["Johnny Depp"]),
+    ]
+    return ActivityGroup("simple_cinema_qcm", "simple_cinema_qcm", objs)

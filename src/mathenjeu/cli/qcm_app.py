@@ -22,7 +22,9 @@ def create_qcm_local_app(
         title="Web Application MathEnJeu", short_title="MathEnJeu",
         page_doc="http://www.xavierdupre.fr/app/mathenjeu/helpsphinx/",
         secure=False, display=None, fct_game=None,
-        games="simple_french_qcm,simple_french_qcm,0;ml_french_qcm,ml_french_qcm,0",
+        games=("simple_cinema_qcm,simple_cinema_qcm,0;"
+               "simple_french_qcm,simple_french_qcm,0;"
+               "ml_french_qcm,ml_french_qcm,0"),
         port=8868, middles=None, start=False,
         userpwd=None, debug=False, fLOG=print):
     """
@@ -101,7 +103,9 @@ def create_qcm_https_app(
         title="Web Application MathEnJeu", short_title="MathEnJeu",
         page_doc="http://www.xavierdupre.fr/app/mathenjeu/helpsphinx/",
         secure=False, display=None,
-        games="simple_french_qcm,simple_french_qcm,0;ml_french_qcm,ml_french_qcm,0",
+        games=("simple_cinema_qcm,simple_cinema_qcm,0;"
+               "simple_french_qcm,simple_french_qcm,0;"
+               "ml_french_qcm,ml_french_qcm,0"),
         port=8868, middles=None, start=False,
         userpwd=None, debug=False,
         # hypercorn parameters
