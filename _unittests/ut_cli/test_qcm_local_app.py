@@ -26,8 +26,10 @@ class TestQcmLocalAppCli(unittest.TestCase):
         main(args=['qcm_local', '-c', 'dummypwd', '-po', '8889',
                    '-u', 'abc'], fLOG=st.fprint)
         res = str(st)
-        self.assertIn(
-            "[create_qcm_local_app] games={'simple_french_qcm': ('simple_french_qcm', '0'), 'ml_french_qcm': ('ml_french_qcm', '0')}", res)
+        self.assertIn("[create_qcm_local_app] games=", res)
+        self.assertIn("'simple_cinema_qcm':", res)
+        self.assertIn("'simple_french_qcm':", res)
+        self.assertIn("'ml_french_qcm':", res)
 
 
 if __name__ == "__main__":
