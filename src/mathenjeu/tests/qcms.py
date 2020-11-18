@@ -208,7 +208,7 @@ def simple_cinema_qcm():
             notion=cinema_seconde,
             answers=["l'épreuve du dragon",
                      "l'épreuve des sirènes", "le labyrinthe"],
-            expected_answers=["L'épreuve du dragon"]),
+            expected_answers=["l'épreuve du dragon"]),
         QuestionChoice(
             'ch2', 'bond', 'fr', 'Quel acteur a joué en premier James Bond ?',
             notion=cinema_seconde,
