@@ -206,7 +206,7 @@ def simple_cinema_qcm():
         QuestionChoice(
             'ch1', 'hp', 'fr', 'Quel est la deuxieme épreuve de la coupe de feu ?',
             notion=cinema_seconde,
-            answers=["L'épreuve du dragon",
+            answers=["l'épreuve du dragon",
                      "l'épreuve des sirènes", "le labyrinthe"],
             expected_answers=["L'épreuve du dragon"]),
         QuestionChoice(
