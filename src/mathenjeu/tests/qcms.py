@@ -217,16 +217,16 @@ def simple_cinema_qcm():
         QuestionChoice(
             'ch3', 'manga', 'fr', "Comment se nomme la sorcière dans 'Le voyage de Chihiro' ?",
             notion=cinema_seconde,
-            answers=["yagaba", "Babayaga", "Yubaba"],
+            answers=["Yagaba", "Babayaga", "Yubaba"],
             expected_answers=["Yubaba"]),
         QuestionChoice(
-            'ch4', 'heros', 'fr', "Dans le film avengers endgame, qui meurt lorsque Thanos claque des doigts ?",
+            'ch4', 'heros', 'fr', "Dans le film Avengers Endgame, qui meurt lorsque Thanos claque des doigts ?",
             notion=cinema_seconde,
-            answers=["spiderman-blackpanther-docterStrange",
-                     "spiderman-ironman-gamorra", "Hulk-blackwidow-rocket"],
-            expected_answers=["spiderman-blackpanther-docterStrange"]),
+            answers=["Spiderman-Black Panther-Doctor Strange",
+                     "Spiderman-Ironman-Gamorra", "Hulk-Black Widow-Rocket"],
+            expected_answers=["Spiderman-Black Panther-Doctor Strange"]),
         QuestionChoice(
-            'ch5', 'cannes', 'fr', "Quelle est la dernière femme réalisatrice à avoir gagné la palme d'or à Cannes ?",
+            'ch5', 'cannes', 'fr', "Quelle est la dernière femme réalisatrice à avoir gagné la Palme d'or à Cannes ?",
             notion=cinema_seconde,
             answers=["Agnès Varda", "Jane Campion", "Kathryn Bigelow"],
             expected_answers=["Jane Campion"]),
@@ -242,18 +242,18 @@ def simple_cinema_qcm():
                      "Hans Zimmer", "Maurice Jarre"],
             expected_answers=["John Williams"]),
         QuestionChoice(
-            'ch8', 'rn', 'fr', "Comment se nomme le renne de Kristoff dans la Reine des Neiges ?",
+            'ch8', 'rn', 'fr', "Comment se nomme le renne de Kristoff dans la 'Reine des Neiges' ?",
             notion=cinema_seconde,
             answers=["Sven", "Hans", "Mark"],
             expected_answers=["Sven"]),
         QuestionChoice(
-            'ch9', 'as', 'fr', ("Dans les aristochats, comment se prénomme le dernier chat "
-                                "de Adélaïde Bonnefamille apres Toulouse, Berlioz et Duchesse ?"),
+            'ch9', 'as', 'fr', ("Dans 'Les Aristochats', comment se prénomme le dernier chat "
+                               "de Adélaïde Bonnefamille apres Toulouse, Berlioz et Duchesse ?"),
             notion=cinema_seconde,
             answers=["Juliette", "Chloé", "Marie"],
             expected_answers=["Marie"]),
         QuestionChoice(
-            'ch10', 'as', 'fr', "Qui joue Edward aux Mains d'argent ?",
+            'ch10', 'as', 'fr', "Qui joue 'Edward aux mains d'argent' ?",
             notion=cinema_seconde,
             answers=["Leonardo DiCaprio", "Johnny Depp", "Tom Hanks"],
             expected_answers=["Johnny Depp"]),

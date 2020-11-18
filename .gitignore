@@ -280,3 +280,4 @@ _doc/notebooks/python/schema.proto
 _doc/notebooks/python/protoc-*.zip
 src/mathenjeu/apps/test_hypercorn_qcm.py
 _unittests/unittests.out
+_doc/notebooks/*.csv
