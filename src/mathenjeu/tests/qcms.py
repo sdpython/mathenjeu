@@ -248,7 +248,7 @@ def simple_cinema_qcm():
             expected_answers=["Sven"]),
         QuestionChoice(
             'ch9', 'as', 'fr', ("Dans 'Les Aristochats', comment se prénomme le dernier chat "
-                               "de Adélaïde Bonnefamille apres Toulouse, Berlioz et Duchesse ?"),
+                                "de Adélaïde Bonnefamille apres Toulouse, Berlioz et Duchesse ?"),
             notion=cinema_seconde,
             answers=["Juliette", "Chloé", "Marie"],
             expected_answers=["Marie"]),

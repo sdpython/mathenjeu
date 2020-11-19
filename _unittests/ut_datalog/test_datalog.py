@@ -9,7 +9,7 @@ from pyquickhelper.pycode import ExtTestCase
 from mathenjeu.datalog import enumerate_qcmlog, enumerate_qcmlogdf
 
 
-class TestLocalAppCli(ExtTestCase):
+class TestLocalAppData(ExtTestCase):
 
     def test_datalog(self):
         this = os.path.abspath(os.path.dirname(__file__))
@@ -19,10 +19,17 @@ class TestLocalAppCli(ExtTestCase):
                'time': datetime.datetime(2018, 12, 12, 17, 56, 29, 989000),
                'qtime': 'begin'}
         self.assertEqual(obs[0], exp)
-        exp = {'person_id': '8a8c40ad28eb1206efd5', 'alias': 'xavierg',
-               'time': datetime.datetime(2018, 12, 12, 23, 10, 37, 527000), 'qtime': 'end',
-               'simple_french_qcm-8-ANS': ' ', 'simple_french_qcm-8-b': 'ok',
-               'game': 'simple_french_qcm', 'qn': '8', 'next': 'None', 'simple_french_qcm-8-nbvisit': 1.0,
+        exp = {'person_id': '8a8c40ad28eb1206efd5',
+               'alias': 'xavierg',
+               'time': datetime.datetime(2018, 12, 12, 23, 10, 37, 527000),
+               'qtime': 'end',
+               'simple_french_qcm-8-ANS': ' ',
+               'simple_french_qcm-8-b': 'ok',
+               'game': 'simple_french_qcm',
+               'qn': '8',
+               'next': 'None',
+               'simple_french_qcm-8-nbvisit': 1.0,
+               'simple_french_qcm-8-good': 0,
                'simple_french_qcm-8-duration': datetime.timedelta(seconds=1, microseconds=422000)}
         self.assertEqual(obs[-1], exp)
 
@@ -33,9 +40,10 @@ class TestLocalAppCli(ExtTestCase):
         self.assertEqual(len(dfs), 5)
         merged = pandas.concat(dfs, sort=False)
         self.assertEqual(merged.shape[0], 5)
-        self.assertEqual(merged.shape[1], 49)
+        self.assertEqual(merged.shape[1], 58)
         values = list(merged["simple_french_qcm-8-ANS"])
         self.assertIn(" Prout", values)
+        # print(merged.T)
 
 
 if __name__ == "__main__":

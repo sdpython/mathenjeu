@@ -29,16 +29,18 @@ def _duration(seq):
     return dt
 
 
-def _enumerate_processed_row(rows, data, cache, last_key):
+def _enumerate_processed_row(rows, data, cache, last_key, set_expected_answers=None):
     """
     Converts time, data as dictionary into other data
     as dictionary.
 
-    @param      rows        previous rows
-    @param      data        data as dictionaries
-    @param      cache       cache events
-    @param      last_key    last seen key
-    @return                 iterator on clean rows
+    @param      rows                    previous rows
+    @param      data                    data as dictionaries
+    @param      cache                   cache events
+    @param      last_key                last seen key
+    @param      set_expected_answers    set of expected answers,
+                                        adds a field if one is found
+    @return                             iterator on clean rows
     """
     def comma_semi(st):
         if st is None:
@@ -68,7 +70,7 @@ def _enumerate_processed_row(rows, data, cache, last_key):
         raise ValueError(  # pragma: no cover
             "Unable to extract an ip address from {0}".format(data))
     keys = {'qn', 'game', 'next', 'events'}
-    if session is not None:
+    if session is not None:  # pylint: disable=R1702
         alias = session['alias']
         person_id = hash4alias(alias + ipadd)
 
@@ -101,6 +103,7 @@ def _enumerate_processed_row(rows, data, cache, last_key):
         elif event == "answer":
             res["qtime"] = 'end'
             q = data.get('data', None)
+            good = {}
             if q is not None:
                 qn = q['qn']
                 game = q['game']
@@ -109,16 +112,25 @@ def _enumerate_processed_row(rows, data, cache, last_key):
                     if k in keys:
                         q2[k] = v
                     else:
-                        q2["{0}-{1}-{2}".format(game, qn, k)] = v
+                        key = "{0}-{1}-{2}".format(game, qn, k)
+                        q2[key] = v
+                        key_short = "{0}-{1}".format(game, qn)
+                        if key in set_expected_answers:
+                            good[key_short] = 1
+                        elif key_short not in good:
+                            good[key_short] = 0
+
                 res.update(q2)
             key = person_id, alias, q['game'], q['qn']
             if key not in cache:
                 cache[key] = []
             cache[key].append((data['time'], 'leave'))
             duration = _duration(cache[key])
-            res["{0}-{1}-{2}".format(game, qn, 'nbvisit')
-                ] = len(cache[key]) * 0.5
+            res["{0}-{1}-{2}".format(
+                game, qn, 'nbvisit')] = len(cache[key]) * 0.5
             res["{0}-{1}-{2}".format(game, qn, 'duration')] = duration
+            for k, v in good.items():
+                res[k + '-good'] = v
             last_key.clear()
             yield res
 
@@ -135,13 +147,14 @@ def _enumerate_processed_row(rows, data, cache, last_key):
                     yield res
 
 
-def enumerate_qcmlog(files):
+def enumerate_qcmlog(files, expected_answers=None):
     """
     Processes many files of logs produced by application
     @see cl QCMApp.
 
-    @param      files       list of filenames
-    @return                 iterator on observations as dictionary
+    :param files: list of filenames
+    :param expected_answers: expected answers
+    :return: iterator on observations as dictionary
 
     Example of data it processes::
 
@@ -157,6 +170,12 @@ def enumerate_qcmlog(files):
         2018-12-12 17:56:54,208,INFO,[DATA],{"msg":"event","session":{"alias":"xavierd"},"events":["game:simple_french_qcm,qn:3"]}
         2018-12-12 17:56:54,239,INFO,[DATA],{"msg":"event","session":{"alias":"xavierd"},"events":["game:simple_french_qcm,qn:3"]}
     """
+    set_expected_answers = set()
+    if expected_answers is not None:
+        for a in expected_answers:
+            for _ in a:
+                set_expected_answers.add(_)
+
     rows = []
     cache = {}
     last_key = []
@@ -201,7 +220,8 @@ def enumerate_qcmlog(files):
 
                 tid = datetime.strptime(ti, '%Y-%m-%d %H:%M:%S,%f')
                 data['time'] = tid
-                obss = _enumerate_processed_row(rows, data, cache, last_key)
+                obss = _enumerate_processed_row(
+                    rows, data, cache, last_key, set_expected_answers)
                 for obs in obss:
                     yield obs
                 rows.append(data)
@@ -239,22 +259,22 @@ def _aggnotnan(values):
     if isinstance(values, pandas.core.series.Series):
         r = _aggnotnan_serie(values)
         return r
-    else:
-        res = []
-        for col in values.columns:
-            val = list(values[col])
-            res.append(_aggnotnan_serie(val))
-        df = pandas.DataFrame(res, values.columns)
-        return df
+    res = []
+    for col in values.columns:
+        val = list(values[col])
+        res.append(_aggnotnan_serie(val))
+    df = pandas.DataFrame(res, values.columns)
+    return df
 
 
-def enumerate_qcmlogdf(files):
+def enumerate_qcmlogdf(files, expected_answers=None):
     """
     Processes many files of logs produced by application
     @see cl QCMApp in dataframe.
 
-    @param      files       list of filenames
-    @return                 iterator on observations as dictionary
+    :param files: list of filenames
+    :param expected_answers: expected answers
+    :return: iterator on observations as dictionary
 
     Example of data it processes::
 
@@ -285,7 +305,7 @@ def enumerate_qcmlogdf(files):
 
     stack = {}
     index = {}
-    for i, row in enumerate(enumerate_qcmlog(files)):
+    for i, row in enumerate(enumerate_qcmlog(files, expected_answers)):
 
         person_id = row.get('person_id', None)
         if person_id is None:

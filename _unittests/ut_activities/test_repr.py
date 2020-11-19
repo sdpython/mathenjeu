@@ -34,6 +34,16 @@ class TestRepr(ExtTestCase):
         self.assertStartsWith("ActivityGroup(_col_acts=[", r)
         self.assertIn("OrderedDict([(", r)
 
+    def test_expected(self):
+        test = simple_cinema_qcm()
+        for qu in test:
+            r = qu.ExpectedAnswers
+            self.assertIsInstance(r, list)
+            self.assertEqual(len(r), 1)
+            self.assertEqual(r[0][0], 'a')
+        exp = test.expected_answers()
+        self.assertIn(['simple_cinema_qcm-0-a0'], exp)
+
 
 if __name__ == "__main__":
     unittest.main()

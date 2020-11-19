@@ -234,10 +234,20 @@ class ActivityGroup(Base):
         """
         if isinstance(item, int):
             return str(item + 1)  # items starts at 0
-        elif isinstance(item, str):
+        if isinstance(item, str):
             try:
                 return self.get_display_item(int(item))
             except ValueError:
                 return item
-        else:
-            raise TypeError("Unable to interpret '{0}'.".format(item))
+        raise TypeError("Unable to interpret '{0}'.".format(item))
+
+    def expected_answers(self):
+        """
+        Returns the expected answers aliases.
+        """
+        res = []
+        for i, qu in enumerate(self):
+            exp = qu.ExpectedAnswers
+            full = ["%s-%d-%s" % (self._col_name, i, r) for r in exp]
+            res.append(full)
+        return res

@@ -1,6 +1,6 @@
 
-.. |gitlogo| image:: _static/git_logo.png
-             :height: 20
+.. image:: https://github.com/sdpython/mathenjeu/blob/master/_doc/sphinxdoc/source/phdoc_static/project_ico.png?raw=true
+    :target: https://github.com/sdpython/mathenjeu/
 
 =========================================
 Maths en Jeux (ou exercices sur internet)
