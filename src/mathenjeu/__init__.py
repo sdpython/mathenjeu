@@ -5,7 +5,7 @@
 Building an web application with QCM.
 """
 
-__version__ = "0.2.114"
+__version__ = "0.2.115"
 __author__ = "Xavier Dupré"
 __github__ = "https://github.com/sdpython/mathenjeu"
 __url__ = "http://www.xavierdupre.fr/app/mathenjeu/helpsphinx/index.html"
