@@ -19,7 +19,7 @@ class TestQcmLocalAppCli(unittest.TestCase):
         st = BufferedPrint()
         main(args=['qcm_local', '--help'], fLOG=st.fprint)
         res = str(st)
-        self.assertIn("Creates a local web-application", res)
+        self.assertIn("usage: qcm_local", res)
 
     def test_local_webapp_start(self):
         st = BufferedPrint()

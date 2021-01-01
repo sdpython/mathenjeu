@@ -19,15 +19,14 @@ class TestStaticLocalAppCli(unittest.TestCase):
         st = BufferedPrint()
         main(args=['static_local', '--help'], fLOG=st.fprint)
         res = str(st)
-        self.assertIn("Creates a local web-application", res)
+        self.assertIn("usage: static_local", res)
 
     def test_local_webapp_start(self):
         st = BufferedPrint()
         main(args=['static_local', '-c', 'dummypwd', '-po', '8889',
                    '-u', 'abc'], fLOG=st.fprint)
         res = str(st)
-        self.assertIn(
-            "[create_static_local_app] create", res)
+        self.assertIn("[create_static_local_app] create", res)
 
 
 if __name__ == "__main__":

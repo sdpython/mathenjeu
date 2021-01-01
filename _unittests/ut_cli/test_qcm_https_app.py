@@ -14,7 +14,7 @@ class TestQcmHttpsAppCli(ExtTestCase):
         st = BufferedPrint()
         main(args=['qcm_https', '--help'], fLOG=st.fprint)
         res = str(st)
-        self.assertIn("Creates a https web-application", res)
+        self.assertIn("usage: qcm_https", res)
 
     def test_https_webapp_start(self):
         temp = get_temp_folder(__file__, "temp_qcm_https")

@@ -14,7 +14,7 @@ class TestCertCli(ExtTestCase):
         st = BufferedPrint()
         main(args=['create_self_signed_cert', '--help'], fLOG=st.fprint)
         res = str(st)
-        self.assertIn("Creates a signed certificate", res)
+        self.assertIn("usage: create_self_signed_cert", res)
 
     def test_cert_run(self):
         temp = get_temp_folder(__file__, "temp_cert")
