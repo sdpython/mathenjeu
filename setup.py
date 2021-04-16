@@ -47,7 +47,6 @@ package_data = {project_var_name + ".apps.qcm.statics.css": ["*.css"],
                 }
 
 
-
 setup(
     name=project_var_name,
     version=read_version(__file__, project_var_name, subfolder='src'),
