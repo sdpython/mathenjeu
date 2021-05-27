@@ -8,8 +8,8 @@ Maths en Jeux (ou exercices sur internet)
 
 .. only:: html
 
-    .. image:: https://travis-ci.org/sdpython/mathenjeu.svg?branch=master
-        :target: https://travis-ci.org/sdpython/mathenjeu
+    .. image:: https://travis-ci.com/sdpython/mathenjeu.svg?branch=master
+        :target: https://travis-ci.com/sdpython/mathenjeu
         :alt: Build status
 
     .. image:: https://ci.appveyor.com/api/projects/status/kewttt58ejfwduao?svg=true
