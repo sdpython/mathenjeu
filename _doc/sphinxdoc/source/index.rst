@@ -26,10 +26,6 @@ Maths en Jeux (ou exercices sur internet)
         :alt: MIT License
         :target: http://opensource.org/licenses/MIT
 
-    .. image:: https://requires.io/github/sdpython/mathenjeu/requirements.svg?branch=master
-         :target: https://requires.io/github/sdpython/mathenjeu/requirements/?branch=master
-         :alt: Requirements Status
-
     .. image:: https://codecov.io/github/sdpython/mathenjeu/coverage.svg?branch=master
         :target: https://codecov.io/github/sdpython/mathenjeu?branch=master
 
