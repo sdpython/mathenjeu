@@ -9,7 +9,7 @@ Maths en Jeux (ou exercices sur internet)
 .. only:: html
 
     .. image:: https://travis-ci.com/sdpython/mathenjeu.svg?branch=master
-        :target: https://travis-ci.com/sdpython/mathenjeu
+        :target: https://app.travis-ci.com/github/sdpython/mathenjeu
         :alt: Build status
 
     .. image:: https://ci.appveyor.com/api/projects/status/kewttt58ejfwduao?svg=true
