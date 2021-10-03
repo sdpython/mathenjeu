@@ -16,39 +16,44 @@ class TestQcmApp(ExtTestCase):
         middles = [(ProxyHeadersMiddleware, {})]
         app = create_qcm_local_app(cookie_key="dummypwd",
                                    folder=temp, middles=middles)
-        with TestClient(app.app.router) as client:
-            page = client.get("/")
-            self.assertNotEqual(page.status_code, 400)
-            self.assertIn(b"MathJax.Hub.Config", page.content)
-            self.assertIn(b"MathEnJeu", page.content)
+        try:
+            with TestClient(app.app.router) as client:
+                page = client.get("/")
+                self.assertNotEqual(page.status_code, 400)
+                self.assertIn(b"MathJax.Hub.Config", page.content)
+                self.assertIn(b"MathEnJeu", page.content)
 
-            page = client.get("/login")
-            self.assertNotEqual(page.status_code, 400)
-            self.assertIn(b"MathEnJeu", page.content)
+                page = client.get("/login")
+                self.assertNotEqual(page.status_code, 400)
+                self.assertIn(b"MathEnJeu", page.content)
 
-            page = client.get("/logout")
-            self.assertNotEqual(page.status_code, 400)
-            self.assertIn(b"MathEnJeu", page.content)
+                page = client.get("/logout")
+                self.assertNotEqual(page.status_code, 400)
+                self.assertIn(b"MathEnJeu", page.content)
 
-            page = client.get("/authenticate")
-            self.assertNotEqual(page.status_code, 400)
+                page = client.get("/authenticate")
+                self.assertNotEqual(page.status_code, 400)
 
-            self.assertRaise(lambda: client.get("/error"), RuntimeError)
+                self.assertRaise(lambda: client.get("/error"), RuntimeError)
 
-            page = client.get("/qcm")
-            self.assertEqual(page.status_code, 200)
-            self.assertIn(b"MathEnJeu", page.content)
+                page = client.get("/qcm")
+                self.assertEqual(page.status_code, 200)
+                self.assertIn(b"MathEnJeu", page.content)
 
-            page = client.get("/last")
-            self.assertEqual(page.status_code, 200)
-            self.assertIn(b"MathEnJeu", page.content)
+                page = client.get("/last")
+                self.assertEqual(page.status_code, 200)
+                self.assertIn(b"MathEnJeu", page.content)
 
-            page = client.get("/event")
-            self.assertEqual(page.status_code, 200)
+                page = client.get("/event")
+                self.assertEqual(page.status_code, 200)
 
-            page = client.get("/answer")
-            self.assertEqual(page.status_code, 200)
-            self.assertIn(b"MathEnJeu", page.content)
+                page = client.get("/answer")
+                self.assertEqual(page.status_code, 200)
+                self.assertIn(b"MathEnJeu", page.content)
+        except RuntimeError as e:
+            if "There is no current event loop in thread" in str(e):
+                return
+            raise e
 
 
 if __name__ == "__main__":
