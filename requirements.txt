@@ -2,7 +2,7 @@ autopep8
 aiofiles
 coverage
 hypercorn
-jinja2
+jinja2==3.0.3
 jupyter_sphinx
 jyquickhelper
 itsdangerous
