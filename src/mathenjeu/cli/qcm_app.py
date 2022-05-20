@@ -234,14 +234,17 @@ def create_qcm_https_app(
                     folder, main_folder, "\n".join(sys.path))) from e
 
     application_path = "apphyper:app"
+    if root_path is None:
+        root_path = ''
     kwargs = dict(application_path=application_path, access_log=access_log,
                   access_log_format=access_log_format, bind=bind,
-                  ca_certs=ca_certs, certfile=certfile, debug=debug, error_log=error_log,
-                  keep_alive=keep_alive, keyfile=keyfile, root_path=root_path, workers=workers,
+                  ca_certs=ca_certs, certfile=certfile,
+                  debug=debug, error_log=error_log,
+                  keep_alive=keep_alive, keyfile=keyfile,
+                  root_path=root_path, workers=workers,
                   reload=reload, ciphers=ciphers)
-
     if fLOG:
-        fLOG("[create_qcm_https_app] create server")
+        fLOG("[create_qcm_https_app] create server")    
     server = ServerHypercorn(**kwargs)
     if start:
         if fLOG:  # pragma: no cover
