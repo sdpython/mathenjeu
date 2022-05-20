@@ -224,10 +224,10 @@ def create_qcm_https_app(
                 if pa is None:
                     raise RuntimeError(  # pylint: disable=W0707
                         "pa should not be None")
-            except ImportError as e:
+            except ImportError as ee:
                 raise ImportError(
                     "Unable to import 'apphyper' from '{0}'\n--sys.path--\n{1}".format(
-                        folder, "\n".join(sys.path))) from e
+                        folder, "\n".join(sys.path))) from ee
         else:
             raise ImportError(
                 "Unable to import 'apphyper' from '{0}'\nFolder '{1}' already present.\n--sys.path--\n{2}".format(
