@@ -54,9 +54,10 @@ class TestStaticApp(ExtTestCase):
                                       content=[('zoo', folder)],
                                       fLOG=None)
         try:
-            with TestClient(app.app.router) as client:
+            with TestClient(app.app.router,
+                            raise_server_exceptions=False) as client:
                 page = client.get("/zoo")
-                self.assertEqual(page.status_code, 404)
+                self.assertEqual(page.status_code, 500)
                 page = client.get("/zoo/test_static_app.py")
                 self.assertEqual(page.status_code, 200)
                 self.assertIn(

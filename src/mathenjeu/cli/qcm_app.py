@@ -244,7 +244,7 @@ def create_qcm_https_app(
                   root_path=root_path, workers=workers,
                   reload=reload, ciphers=ciphers)
     if fLOG:
-        fLOG("[create_qcm_https_app] create server")    
+        fLOG("[create_qcm_https_app] create server")
     server = ServerHypercorn(**kwargs)
     if start:
         if fLOG:  # pragma: no cover
